@@ -1,0 +1,124 @@
+#titre {
+    color:#dee2ff;
+    text-align: center;
+    margin-top: 80px;
+    margin-bottom: 50px;
+}
+
+body {
+    background-color: #28243A;
+}
+
+.case-btn {
+    width: 100px;
+    height: 100px;
+    background-color: #28243A;
+    margin-right: none;
+    border: none;
+    font-size: 90px;
+    color: white;
+
+}
+
+.tableCase {
+    width: 100px;
+    height: 100px;
+    background-color: #28243A;
+    border:5px solid white;
+}
+
+table {
+    border-collapse: collapse;
+    border: 6px solid #28243A;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#victoire {
+    color: aquamarine;
+    text-align: center;
+    font-size: 70px;
+    margin-top: 200px;
+}
+
+#rejouer-btn {
+    width: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    padding: 8px 10px;
+    color: black;
+    background-color: #efd3d7;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+
+.id-btn {
+    width: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    padding: 8px 10px;
+    color: #28243A;
+    background-color: #AFF4C6;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+
+}
+
+#rejoindre-btn {
+    display: inline;
+}
+
+#noPartie {
+    height: 25px;
+    border: none;
+    border-radius: 5px;
+}
+
+.center {
+    width: max-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+h1 {
+    color: aquamarine;
+    text-align: center;
+}
+
+#idFausse {
+    margin-top: 50px;
+    color: red;
+}
+
+#attente {
+    margin-top: 100px;
+}
+
+#login {
+    margin-top: 150px;
+}
+
+#score {
+    text-align: center;
+    color: aquamarine;
+    margin-bottom: 70px;
+
+}

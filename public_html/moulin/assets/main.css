@@ -1,0 +1,28 @@
+.titre {
+    color:white;
+    text-align: center;
+    margin-top: 100px;
+    margin-bottom: 70px;
+}
+
+body {
+    background-color: #28243A;
+}
+
+.jouer-btn {
+    width: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+    padding: 8px 10px;
+    color: black;
+    background-color: #A9E5BB;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+#login {
+    text-align: center;
+}

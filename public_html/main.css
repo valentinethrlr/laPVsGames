@@ -1,0 +1,25 @@
+.titre {
+    margin-top: 100px;
+    text-align: center;
+    color: white;
+    margin-bottom: 70px;
+    
+}
+
+body {
+    background-color: #28243A;
+}
+
+.btn {
+    width: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+    padding: 8px 10px;
+    color: #28243A;
+    background-color: #A9E5BB;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+}

@@ -1,0 +1,10 @@
+body{
+    background: #28243A;
+}
+
+#grille {
+    display: block;
+    width: 25%;
+    margin: auto;
+    margin-top: 140px;
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Jouer!:)</title>
+    <link rel="icon" type="image/pion-icon" href="/morpion/assets/images/pion.avif">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" href="/morpion/assets/css/plateau.css?version=85" media="screen" />
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js" integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous"></script>
+    <script src='/morpion/assets/js/ligne.js?v=45'></script>
+</head>
+<body>
+
+    <div id="login">
+        <button class="id-btn" onclick="creer()">CREER</button>
+        
+        <div class="center">
+            <input type="number" id="noPartie">
+            <button id="rejoindre-btn" class="id-btn" onclick="rejoindre()">REJOINDRE</button>
+        </div>
+        <h1 id="idFausse"></h1>
+
+    </div>
+
+    <div id="attente" style="display: none;">
+        <h1>En attente de l'adversaire...</h1><br>
+        <h1 id="votreId">Votre ID est: </h1><br>
+    </div>
+
+
+    <div id="partie" style="display: none;">
+        <h1 id="titre">La partie commence</h1>
+        <h2 id="score">X: 0 vs O: 0</h2>
+
+        <table id="table">
+            <tr>
+                <td class="tableCase">
+                    <button class="case-btn" onclick="buttonClicked(0)"></button>
+                </td>
+                <td class="tableCase">
+                    <button class="case-btn" onclick="buttonClicked(1)"></button>
+                </td>
+                <td class="tableCase">
+                    <button class="case-btn" onclick="buttonClicked(2)"></button>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableCase">
+                    <button class="case-btn" onclick="buttonClicked(3)"></button>
+                </td>
+                <td class="tableCase">
+                    <button class="case-btn" onclick="buttonClicked(4)"></button>
+                </td>
+                <td class="tableCase">
+                    <button class="case-btn" onclick="buttonClicked(5)"></button>
+                </td>
+            </tr>
+            <tr>
+                <td class="tableCase">
+                    <button class="case-btn" onclick="buttonClicked(6)"></button>
+                </td>
+                <td class="tableCase">
+                    <button class="case-btn" onclick="buttonClicked(7)"></button>
+                </td>
+                <td class="tableCase">
+                    <button class="case-btn" onclick="buttonClicked(8)"></button>
+                </td>
+            </tr>
+        </table>
+
+            <h2 id="victoire"></h2>
+            <button id="rejouer-btn" onclick="rejouer()" style="display: none;">REJOUER</button>
+    </div>
+
+</body>
+</html>
+
