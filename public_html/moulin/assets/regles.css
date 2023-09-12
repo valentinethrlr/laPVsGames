@@ -1,5 +1,4 @@
 .titre {
-    color:antiquewhite;
     text-align: center;
     margin-top: 100px;
     margin-bottom: 70px;
@@ -8,4 +7,5 @@
 
 body {
     background-color: #28243A;
+    color: antiquewhite;
 }
