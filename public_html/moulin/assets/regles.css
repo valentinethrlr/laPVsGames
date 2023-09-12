@@ -2,10 +2,21 @@
     text-align: center;
     margin-top: 100px;
     margin-bottom: 70px;
-    font-size: x-large;
 }
 
 body {
     background-color: #28243A;
     color: antiquewhite;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#texte {
+    display: block;
+    width: min(1000px, 90%);
+    margin: auto;
+    padding: 5px clamp(0px, 1vw, 40px) 20px clamp(0px, 1vw, 40px);
+    text-align: justify;
+    font-size: larger;
+
+    
 }
