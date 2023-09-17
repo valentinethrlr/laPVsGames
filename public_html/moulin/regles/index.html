@@ -6,13 +6,48 @@
     <title>MOULIN</title>
     <link rel="icon" type="image/pion-icon" href="/morpion/assets/images/pion.avif">
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel="stylesheet" type="text/css" href="../assets/regles.css?version=9" media="screen" />
+    <link rel="stylesheet" type="text/css" href="../assets/regles.css?version=24" media="screen" />
 </head>
 <body>
    <h1 class="titre">Règles du jeu</h1>
    <div id="texte">
         <h3>But du jeu:</h3>
-        <p>Capturer les pions de son adversaire jusqu’à ce qu’il ne lui en reste plus que 2 en réalisant des <b>moulins</b> ou qu’il ne puisse plus faire de mouvements en bloquant tous ses pions.</p>
+        <p>Capturer les pions de son adversaire jusqu’à ce qu’il ne lui en reste plus que 2 en réalisant des <b>moulins</b> ou faire en sorte qu’il ne puisse plus faire de mouvements en bloquant tous ses pions.</p>
+        <h3>Déroulement:</h3>
+        <ol>
+            <li class="item">Chaque joueur pose un de ses pions à tour de rôle sur une des intersections du plateau.</li>
+            <li class="item">Une fois que tous les points sont posés, les joueurs doivent déplacer à tour de rôle un de leur pion à une intersections adjacente libre, à travers la ligne qui relie le point de départ et celui de destination.</li>
+        </ol>
+
+        <object id="animation" type="image/svg+xml" data="./movExemple.svg" width="400px" height="400px">
+            <img src="./movExemple.svg"> 
+        </object>
+
+        <p class="legende">Exemple de début de partie</p>
+
+        <p class="tabulation">Si un joueur parvient à aligner trois de ses points sur des intersections adjacentes reliés par un trait, il a formé un <b>moulin</b> et peut capturer un pion de son adversaire qui devient hors-jeu. Il est possible de déplacer un des points du <b>moulin</b>, puis de le replacer pour le refermer, ce qui permet à nouveau de capturer un pion.</p>
+
+        <div class="alignCenter">
+        <img src="./moulin1.svg" width="300px" height="300px">
+        <img src="./moulin2.svg" width="300px" height="300px">
+        </div>
+
+        <p class="legende">Exemples de MOULIN</p>
+
+        <p class="tabulation">Le joueur peut capturer n’importe quel pion adverse qui ne fait pas partie d’un moulin. Si tous les pions adverses forment des moulins, il peut choisir librement un d’entre eux.</p>
+        <p class="tabulation">Dès qu’un joueur n’a plus que trois pions sur le plateau, il peut déplacer ses pions librement à n’importe quelle intersection, sans limitation d’en choisir une adjacente.</p>
+        <h3>Fin de partie:</h3>
+        <p class="tabulation">Un joueur gange si :</p>
+        <ul>
+            <li class="item">Son adversaire n’a plus que 2 pions sur le plateau et ne peut plus former de <b>moulin</b>.</li>
+            <li class="item">Son adversaire ne peut plus réaliser aucun mouvement car tous ses pions sont bloqués.</li>
+        </ul>
+        <p class="tabulation">La partie est nulle si :</p>
+        <ul>
+            <li class="item">Les deux joueurs font 50 mouvements sans réaliser aucune prise.</li>
+            <li class="item">La position des pions est répétée 5 fois sur le plateau.</li>
+        </ul>
+    
     </div>
 </body>
 </html>
