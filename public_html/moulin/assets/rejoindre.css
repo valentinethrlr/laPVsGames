@@ -1,0 +1,51 @@
+body {
+    background-color: #28243A;
+}
+
+.id-btn {
+    width: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    padding: 8px 10px;
+    color: #28243A;
+    background-color: #AFF4C6;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+
+}
+
+#rejoindre-btn {
+    display: inline;
+}
+
+.center {
+    width: max-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 200px;
+}
+
+::placeholder {
+    text-align: center; 
+ }
+ 
+ /* or, for legacy browsers */
+ 
+ ::-webkit-input-placeholder {
+    text-align: center;
+ }
+ 
+ :-moz-placeholder { /* Firefox 18- */
+    text-align: center;  
+ }
+ 
+ ::-moz-placeholder {  /* Firefox 19+ */
+    text-align: center;  
+ }
+ 
+ :-ms-input-placeholder {  
+    text-align: center; 
+ }
