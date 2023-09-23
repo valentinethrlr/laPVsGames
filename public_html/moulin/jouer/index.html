@@ -7,7 +7,7 @@
         <link rel="icon" type="image/pion-icon" href="/morpion/assets/images/pion.avif">
         <meta name='viewport' content='width=device-width, initial-scale=1'>
         <link rel="stylesheet" type="text/css" href="../assets/grille.css?version=14" media="screen" />
-        <script src='../assets/jeu.js?v=3'></script>
+        <script src='../assets/jeu.js?v=4'></script>
     </head>
 
     <body>
@@ -15,7 +15,38 @@
         <img src="./moulin_colors.svg" usemap="#plateau" width="500" height="500" alt="plateau">
 
         <map name="plateau">
-            <area shape="circle" coords="0,0,30" onclick="clique()"> 
+            <area shape="circle" coords="0,0,25" onclick="joue(0)">
+            <area shape="circle" coords="250,0,25" onclick="joue(1)">
+            <area shape="circle" coords="500,0,25" onclick="joue(2)">
+
+            <area shape="circle" coords="83,83,25" onclick="joue(3)">
+            <area shape="circle" coords="250,83,25" onclick="joue(4)">
+            <area shape="circle" coords="410,83,25" onclick="joue(5)">
+
+            <area shape="circle" coords="170,165,25" onclick="joue(6)">
+            <area shape="circle" coords="250,165,25" onclick="joue(7)">
+            <area shape="circle" coords="330,165,25" onclick="joue(8)">
+
+            <area shape="circle" coords="0,250,25" onclick="joue(9)">
+            <area shape="circle" coords="83,250,25" onclick="joue(10)">
+            <area shape="circle" coords="170,250,25" onclick="joue(11)">
+            <area shape="circle" coords="330,250,25" onclick="joue(12)">
+            <area shape="circle" coords="410,250,25" onclick="joue(13)">
+            <area shape="circle" coords="500,250,25" onclick="joue(14)">
+
+            <area shape="circle" coords="170,332,25" onclick="joue(15)">
+            <area shape="circle" coords="250,332,25" onclick="joue(16)">
+            <area shape="circle" coords="330,332,25" onclick="joue(17)">
+
+            <area shape="circle" coords="83,408,25" onclick="joue(18)">
+            <area shape="circle" coords="250,408,25" onclick="joue(19)">
+            <area shape="circle" coords="410,408,25" onclick="joue(20)">
+
+            <area shape="circle" coords="0,500,25" onclick="joue(21)">
+            <area shape="circle" coords="250,500,25" onclick="joue(22)">
+            <area shape="circle" coords="500,500,25" onclick="joue(23)">
+
+
         </map>
 
         </div>

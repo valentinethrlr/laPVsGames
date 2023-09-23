@@ -1,3 +1,3 @@
-function clique() {
-    console.log("yeahy")
+function joue(n) {
+    console.log(n)
 }
