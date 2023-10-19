@@ -15,6 +15,7 @@ function creerAppareil() {
     document.getElementById("plateau").style.display = "block"
     document.getElementById("pionsBlancs").style.display = "block"
     document.getElementById("pionsNoirs").style.display = "block"
+    document.getElementById("bouge").style.display = "block"
 }
 
 function mouvement(pion, place) {
@@ -24,8 +25,11 @@ function mouvement(pion, place) {
     let posCase = but.getBoundingClientRect()
     let pos = 0
 
-    console.log(elem)
-    console.log(but)
+    console.log(posCase)
+    console.log(document.getElementById("case3").getBoundingClientRect())
+    console.log(document.getElementById("case3").coords)
+    console.log(document.getElementById("case4").coords)
+
 
     clearInterval(id)
     id = setInterval(frame, 10)
@@ -35,7 +39,7 @@ function mouvement(pion, place) {
             clearInterval(id);
         } else {
             pos++
-            elem.style.top = (Math.floor(Math.abs(posCase.top - posPion.top))/20) * pos + 'px';
-            elem.style.left = (Math.floor(Math.abs(posCase.right - posPion.right))/20) * pos + 'px';
+            elem.style.top = (Math.abs(posCase.y - posPion.y)/20) * pos + 'px';
+            elem.style.left = (Math.abs(posCase.x - posPion.x)/20) * pos + 'px';
         }
     }}
