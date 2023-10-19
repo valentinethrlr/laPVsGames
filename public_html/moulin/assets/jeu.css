@@ -1,0 +1,73 @@
+body{
+    background: #28243A;
+}
+
+.centerGrille {
+    display: block;
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+}
+
+area {
+    cursor: pointer;
+    position: absolute;
+  }
+
+.jouer-btn {
+    width: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+    padding: 8px 10px;
+    color: black;
+    background-color: #A9E5BB;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.centerVert {
+    margin-top: 200px;
+}
+
+.pionB {
+   height: 30px;
+   width: 30px;
+   background-color: white;
+   border-radius: 50%; 
+   margin-top: 30px;
+   display: inline-block;
+   justify-content: center;
+   box-shadow: 1px 1px black;
+   position: relative;
+
+}
+
+.pionN {
+    height: 30px;
+    width: 30px;
+    background-color: black;
+    border-radius: 50%; 
+    margin-top: 30px;
+    display: inline-block;
+    justify-content: center;
+    box-shadow: 1px 1px white;
+    position: relative;
+ }
+
+ #pionsBlancs {
+    width: 400px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+ }
+
+ #pionsNoirs {
+    width: 400px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+ }

@@ -6,49 +6,90 @@
         <title>MOULIN</title>
         <link rel="icon" type="image/pion-icon" href="/morpion/assets/images/pion.avif">
         <meta name='viewport' content='width=device-width, initial-scale=1'>
-        <link rel="stylesheet" type="text/css" href="../assets/grille.css?version=14" media="screen" />
-        <script src='../assets/jeu.js?v=4'></script>
+        <link rel="stylesheet" type="text/css" href="../assets/jeu.css?version=26" media="screen" />
+        <script src='../assets/jeu.js?v=22'></script>
     </head>
 
     <body>
-        <div class="centerGrille" >
+        
+        <div class="centerVert" id="optionsJouer">
+            <button class="jouer-btn" onclick='creer()'>CREER UNE PARTIE</button>
+            <button class="jouer-btn" onclick='ligne()'>JOUER EN LIGNE</button>
+            <button class="jouer-btn" onclick='ordi()'>JOUER CONTRE L'ORDINATEUR</button>
+        </div>
+
+        <div class="centerVert" id="optionsCreer" style="display: none;">
+            <button class="jouer-btn" onclick='creerLigne()'>CREER UNE PARTIE EN LIGNE</button>
+            <button class="jouer-btn" onclick='creerAppareil()'>JOUER SUR L'APPAREIL</button>
+        </div>
+
+        <div class="centerVert" id="creationId" style="display: none;">
+            <h3>En attente de l'adversaire...</h3>
+            <h3>Votre ID est: </h3>
+        </div>
+        
+        <div id="pionsBlancs" style="display: none;">
+            <div id="pb1" class="pionB"></div>
+            <div id="pb2" class="pionB"></div>
+            <div id="pb3" class="pionB"></div>
+            <div id="pb4" class="pionB"></div>
+            <div id="pb5" class="pionB"></div>
+            <div id="pb6" class="pionB"></div>
+            <div id="pb7" class="pionB"></div>
+            <div id="pb8" class="pionB"></div>
+            <div id="pb9" class="pionB"></div>
+        </div>
+        
+        <div id = "plateau" class="centerGrille" style="display: none;">
         <img src="./moulin_colors.svg" usemap="#plateau" width="500" height="500" alt="plateau">
 
         <map name="plateau">
-            <area shape="circle" coords="0,0,25" onclick="joue(0)">
-            <area shape="circle" coords="250,0,25" onclick="joue(1)">
-            <area shape="circle" coords="500,0,25" onclick="joue(2)">
+            <area id="case0" shape="circle" coords="0,0,25" onclick="joue(0)">
+            <area id="case1" shape="circle" coords="250,0,25" onclick="joue(1)">
+            <area id="case2" shape="circle" coords="500,0,25" onclick="joue(2)">
 
-            <area shape="circle" coords="83,83,25" onclick="joue(3)">
-            <area shape="circle" coords="250,83,25" onclick="joue(4)">
-            <area shape="circle" coords="410,83,25" onclick="joue(5)">
+            <area id="case3" shape="circle" coords="83,83,25" onclick="joue(3)">
+            <area id="case4" shape="circle" coords="250,83,25" onclick="joue(4)">
+            <area id="case5" shape="circle" coords="410,83,25" onclick="joue(5)">
 
-            <area shape="circle" coords="170,165,25" onclick="joue(6)">
-            <area shape="circle" coords="250,165,25" onclick="joue(7)">
-            <area shape="circle" coords="330,165,25" onclick="joue(8)">
+            <area id="case6" shape="circle" coords="170,165,25" onclick="joue(6)">
+            <area id="case7" shape="circle" coords="250,165,25" onclick="joue(7)">
+            <area id="case8" shape="circle" coords="330,165,25" onclick="joue(8)">
 
-            <area shape="circle" coords="0,250,25" onclick="joue(9)">
-            <area shape="circle" coords="83,250,25" onclick="joue(10)">
-            <area shape="circle" coords="170,250,25" onclick="joue(11)">
-            <area shape="circle" coords="330,250,25" onclick="joue(12)">
-            <area shape="circle" coords="410,250,25" onclick="joue(13)">
-            <area shape="circle" coords="500,250,25" onclick="joue(14)">
+            <area id="case9" shape="circle" coords="0,250,25" onclick="joue(9)">
+            <area id="case10" shape="circle" coords="83,250,25" onclick="joue(10)">
+            <area id="case11" shape="circle" coords="170,250,25" onclick="joue(11)">
+            <area id="case12" shape="circle" coords="330,250,25" onclick="joue(12)">
+            <area id="case13" shape="circle" coords="410,250,25" onclick="joue(13)">
+            <area id="case14" shape="circle" coords="500,250,25" onclick="joue(14)">
 
-            <area shape="circle" coords="170,332,25" onclick="joue(15)">
-            <area shape="circle" coords="250,332,25" onclick="joue(16)">
-            <area shape="circle" coords="330,332,25" onclick="joue(17)">
+            <area id="case15" shape="circle" coords="170,332,25" onclick="joue(15)">
+            <area id="case16" shape="circle" coords="250,332,25" onclick="joue(16)">
+            <area id="case17" shape="circle" coords="330,332,25" onclick="joue(17)">
 
-            <area shape="circle" coords="83,408,25" onclick="joue(18)">
-            <area shape="circle" coords="250,408,25" onclick="joue(19)">
-            <area shape="circle" coords="410,408,25" onclick="joue(20)">
+            <area id="case18" shape="circle" coords="83,408,25" onclick="joue(18)">
+            <area id="case19" shape="circle" coords="250,408,25" onclick="joue(19)">
+            <area id="case20" shape="circle" coords="410,408,25" onclick="joue(20)">
 
-            <area shape="circle" coords="0,500,25" onclick="joue(21)">
-            <area shape="circle" coords="250,500,25" onclick="joue(22)">
-            <area shape="circle" coords="500,500,25" onclick="joue(23)">
-
+            <area id="case21" shape="circle" coords="0,500,25" onclick="joue(21)">
+            <area id="case22" shape="circle" coords="250,500,25" onclick="joue(22)">
+            <area id="case23" shape="circle" coords="500,500,25" onclick="joue(23)">
         </map>
-
         </div>
+
+        <div id="pionsNoirs" style="display: none;">
+            <div id="pn1" class="pionN"></div>
+            <div id="pn2" class="pionN"></div>
+            <div id="pn3" class="pionN"></div>
+            <div id="pn4" class="pionN"></div>
+            <div id="pn5" class="pionN"></div>
+            <div id="pn6" class="pionN"></div>
+            <div id="pn7" class="pionN"></div>
+            <div id="pn8" class="pionN"></div>
+            <div id="pn9" class="pionN"></div>
+        </div>
+
+        <button class="jouer-btn" onclick='mouvement("pb1", "case20")''>BOUGE !</button>
 
     </body>
 </html>
