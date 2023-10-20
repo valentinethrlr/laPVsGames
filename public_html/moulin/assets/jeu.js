@@ -1,5 +1,6 @@
 let tour = 0
 let id = null
+let plateau = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
 
 function joue(n) {
     console.log(n)
@@ -12,7 +13,7 @@ function creer() {
 
 function creerAppareil() {
     document.getElementById("optionsCreer").style.display = "none"
-    document.getElementById("plateau").style.display = "block"
+    document.getElementById("grille").style.display = "block"
     document.getElementById("pionsBlancs").style.display = "block"
     document.getElementById("pionsNoirs").style.display = "block"
     document.getElementById("bouge").style.display = "block"
@@ -22,14 +23,17 @@ function mouvement(pion, place) {
     let elem = document.getElementById(pion)
     let but = document.getElementById(place)
     let posPion = elem.getBoundingClientRect()
-    let posCase = but.getBoundingClientRect()
+    let coords = but.coords.split(",")
+    let xBut = Number(coords[0])
+    let yBut = Number(coords[1])
+    let posPlateau = (document.getElementById("grille")).getBoundingClientRect()
+    let xPlateau = posPlateau.x
+    let yPlateau = posPlateau.y
     let pos = 0
 
-    console.log(posCase)
-    console.log(document.getElementById("case3").getBoundingClientRect())
-    console.log(document.getElementById("case3").coords)
-    console.log(document.getElementById("case4").coords)
 
+    console.log(yPlateau + yBut - posPion.y)
+    console.log(xPlateau + xBut - posPion.x)
 
     clearInterval(id)
     id = setInterval(frame, 10)
@@ -39,7 +43,12 @@ function mouvement(pion, place) {
             clearInterval(id);
         } else {
             pos++
-            elem.style.top = (Math.abs(posCase.y - posPion.y)/20) * pos + 'px';
-            elem.style.left = (Math.abs(posCase.x - posPion.x)/20) * pos + 'px';
+            elem.style.top = (Math.abs(yPlateau + yBut - posPion.y)/20) * pos + 'px';
+            elem.style.left = (Math.abs(xPlateau + xBut - posPion.x)/20) * pos + 'px';
         }
     }}
+
+    
+function miseEnPlace() {
+    
+    }

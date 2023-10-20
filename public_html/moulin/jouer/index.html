@@ -7,7 +7,7 @@
         <link rel="icon" type="image/pion-icon" href="/morpion/assets/images/pion.avif">
         <meta name='viewport' content='width=device-width, initial-scale=1'>
         <link rel="stylesheet" type="text/css" href="../assets/jeu.css?version=28" media="screen" />
-        <script src='../assets/jeu.js?v=37'></script>
+        <script src='../assets/jeu.js?v=41'></script>
     </head>
 
     <body>
@@ -40,11 +40,11 @@
             <div id="pb9" class="pionB"></div>
         </div>
         
-        <div id = "plateau" class="centerGrille" style="display: none;">
+        <div id ="grille" class="centerGrille" style="display: none;">
         <img src="./moulin_colors.svg" usemap="#plateau" width="500" height="500" alt="plateau">
 
         <map name="plateau">
-            <area id="case0" shape="circle" coords="0,0,25" onclick="joue(0)">
+            <area id="case0" shape="circle" coords="0,0,25" href="asdf" onclick="joue(0)">
             <area id="case1" shape="circle" coords="250,0,25" onclick="joue(1)">
             <area id="case2" shape="circle" coords="500,0,25" onclick="joue(2)">
 
@@ -89,7 +89,7 @@
             <div id="pn9" class="pionN"></div>
         </div>
 
-        <button id="bouge" class="jouer-btn" onclick='mouvement("pb8", "case17")' style="display: none;">BOUGE !</button>
+        <button id="bouge" class="jouer-btn" onclick='mouvement("pb3", "case1")' style="display: none;">BOUGE !</button>
 
     </body>
 </html>
