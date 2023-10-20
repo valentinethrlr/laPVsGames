@@ -54,8 +54,8 @@ area {
     margin-top: 30px;
     display: inline-block;
     justify-content: center;
-    box-shadow: 1px 1px white;
     position: relative;
+    border: 1px solid whitesmoke;
  }
 
  #pionsBlancs {

@@ -20,33 +20,22 @@ function creerAppareil() {
 }
 
 function mouvement(pion, place) {
-    let elem = document.getElementById(pion)
+    let pionBouge = document.getElementById(pion)
+    let posPion = pionBouge.getBoundingClientRect()
+    let xPion = posPion.x
+    let yPion = posPion.y
     let but = document.getElementById(place)
-    let posPion = elem.getBoundingClientRect()
     let coords = but.coords.split(",")
     let xBut = Number(coords[0])
     let yBut = Number(coords[1])
     let posPlateau = (document.getElementById("grille")).getBoundingClientRect()
     let xPlateau = posPlateau.x
     let yPlateau = posPlateau.y
-    let pos = 0
+    console.log(xBut + xPlateau)
+    console.log(yBut + yPlateau)
+    pionBouge.style.transform = `translate(${xBut + xPlateau - xPion - 15}px, ${yBut + yPlateau - yPion - 8}px)`
 
-
-    console.log(yPlateau + yBut - posPion.y)
-    console.log(xPlateau + xBut - posPion.x)
-
-    clearInterval(id)
-    id = setInterval(frame, 10)
-
-    function frame() {
-        if (pos == 20) {
-            clearInterval(id);
-        } else {
-            pos++
-            elem.style.top = (Math.abs(yPlateau + yBut - posPion.y)/20) * pos + 'px';
-            elem.style.left = (Math.abs(xPlateau + xBut - posPion.x)/20) * pos + 'px';
-        }
-    }}
+}
 
     
 function miseEnPlace() {
