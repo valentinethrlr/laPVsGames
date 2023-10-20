@@ -1,9 +1,23 @@
-let tour = 0
+let tour = 1
 let id = null
 let plateau = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
 
-function joue(n) {
-    console.log(n)
+function joue(caseId) {
+    if (tour <= 18) {
+        console.log(tour)
+        console.log(caseId)
+        if (tour % 2 == 1) {
+            console.log(`pb${(tour+1)/2}`, `case${caseId}`)
+            mouvement(`pb${(tour+1)/2}`, `case${caseId}`)
+            console.log('blanc')
+            tour ++
+        } else {
+            console.log(`pn${tour/2}`, `case${caseId}`)
+            mouvement(`pn${tour/2}`, `case${caseId}`)
+            console.log('noir')
+            tour ++
+        }
+    }
 }
 
 function creer() {
@@ -31,13 +45,6 @@ function mouvement(pion, place) {
     let posPlateau = (document.getElementById("grille")).getBoundingClientRect()
     let xPlateau = posPlateau.x
     let yPlateau = posPlateau.y
-    console.log(xBut + xPlateau)
-    console.log(yBut + yPlateau)
-    pionBouge.style.transform = `translate(${xBut + xPlateau - xPion - 15}px, ${yBut + yPlateau - yPion - 8}px)`
+    pionBouge.style.transform = `translate(${xBut + xPlateau - xPion}px, ${yBut + yPlateau - yPion}px)`
 
 }
-
-    
-function miseEnPlace() {
-    
-    }
