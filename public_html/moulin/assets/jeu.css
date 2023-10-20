@@ -41,7 +41,6 @@ area {
    margin-top: 30px;
    display: inline-block;
    justify-content: center;
-   box-shadow: 1px 1px black;
    position: relative;
 
 }
@@ -72,3 +71,6 @@ area {
     margin-right: auto;
  }
 
+@keyframes selectionner {
+    to {outline: 2.5px solid #FF686B;}
+}

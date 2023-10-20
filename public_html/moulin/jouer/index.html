@@ -6,8 +6,8 @@
         <title>MOULIN</title>
         <link rel="icon" type="image/pion-icon" href="/morpion/assets/images/pion.avif">
         <meta name='viewport' content='width=device-width, initial-scale=1'>
-        <link rel="stylesheet" type="text/css" href="../assets/jeu.css?version=32" media="screen" />
-        <script src='../assets/jeu.js?v=71'></script>
+        <link rel="stylesheet" type="text/css" href="../assets/jeu.css?version=44" media="screen" />
+        <script src='../assets/jeu.js?v=81'></script>
     </head>
 
     <body>
@@ -29,15 +29,15 @@
         </div>
         
         <div id="pionsBlancs" style="display: none;">
-            <div id="pb1" class="pionB"></div>
-            <div id="pb2" class="pionB"></div>
-            <div id="pb3" class="pionB"></div>
-            <div id="pb4" class="pionB"></div>
-            <div id="pb5" class="pionB"></div>
-            <div id="pb6" class="pionB"></div>
-            <div id="pb7" class="pionB"></div>
-            <div id="pb8" class="pionB"></div>
-            <div id="pb9" class="pionB"></div>
+            <div id="pb1" class="pionB" onclick="selectionne('pb1')"></div>
+            <div id="pb2" class="pionB" onclick="selectionne('pb2')"></div>
+            <div id="pb3" class="pionB" onclick="selectionne('pb3')"></div>
+            <div id="pb4" class="pionB" onclick="selectionne('pb4')"></div>
+            <div id="pb5" class="pionB" onclick="selectionne('pb5')"></div>
+            <div id="pb6" class="pionB" onclick="selectionne('pb6')"></div>
+            <div id="pb7" class="pionB" onclick="selectionne('pb7')"></div>
+            <div id="pb8" class="pionB" onclick="selectionne('pb8')"></div>
+            <div id="pb9" class="pionB" onclick="selectionne('pb9')"></div>
         </div>
         
         <div id ="grille" class="centerGrille" style="display: none;">
@@ -78,18 +78,16 @@
         </div>
 
         <div id="pionsNoirs" style="display: none;">
-            <div id="pn1" class="pionN"></div>
-            <div id="pn2" class="pionN"></div>
-            <div id="pn3" class="pionN"></div>
-            <div id="pn4" class="pionN"></div>
-            <div id="pn5" class="pionN"></div>
-            <div id="pn6" class="pionN"></div>
-            <div id="pn7" class="pionN"></div>
-            <div id="pn8" class="pionN"></div>
-            <div id="pn9" class="pionN"></div>
+            <div id="pn1" class="pionN" onclick="selectionne('pn1')"></div>
+            <div id="pn2" class="pionN" onclick="selectionne('pn2')"></div>
+            <div id="pn3" class="pionN" onclick="selectionne('pn3')"></div>
+            <div id="pn4" class="pionN" onclick="selectionne('pn4')"></div>
+            <div id="pn5" class="pionN" onclick="selectionne('pn5')"></div>
+            <div id="pn6" class="pionN" onclick="selectionne('pn6')"></div>
+            <div id="pn7" class="pionN" onclick="selectionne('pn7')"></div>
+            <div id="pn8" class="pionN" onclick="selectionne('pn8')"></div>
+            <div id="pn9" class="pionN" onclick="selectionne('pn9')"></div>
         </div>
-
-        <button id="bouge" class="jouer-btn" onclick='mouvement("pn3", "case5")' style="display: none;">BOUGE !</button>
 
     </body>
 </html>
