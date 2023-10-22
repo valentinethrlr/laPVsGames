@@ -2,7 +2,30 @@ let tour = 1
 let id = null
 let plateau = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
 let current_pion = null
-
+let zone0 = [1, 9]
+let zone1 = [0, 2, 4]
+let zone2 = [1, 14]
+let zone3 = [4, 10]
+let zone4 = [1, 3, 5, 7]
+let zone5 = [4, 13]
+let zone6 = [7, 12]
+let zone7 = [4, 6, 8]
+let zone8 = [7, 12]
+let zone9 = [0, 21]
+let zone10 = [3, 9, 11, 18]
+let zone11 = [6, 10]
+let zone12 = [8, 13, 17]
+let zone13 = [5, 12, 14, 20]
+let zone14 = [2, 13, 23]
+let zone15 = [11, 16]
+let zone16 = [15, 17, 19]
+let zone17 = [12, 16]
+let zone18 = [10, 19]
+let zone19 = [16, 18, 20, 22]
+let zone20 = [13, 19]
+let zone21 = [9, 22]
+let zone22 = [19, 21, 23]
+let zone23 = [14, 22]
 
 function creer() {
     document.getElementById("optionsJouer").style.display = "none"
@@ -14,7 +37,6 @@ function creerAppareil() {
     document.getElementById("grille").style.display = "block"
     document.getElementById("pionsBlancs").style.display = "block"
     document.getElementById("pionsNoirs").style.display = "block"
-    document.getElementById("bouge").style.display = "block"
 }
 
 function mouvement(pion, place) {
@@ -33,14 +55,20 @@ function mouvement(pion, place) {
 
 
 function joue(caseNumber) {
+
+    //mise en place du jeu
     if (tour <= 18) {
         if (tour % 2 == 1) {
             mouvement(`pb${(tour+1)/2}`, `case${caseNumber}`)
+            plateau[caseNumber] = `pb${(tour+1)/2}`
             tour ++
         } else {
             mouvement(`pn${tour/2}`, `case${caseNumber}`)
+            plateau[caseNumber] = `pn${tour/2}`
             tour ++
         }
+
+    //déplacement des pions    
     } else if (tour > 18) {
 
         //impossible de déplacer un pion adverse
@@ -48,6 +76,10 @@ function joue(caseNumber) {
             return
 
         } else if (tour % 2 == 0 && current_pion.startsWith('pb')) {
+            return
+        
+        //contrôle que le mouvement est autorisé
+        } else if (!(eval(`zone${plateau.indexOf(current_pion)}`).includes(caseNumber))) {
             return
         }
 
