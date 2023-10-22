@@ -1,6 +1,8 @@
 let tour = 1
 let id = null
 let plateau = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+let current_pion = null
+
 
 function creer() {
     document.getElementById("optionsJouer").style.display = "none"
@@ -17,43 +19,60 @@ function creerAppareil() {
 
 function mouvement(pion, place) {
     let pionBouge = document.getElementById(pion)
-    let posPion = pionBouge.getBoundingClientRect()
-    let xPion = posPion.x
-    let yPion = posPion.y
+    pionBouge.style.position ="absolute";
     let but = document.getElementById(place)
-    let coords = but.coords.split(",")
-    let xBut = Number(coords[0])
-    let yBut = Number(coords[1])
-    let posPlateau = (document.getElementById("grille")).getBoundingClientRect()
-    let xPlateau = posPlateau.x
-    let yPlateau = posPlateau.y
-    pionBouge.style.transform = `translate(${xBut + xPlateau - xPion}px, ${yBut + yPlateau - yPion}px)`
+    let posBut = but.coords.split(",")
+    let xBut = Number(posBut[0])
+    let yBut = Number(posBut[1])
+    let plateau = document.getElementById("grille")
+    let xPlateau = plateau.offsetLeft
+    let yPlateau = plateau.offsetTop
+    pionBouge.style.top = (yPlateau + yBut - 29) + "px"
+    pionBouge.style.left = (xPlateau + xBut) + "px"
 }
 
 
-function joue(caseId) {
+function joue(caseNumber) {
     if (tour <= 18) {
-        console.log(tour)
-        console.log(caseId)
         if (tour % 2 == 1) {
-            console.log(`pb${(tour+1)/2}`, `case${caseId}`)
-            mouvement(`pb${(tour+1)/2}`, `case${caseId}`)
-            console.log('blanc')
+            mouvement(`pb${(tour+1)/2}`, `case${caseNumber}`)
             tour ++
         } else {
-            console.log(`pn${tour/2}`, `case${caseId}`)
-            mouvement(`pn${tour/2}`, `case${caseId}`)
-            console.log('noir')
+            mouvement(`pn${tour/2}`, `case${caseNumber}`)
             tour ++
         }
+    } else if (tour > 18) {
+
+        //impossible de déplacer un pion adverse
+        if (tour % 2 == 1 && current_pion.startsWith('pn')) {
+            return
+
+        } else if (tour % 2 == 0 && current_pion.startsWith('pb')) {
+            return
+        }
+
+        mouvement(current_pion, `case${caseNumber}`)
+        document.getElementById(current_pion).classList.remove("animationSelection")
+        current_pion = null
+        tour ++
     }
 }
 
-function selectionne(pionId) {
-    if (tour > 18) {
-        document.getElementById(pionId).style['animation-name'] = "selectionner"
-        document.getElementById(pionId).style['animation-duration'] = "0.75s"
-        document.getElementById(pionId).style['animation-iteration-count'] = "2"
-    }
 
+function selectionne(pionId) {
+    for (let i = 1; i < 10; i++) {
+        document.getElementById("pb" + i).classList.remove("animationSelection")
+        document.getElementById("pn" + i).classList.remove("animationSelection")}
+
+    if (tour > 18) {
+        //impossible de sélectionner un pion adverse
+        if (tour % 2 == 1 && pionId.startsWith('pb')) {
+            document.getElementById(pionId).classList.add("animationSelection")
+            current_pion = pionId
+        
+        } else if (tour % 2 == 0 && pionId.startsWith('pn')) {
+            document.getElementById(pionId).classList.add("animationSelection")
+            current_pion = pionId
+        }    
+    }
 }
