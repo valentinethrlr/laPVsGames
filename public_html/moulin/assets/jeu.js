@@ -66,10 +66,12 @@ function joue(caseNumber) {
             mouvement(`pb${(tour+1)/2}`, `case${caseNumber}`)
             plateau[caseNumber] = `pb${(tour+1)/2}`
             tour ++
+            document.getElementById("indication").innerText = "BONJOUR !"
         } else {
             mouvement(`pn${tour/2}`, `case${caseNumber}`)
             plateau[caseNumber] = `pn${tour/2}`
             tour ++
+            document.getElementById("indication").innerText = "BONJOUR !"
         }
 
     //déplacement des pions    
@@ -88,26 +90,41 @@ function joue(caseNumber) {
         }
 
         mouvement(current_pion, `case${caseNumber}`)
+        document.getElementById("indication").innerText = "BONJOUR !"
         document.getElementById(current_pion).classList.remove("animationSelection")
         //déplace le pion dans la liste plateau
         plateau[plateau.indexOf(current_pion)] = null
         plateau[caseNumber] = current_pion
         current_pion = null
         tour ++
-        console.log(plateau)
     }
 
     //contrôle de moulin
     if (tour > 5) {
         let possibilite = null
+        let pion1 = null
+        let pion2 = null
+        let pion3 = null
         for (let i=0; i<moulins.length; i++) {
-            let possibilite = moulins[i]
+            possibilite = moulins[i]
+            pion1 = plateau[possibilite[0]]
+            pion2 = plateau[possibilite[1]]
+            pion3 = plateau[possibilite[2]]
 
             //contrôle que le pion soit de type b ou n (deuxième caractère de la chaîne de caractère)
-            if (!(plateau[possibilite[0]]== null) && !(plateau[possibilite[1]]== null) && !(plateau[possibilite[2]]== null) 
-                && plateau[possibilite[0]][1] == plateau[possibilite[1]][1] && plateau[possibilite[1]][1] == plateau[possibilite[2]][1]) {
-                console.log("moulin")
-                document.getElementById("indication").innerText = "MOULIN !"
+
+            if (!(pion1== null) && !(pion2 == null) && !(pion3 == null) 
+                && pion1[1] == pion2[1] && pion2[1] == pion3[1]) {
+                
+                //contrôle que le moulin vient d'être formé
+                if (moulinsPlateau[i] == 0) {
+                    document.getElementById("indication").innerText = "MOULIN !"
+                    moulinsPlateau[i] = 1
+                } else {
+                    moulinsPlateau[i] = 1
+                }    
+            } else {
+                moulinsPlateau[i] = 0
             }
         }
     }
