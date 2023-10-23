@@ -120,7 +120,7 @@ function joue(caseNumber) {
                 && pion1[1] == pion2[1] && pion2[1] == pion3[1]) {
                 
                 //contrôle que le moulin vient d'être formé
-                if (moulinsPlateau[i] == 0) {
+                if (moulinsPlateau[i] == null) {
                     document.getElementById("indication").innerText = "MOULIN !"
                     typeMoulin = pion1[1]
                     moulinsPlateau[i] = pion1[1]
@@ -128,7 +128,7 @@ function joue(caseNumber) {
                     moulinsPlateau[i] = pion1[1]
                 }    
             } else {
-                moulinsPlateau[i] = 0
+                moulinsPlateau[i] = null
             }
         }
     }
@@ -142,10 +142,12 @@ function selectionne(pionId) {
     //contrôle s'il y a eu moulin
     if (typeMoulin == "b" || typeMoulin == "n") {
 
-        // crée la liste des pions adverses dans un moulin
+        //crée la liste des pions adverses dans un moulin
         let intouchable = []
         let positionsIntouchables = null
         for (let i = 0; i < moulins.length; i++) {
+
+            //ne considère que les pions adverses
             if (!(moulinsPlateau[i] == typeMoulin) && !(moulinsPlateau[i] == null)) {
                 positionsIntouchables = moulins[i]
                 for (let j = 0; j < 3; j++) {
@@ -154,10 +156,11 @@ function selectionne(pionId) {
             }
         }
 
-        //contrôle que le pion sélectionné est un pion adverse
-        if (!(pionId[1] == moulin)) {
+        //contrôle que le pion sélectionné est un pion adverse et qu'il peut être éliminé
+        if (!(pionId[1] == typeMoulin) && !(intouchable.includes(pionId))) {
             elimine(pionId)
             typeMoulin = null
+            intouchable = []
         }
 
     } else if (tour > 18) {
