@@ -159,6 +159,9 @@ function selectionne(pionId) {
         //contrôle que le pion sélectionné est un pion adverse et qu'il peut être éliminé
         if (!(pionId[1] == typeMoulin) && !(intouchable.includes(pionId))) {
             elimine(pionId)
+            console.log(plateau)
+            plateau[plateau.indexOf(pionId)] = null
+            console.log(plateau)
             typeMoulin = null
             intouchable = []
         }
