@@ -27,6 +27,9 @@ let zone21 = [9, 22]
 let zone22 = [19, 21, 23]
 let zone23 = [14, 22]
 
+let moulins = [[0,1,2], [3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 13, 14], [15, 16, 17], [18, 19, 20], [21, 22, 23], [0, 9, 21], [3, 10, 18], [6, 11, 15], [1, 4, 7], [16, 19, 22], [8, 12, 17], [5, 13, 20], [2, 14, 23]]
+let moulinsPlateau = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
 function creer() {
     document.getElementById("optionsJouer").style.display = "none"
     document.getElementById("optionsCreer").style.display = "block" 
@@ -37,6 +40,7 @@ function creerAppareil() {
     document.getElementById("grille").style.display = "block"
     document.getElementById("pionsBlancs").style.display = "block"
     document.getElementById("pionsNoirs").style.display = "block"
+    document.getElementById("indication").style.display = "block"
 }
 
 function mouvement(pion, place) {
@@ -85,8 +89,27 @@ function joue(caseNumber) {
 
         mouvement(current_pion, `case${caseNumber}`)
         document.getElementById(current_pion).classList.remove("animationSelection")
+        //déplace le pion dans la liste plateau
+        plateau[plateau.indexOf(current_pion)] = null
+        plateau[caseNumber] = current_pion
         current_pion = null
         tour ++
+        console.log(plateau)
+    }
+
+    //contrôle de moulin
+    if (tour > 5) {
+        let possibilite = null
+        for (let i=0; i<moulins.length; i++) {
+            let possibilite = moulins[i]
+
+            //contrôle que le pion soit de type b ou n (deuxième caractère de la chaîne de caractère)
+            if (!(plateau[possibilite[0]]== null) && !(plateau[possibilite[1]]== null) && !(plateau[possibilite[2]]== null) 
+                && plateau[possibilite[0]][1] == plateau[possibilite[1]][1] && plateau[possibilite[1]][1] == plateau[possibilite[2]][1]) {
+                console.log("moulin")
+                document.getElementById("indication").innerText = "MOULIN !"
+            }
+        }
     }
 }
 
