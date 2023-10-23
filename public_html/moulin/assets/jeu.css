@@ -58,14 +58,14 @@ area {
  }
 
  #pionsBlancs {
-    width: 400px;
+    width: 800px;
     display: block;
     margin-left: auto;
     margin-right: auto;
  }
 
  #pionsNoirs {
-    width: 400px;
+    width: 800px;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -88,5 +88,9 @@ area {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 20px;
-    margin-top: 30px;
+    margin-top: 10px;
+}
+
+#pnElimine1 {
+    margin-left: 20px;
 }

@@ -28,7 +28,10 @@ let zone22 = [19, 21, 23]
 let zone23 = [14, 22]
 
 let moulins = [[0,1,2], [3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 13, 14], [15, 16, 17], [18, 19, 20], [21, 22, 23], [0, 9, 21], [3, 10, 18], [6, 11, 15], [1, 4, 7], [16, 19, 22], [8, 12, 17], [5, 13, 20], [2, 14, 23]]
-let moulinsPlateau = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+let moulinsPlateau = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+let typeMoulin = null
+let nbBElimine = 0
+let nbNElimine = 0
 
 function creer() {
     document.getElementById("optionsJouer").style.display = "none"
@@ -119,9 +122,10 @@ function joue(caseNumber) {
                 //contrôle que le moulin vient d'être formé
                 if (moulinsPlateau[i] == 0) {
                     document.getElementById("indication").innerText = "MOULIN !"
-                    moulinsPlateau[i] = 1
+                    typeMoulin = pion1[1]
+                    moulinsPlateau[i] = pion1[1]
                 } else {
-                    moulinsPlateau[i] = 1
+                    moulinsPlateau[i] = pion1[1]
                 }    
             } else {
                 moulinsPlateau[i] = 0
@@ -130,21 +134,53 @@ function joue(caseNumber) {
     }
 }
 
-
 function selectionne(pionId) {
     for (let i = 1; i < 10; i++) {
         document.getElementById("pb" + i).classList.remove("animationSelection")
         document.getElementById("pn" + i).classList.remove("animationSelection")}
 
-    if (tour > 18) {
+    //contrôle s'il y a eu moulin
+    if (typeMoulin == "b" || typeMoulin == "n") {
+
+        // crée la liste des pions adverses dans un moulin
+        let intouchable = []
+        let positionsIntouchables = null
+        for (let i = 0; i < moulins.length; i++) {
+            if (!(moulinsPlateau[i] == typeMoulin) && !(moulinsPlateau[i] == null)) {
+                positionsIntouchables = moulins[i]
+                for (let j = 0; j < 3; j++) {
+                    intouchable.push(plateau[positionsIntouchables[j]])
+                }
+            }
+        }
+
+        //contrôle que le pion sélectionné est un pion adverse
+        if (!(pionId[1] == moulin)) {
+            elimine(pionId)
+            typeMoulin = null
+        }
+
+    } else if (tour > 18) {
         //impossible de sélectionner un pion adverse
-        if (tour % 2 == 1 && pionId.startsWith('pb')) {
+        if (tour % 2 == 1 && pionId.startsWith("pb")) {
             document.getElementById(pionId).classList.add("animationSelection")
             current_pion = pionId
         
-        } else if (tour % 2 == 0 && pionId.startsWith('pn')) {
+        } else if (tour % 2 == 0 && pionId.startsWith("pn")) {
             document.getElementById(pionId).classList.add("animationSelection")
             current_pion = pionId
         }    
+    }
+}
+
+function elimine(pion) {
+    if (pion[1] == "b") {
+        nbBElimine += 1
+        document.getElementById(pion).style.display = "none"
+        document.getElementById(`pbElimine${nbBElimine}`).style.visibility = "visible"
+    } else {
+        nbNElimine += 1
+        document.getElementById(pion).style.display = "none"
+        document.getElementById(`pnElimine${nbNElimine}`).style.visibility = "visible"
     }
 }
