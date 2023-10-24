@@ -13,7 +13,7 @@ let zone5 = [4, 13]
 let zone6 = [7, 12]
 let zone7 = [4, 6, 8]
 let zone8 = [7, 12]
-let zone9 = [0, 21]
+let zone9 = [0, 10, 21]
 let zone10 = [3, 9, 11, 18]
 let zone11 = [6, 10]
 let zone12 = [8, 13, 17]
@@ -70,7 +70,7 @@ function mouvement(pion, place) {
 
 
 function joue(caseNumber) {
-
+    console.log(caseNumber)
     //mise en place du jeu
     if (tour <= 18) {
         if (tour % 2 == 1) {
@@ -121,7 +121,12 @@ function joue(caseNumber) {
                     //crée la liste des pions intouchables et ceux qu'il est possible d'éliminer
                     let pionsIntouchables = listeIntouchable()
                     pionsPossibles = listePossible(pionsIntouchables)
-                
+
+                    //si tous les pions adverses sont dans un moulin, tous peuvent être éliminés
+                    if (pionsPossibles.length == 0) {
+                        pionsPossibles = listePossible([])
+                    }
+
                     //anime les pions qu'il est possible d'éliminer
                     for (let i = 0; i < pionsPossibles.length; i++) {
                         document.getElementById(pionsPossibles[i]).classList.add("animationSelection")
@@ -143,6 +148,7 @@ function joue(caseNumber) {
 
 
 function selectionne(pionId) {
+    console.log(pionId)
     for (let i = 1; i < 10; i++) {
         document.getElementById("pb" + i).classList.remove("animationSelection")
         document.getElementById("pn" + i).classList.remove("animationSelection")}
