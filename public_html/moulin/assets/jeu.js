@@ -39,6 +39,7 @@ let nbBElimine = 0
 let nbNElimine = 0
 
 let pionsPossibles
+let supprimeDansMoulin = false
 
 
 function creer() {
@@ -70,7 +71,6 @@ function mouvement(pion, place) {
 
 
 function joue(caseNumber) {
-    console.log(caseNumber)
     //mise en place du jeu
     if (tour <= 18) {
         if (tour % 2 == 1) {
@@ -125,6 +125,7 @@ function joue(caseNumber) {
                     //si tous les pions adverses sont dans un moulin, tous peuvent être éliminés
                     if (pionsPossibles.length == 0) {
                         pionsPossibles = listePossible([])
+                        supprimeDansMoulin = true
                     }
 
                     //anime les pions qu'il est possible d'éliminer
@@ -148,7 +149,6 @@ function joue(caseNumber) {
 
 
 function selectionne(pionId) {
-    console.log(pionId)
     for (let i = 1; i < 10; i++) {
         document.getElementById("pb" + i).classList.remove("animationSelection")
         document.getElementById("pn" + i).classList.remove("animationSelection")}
@@ -159,15 +159,34 @@ function selectionne(pionId) {
         //contrôle que le pion peut être éliminé
         if (pionsPossibles.includes(pionId)) {
             elimine(pionId)
-            plateau[plateau.indexOf(pionId)] = null
-            typeMoulin = null
+
+            //si le pion éliminé faisait partie d'un moulin, suppression de ce moulin dans moulinsPlateau
+            if (supprimeDansMoulin) {
+                let positionPion = plateau.indexOf(pionId)
+                let dansMoulin = []
+                
+                //cherche dans quel(s) moulin(s) il se trouve
+                for (i = 0; i < moulins.length; i++) {
+                    if (moulins[i].includes(positionPion)) {
+                        dansMoulin.push(i)
+                    }
+                }
+
+                for (i = 0; i < dansMoulin.length; i++) {
+                    moulinsPlateau[dansMoulin[i]] = null
+                }
+
+                supprimeDansMoulin = false
+            }
         
             //désanime les pions qu'il est possible d'éliminer
             for (let i = 0; i < pionsPossibles.length; i++) {
                 document.getElementById(pionsPossibles[i]).classList.remove("animationSelection")
             }
             
-            //vide la liste pionsPossibles
+            //mise à zéro des variables globales
+            plateau[plateau.indexOf(pionId)] = null
+            typeMoulin = null
             pionsPossibles = []
         }
 
