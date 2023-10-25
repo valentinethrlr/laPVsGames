@@ -44,7 +44,6 @@ let supprimeDansMoulin = false
 let mouvementSansPrise = 0
 
 
-
 function creer() {
     document.getElementById("optionsJouer").style.display = "none"
     document.getElementById("optionsCreer").style.display = "block" 
@@ -60,7 +59,7 @@ function creerAppareil() {
 
 
 function joue(caseNumber) {
-    console.log(tour)
+
     //mise en place du jeu
     if (tour < 18 && typeMoulin == null) {
         if (tour % 2 == 1) {
@@ -94,11 +93,10 @@ function joue(caseNumber) {
     //50 mouvements sans prise
     } else if (mouvementSansPrise == 50) {
         finDePartie("nul")
-    
+
     //déplacement dans les autres cas 
     } else {
         
-        console.log("passes par déplacement")
         if (eval(`zone${plateau.indexOf(current_pion)}`).includes(caseNumber)) {
             deplacement(caseNumber)
             mouvementSansPrise ++
@@ -158,7 +156,6 @@ function joue(caseNumber) {
         }
     }
 }
-
 
 
 function selectionne(pionId) {
