@@ -85,10 +85,14 @@ function joue(caseNumber) {
 
     //déplacement des pions (avec 3 pions)    
     } else if (nbBElimine == 6 && tour % 2 == 1) {
+        console.log(tour)
         deplacement(caseNumber)
+        tour ++
     
-    } else if (nbBElimine == 6 && tour % 2 == 0) {
+    } else if (nbNElimine == 6 && tour % 2 == 0) {
+        console.log(tour)
         deplacement(caseNumber)
+        tour ++
     
     //50 mouvements sans prise
     } else if (mouvementSansPrise == 50) {
