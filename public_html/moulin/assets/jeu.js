@@ -72,7 +72,7 @@ function mouvement(pion, place) {
 
 function joue(caseNumber) {
     //mise en place du jeu
-    if (tour <= 18) {
+    if (tour <= 18 && typeMoulin == null) {
         if (tour % 2 == 1) {
             mouvement(`pb${(tour+1)/2}`, `case${caseNumber}`)
             plateau[caseNumber] = `pb${(tour+1)/2}`
@@ -86,7 +86,7 @@ function joue(caseNumber) {
         }
 
     //déplacement des pions    
-    } else if (tour > 18) {
+    } else if (nbBElimine < 6 && nbNElimine < 6) {
         
         //contrôle que le mouvement est autorisé
         if (!(eval(`zone${plateau.indexOf(current_pion)}`).includes(caseNumber))) {
@@ -94,7 +94,14 @@ function joue(caseNumber) {
         }
 
         deplacement(caseNumber)
-        }
+
+    //s'il n'y a plus que 3 pions blancs ou noirs    
+    } else if (nbBElimine = 6 && tour % 2 == 1) {
+        deplacement(caseNumber)
+    
+    } else if (nbBElimine = 6 && tour % 2 == 0) {
+        deplacement(caseNumber)
+    }
 
     //contrôle de moulin
     if (tour > 5) {
@@ -202,6 +209,11 @@ function selectionne(pionId) {
             current_pion = pionId
         }    
     }
+
+    //fin de partie
+    if (nbBElimine > 6 || nbNElimine > 6) {
+        finDePartie()
+    }
 }
 
 
@@ -267,4 +279,25 @@ function deplacement(caseNumber) {
     plateau[caseNumber] = current_pion
     current_pion = null
     tour ++
+}
+
+
+function finDePartie() {
+    document.getElementById("grille").style.display = "none"
+    for (let i = 1; i <= 9; i++) {
+        document.getElementById(`pb${i}`).style.display = "none"
+        document.getElementById(`pn${i}`).style.display = "none"
+    }
+    
+    for (let i = 1; i <= 7; i++) {
+        document.getElementById(`pnElimine${i}`).style.display = "none"
+        document.getElementById(`pbElimine${i}`).style.display = "none"
+    }
+
+    if (nbBElimine = 7) {
+        document.getElementById("indication").innerText = "Victoire des noirs !"
+    } else {
+        document.getElementById("indication").innerText = "Victoire des blancs !"
+    }
+    
 }
