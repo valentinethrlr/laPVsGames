@@ -10,7 +10,7 @@ let zone2 = [1, 14]
 let zone3 = [4, 10]
 let zone4 = [1, 3, 5, 7]
 let zone5 = [4, 13]
-let zone6 = [7, 12]
+let zone6 = [7, 11]
 let zone7 = [4, 6, 8]
 let zone8 = [7, 12]
 let zone9 = [0, 10, 21]
@@ -42,6 +42,7 @@ let pionsPossibles
 let supprimeDansMoulin = false
 
 
+
 function creer() {
     document.getElementById("optionsJouer").style.display = "none"
     document.getElementById("optionsCreer").style.display = "block" 
@@ -55,24 +56,11 @@ function creerAppareil() {
     document.getElementById("indication").style.display = "block"
 }
 
-function mouvement(pion, place) {
-    let pionBouge = document.getElementById(pion)
-    pionBouge.style.position ="absolute";
-    let but = document.getElementById(place)
-    let posBut = but.coords.split(",")
-    let xBut = Number(posBut[0])
-    let yBut = Number(posBut[1])
-    let plateau = document.getElementById("grille")
-    let xPlateau = plateau.offsetLeft
-    let yPlateau = plateau.offsetTop
-    pionBouge.style.top = (yPlateau + yBut - 29) + "px"
-    pionBouge.style.left = (xPlateau + xBut) + "px"
-}
-
 
 function joue(caseNumber) {
+    console.log(tour)
     //mise en place du jeu
-    if (tour <= 18 && typeMoulin == null) {
+    if (tour < 18 && typeMoulin == null) {
         if (tour % 2 == 1) {
             mouvement(`pb${(tour+1)/2}`, `case${caseNumber}`)
             plateau[caseNumber] = `pb${(tour+1)/2}`
@@ -85,22 +73,31 @@ function joue(caseNumber) {
             document.getElementById("indication").innerText = "BONJOUR !"
         }
 
-    //déplacement des pions    
-    } else if (nbBElimine < 6 && nbNElimine < 6) {
-        
-        //contrôle que le mouvement est autorisé
-        if (!(eval(`zone${plateau.indexOf(current_pion)}`).includes(caseNumber))) {
-            return
-        }
+    //déplacement des pions (avec 3 pions)     
+    } else if (tour == 18 && typeMoulin == null) {
+        mouvement("pn9", `case${caseNumber}`)
+        plateau[caseNumber] = "pn9"
+        tour ++
+        document.getElementById("indication").innerText = "BONJOUR !"
 
-        deplacement(caseNumber)
+        controleMouvementPossible()
 
-    //s'il n'y a plus que 3 pions blancs ou noirs    
-    } else if (nbBElimine = 6 && tour % 2 == 1) {
+    } else if (nbBElimine == 6 && tour % 2 == 1) {
         deplacement(caseNumber)
     
-    } else if (nbBElimine = 6 && tour % 2 == 0) {
+    } else if (nbBElimine == 6 && tour % 2 == 0) {
         deplacement(caseNumber)
+
+    //deéplacement dans les autres cas    
+    } else {
+        
+        console.log("passes par déplacement")
+        if (eval(`zone${plateau.indexOf(current_pion)}`).includes(caseNumber)) {
+            deplacement(caseNumber)
+            tour ++
+
+            controleMouvementPossible()
+        }    
     }
 
     //contrôle de moulin
@@ -191,12 +188,14 @@ function selectionne(pionId) {
                 document.getElementById(pionsPossibles[i]).classList.remove("animationSelection")
             }
             
-            //mise à zéro des variables globales
-            plateau[plateau.indexOf(pionId)] = null
-            typeMoulin = null
-            pionsPossibles = []
+        //mise à zéro des variables globales
+        plateau[plateau.indexOf(pionId)] = null
+        pionsPossibles = []
         }
 
+    //contrôle que le joueur suivant puisse encore se déplacer
+    controleMouvementPossible()
+    
     //déplacement des pions au cours du jeu
     } else if (tour > 18) {
         //impossible de sélectionner un pion adverse
@@ -212,9 +211,27 @@ function selectionne(pionId) {
 
     //fin de partie
     if (nbBElimine > 6 || nbNElimine > 6) {
-        finDePartie()
+        finDePartie(typeMoulin)
     }
+    
+    typeMoulin = null
 }
+
+
+function mouvement(pion, place) {
+    let pionBouge = document.getElementById(pion)
+    pionBouge.style.position ="absolute";
+    let but = document.getElementById(place)
+    let posBut = but.coords.split(",")
+    let xBut = Number(posBut[0])
+    let yBut = Number(posBut[1])
+    let plateau = document.getElementById("grille")
+    let xPlateau = plateau.offsetLeft
+    let yPlateau = plateau.offsetTop
+    pionBouge.style.top = (yPlateau + yBut - 29) + "px"
+    pionBouge.style.left = (xPlateau + xBut) + "px"
+}
+
 
 
 function elimine(pion) {
@@ -278,11 +295,10 @@ function deplacement(caseNumber) {
     plateau[plateau.indexOf(current_pion)] = null
     plateau[caseNumber] = current_pion
     current_pion = null
-    tour ++
 }
 
 
-function finDePartie() {
+function finDePartie(gagnant) {
     document.getElementById("grille").style.display = "none"
     for (let i = 1; i <= 9; i++) {
         document.getElementById(`pb${i}`).style.display = "none"
@@ -294,10 +310,58 @@ function finDePartie() {
         document.getElementById(`pbElimine${i}`).style.display = "none"
     }
 
-    if (nbBElimine = 7) {
+    if (gagnant == "n") {
         document.getElementById("indication").innerText = "Victoire des noirs !"
-    } else {
+        document.getElementById("indication").style.marginTop= "200px"
+        document.getElementById("indication").style.fontSize = "50px"
+    } else if (gagnant == "b") {
         document.getElementById("indication").innerText = "Victoire des blancs !"
+        document.getElementById("indication").style.marginTop= "200px"
+        document.getElementById("indication").style.fontSize = "50px"
     }
     
+}
+
+function casesAutorises() {
+    let joueur = null
+    let cePion = null
+    let positionPionPlateau = []
+    let deplacementsAutorises = []
+
+    if (tour % 2 == 1) {
+        joueur = "b"
+    } else {
+        joueur = "n"
+    }
+
+    for (let i = 1; i <= 9; i++) {
+        cePion = `p${joueur}${i}`
+        if (plateau.includes(cePion)) {
+            positionPionPlateau.push(plateau.indexOf(cePion))
+        }
+    }
+
+    for (let i = 0; i < positionPionPlateau.length; i++) {
+        let current_zone = eval(`zone${positionPionPlateau[i]}`)
+        for (let j = 0; j < current_zone.length; j++) {
+            let current_case = current_zone[j]
+            if (plateau[current_case] == null) {
+                deplacementsAutorises.push(current_case)
+            }
+        }
+    }
+
+    return deplacementsAutorises
+}
+
+function controleMouvementPossible() {
+     //contrôle que le joueur suivant peut se déplacer
+    let autorise = casesAutorises()
+    if (autorise.length == 0) {
+        if (tour % 2 == 1) {
+            finDePartie("n")
+        } else {
+            finDePartie("b")
+        }
+    }
 }
