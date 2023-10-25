@@ -41,6 +41,8 @@ let nbNElimine = 0
 let pionsPossibles
 let supprimeDansMoulin = false
 
+let mouvementSansPrise = 0
+
 
 
 function creer() {
@@ -73,7 +75,7 @@ function joue(caseNumber) {
             document.getElementById("indication").innerText = "BONJOUR !"
         }
 
-    //déplacement des pions (avec 3 pions)     
+    //dernier placement de pion
     } else if (tour == 18 && typeMoulin == null) {
         mouvement("pn9", `case${caseNumber}`)
         plateau[caseNumber] = "pn9"
@@ -82,18 +84,24 @@ function joue(caseNumber) {
 
         controleMouvementPossible()
 
+    //déplacement des pions (avec 3 pions)    
     } else if (nbBElimine == 6 && tour % 2 == 1) {
         deplacement(caseNumber)
     
     } else if (nbBElimine == 6 && tour % 2 == 0) {
         deplacement(caseNumber)
-
-    //deéplacement dans les autres cas    
+    
+    //50 mouvements sans prise
+    } else if (mouvementSansPrise == 50) {
+        finDePartie("nul")
+    
+    //déplacement dans les autres cas 
     } else {
         
         console.log("passes par déplacement")
         if (eval(`zone${plateau.indexOf(current_pion)}`).includes(caseNumber)) {
             deplacement(caseNumber)
+            mouvementSansPrise ++
             tour ++
 
             controleMouvementPossible()
@@ -121,6 +129,7 @@ function joue(caseNumber) {
                     document.getElementById("indication").innerText = "MOULIN !"
                     typeMoulin = pion1[1]
                     moulinsPlateau[i] = pion1[1]
+                    mouvementSansPrise = 0
                     
                     //crée la liste des pions intouchables et ceux qu'il est possible d'éliminer
                     let pionsIntouchables = listeIntouchable()
@@ -310,16 +319,18 @@ function finDePartie(gagnant) {
         document.getElementById(`pbElimine${i}`).style.display = "none"
     }
 
+    document.getElementById("indication").style.marginTop= "200px"
+    document.getElementById("indication").style.fontSize = "50px"
+
     if (gagnant == "n") {
         document.getElementById("indication").innerText = "Victoire des noirs !"
-        document.getElementById("indication").style.marginTop= "200px"
-        document.getElementById("indication").style.fontSize = "50px"
+
     } else if (gagnant == "b") {
         document.getElementById("indication").innerText = "Victoire des blancs !"
-        document.getElementById("indication").style.marginTop= "200px"
-        document.getElementById("indication").style.fontSize = "50px"
+        
+    } else {
+        document.getElementById("indication").innerText = "La partie est nulle ! :("
     }
-    
 }
 
 function casesAutorises() {
