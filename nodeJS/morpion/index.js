@@ -10,7 +10,7 @@ let id
 //initialiser le serveur
 const io = require("socket.io")(httpServer, {
   cors: {
-    origin: "http://valentine.totifle.ch",
+    origin: "http://vgames.totifle.ch/morpion",
     methods: ["GET", "POST"]
   }
 });

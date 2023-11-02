@@ -15,7 +15,7 @@ let zone7 = [4, 6, 8]
 let zone8 = [7, 12]
 let zone9 = [0, 10, 21]
 let zone10 = [3, 9, 11, 18]
-let zone11 = [6, 10]
+let zone11 = [6, 10, 15]
 let zone12 = [8, 13, 17]
 let zone13 = [5, 12, 14, 20]
 let zone14 = [2, 13, 23]
@@ -60,18 +60,20 @@ function creerAppareil() {
 
 function joue(caseNumber) {
 
+    if (tour == 1) {
+        document.getElementById("indication").innerText = ""
+    }
+
     //mise en place du jeu
     if (tour < 18 && typeMoulin == null) {
         if (tour % 2 == 1) {
             mouvement(`pb${(tour+1)/2}`, `case${caseNumber}`)
             plateau[caseNumber] = `pb${(tour+1)/2}`
             tour ++
-            document.getElementById("indication").innerText = "BONJOUR !"
         } else {
             mouvement(`pn${tour/2}`, `case${caseNumber}`)
             plateau[caseNumber] = `pn${tour/2}`
             tour ++
-            document.getElementById("indication").innerText = "BONJOUR !"
         }
 
     //dernier placement de pion
@@ -79,7 +81,6 @@ function joue(caseNumber) {
         mouvement("pn9", `case${caseNumber}`)
         plateau[caseNumber] = "pn9"
         tour ++
-        document.getElementById("indication").innerText = "BONJOUR !"
 
         controleMouvementPossible()
 
@@ -249,10 +250,12 @@ function elimine(pion) {
         nbBElimine += 1
         document.getElementById(pion).style.display = "none"
         document.getElementById(`pbElimine${nbBElimine}`).style.visibility = "visible"
+        document.getElementById("indication").innerText = ""
     } else {
         nbNElimine += 1
         document.getElementById(pion).style.display = "none"
         document.getElementById(`pnElimine${nbNElimine}`).style.visibility = "visible"
+        document.getElementById("indication").innerText = ""
     }
 }
 
@@ -299,7 +302,6 @@ function listePossible(intouchable) {
 
 function deplacement(caseNumber) {
     mouvement(current_pion, `case${caseNumber}`)
-    document.getElementById("indication").innerText = "BONJOUR !"
     document.getElementById(current_pion).classList.remove("animationSelection")
     //déplace le pion dans la liste plateau
     plateau[plateau.indexOf(current_pion)] = null

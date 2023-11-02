@@ -39,11 +39,11 @@ function end(winner) {
     if (winner === "") {
         document.getElementById("titre").style.display = "none";
         document.getElementById("victoire").textContent = "Egalité parfaite ! ARGH !"
-        document.getElementById("victoire").innerHTML += "<br><button id='rejouer-btn' onclick=\"location.href = 'http://valentine.totifle.ch/morpion/local/'\">REJOUER</button>"
+        document.getElementById("victoire").innerHTML += "<br><button id='rejouer-btn' onclick=\"location.href = 'http://vgames.totifle.ch/morpion/local/'\">REJOUER</button>"
     } else {
         document.getElementById("titre").style.display = "none";
         document.getElementById("victoire").textContent = `Le joueur.euse ${winner} a gagné ! YEAHY !`
-        document.getElementById("victoire").innerHTML += "<br><button id='rejouer-btn' onclick=\"location.href = 'http://valentine.totifle.ch/morpion/local/'\">REJOUER</button>"
+        document.getElementById("victoire").innerHTML += "<br><button id='rejouer-btn' onclick=\"location.href = 'http://vgames.totifle.ch/morpion/local/'\">REJOUER</button>"
     }
     
 }
