@@ -43,6 +43,24 @@ let supprimeDansMoulin = false
 
 let mouvementSansPrise = 0
 
+let dureeJoueur = null
+let couleurJoueur = null
+
+function duree(n) {
+    document.getElementById("duree5").style.border = "none"
+    document.getElementById("duree10").style.border = "none"
+    document.getElementById("duree0").style.border = "none"
+    document.getElementById(`duree${n}`).style.border = "2px solid #FF686B"
+    dureeJoueur = n
+}
+
+function couleur(c) {
+    document.getElementById("couleurb").style.border = "none"
+    document.getElementById("couleurn").style.border = "none"
+    document.getElementById("couleura").style.border = "none"
+    document.getElementById(`couleur${c}`).style.border = "2px solid #FF686B"
+    couleurJoueur = c
+}
 
 function creer() {
     document.getElementById("optionsJouer").style.display = "none"
@@ -50,11 +68,18 @@ function creer() {
 }
 
 function creerAppareil() {
-    document.getElementById("optionsCreer").style.display = "none"
-    document.getElementById("grille").style.display = "block"
-    document.getElementById("pionsBlancs").style.display = "block"
-    document.getElementById("pionsNoirs").style.display = "block"
-    document.getElementById("indication").style.display = "block"
+    if (!(dureeJoueur == null) && !(couleurJoueur == null)) {
+        document.getElementById("optionsCreer").style.display = "none"
+        document.getElementById("incompletude").style.display = "none"
+        document.getElementById("grille").style.display = "block"
+        document.getElementById("pionsBlancs").style.display = "block"
+        document.getElementById("pionsNoirs").style.display = "block"
+        document.getElementById("indication").style.display = "block"
+    } else {
+        document.getElementById("incompletude").style.display = "block"
+    }
+
+    
 }
 
 

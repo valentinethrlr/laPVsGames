@@ -6,8 +6,8 @@
         <title>MOULIN</title>
         <link rel="icon" type="image/pion-icon" href="/morpion/assets/images/pion.avif">
         <meta name='viewport' content='width=device-width, initial-scale=1'>
-        <link rel="stylesheet" type="text/css" href="../assets/css/jeu.css?version=66" media="screen" />
-        <script src='../assets/js/jeu.js?v=225'></script>
+        <link rel="stylesheet" type="text/css" href="../assets/css/jeu.css?version=86" media="screen" />
+        <script src='../assets/js/jeu.js?v=228'></script>
     </head>
 
     <body>
@@ -15,12 +15,30 @@
         <div class="centerVert" id="optionsJouer">
             <button class="jouer-btn" onclick='creer()'>CREER UNE PARTIE</button>
             <button class="jouer-btn" onclick='ligne()'>JOUER EN LIGNE</button>
-            <button class="jouer-btn" onclick='ordi()'>JOUER CONTRE L'ORDINATEUR</button>
+            <button class="jouer-btn" onclick='ordi()'>JOUER CONTRE L'ORDINATEUR</button> 
         </div>
 
         <div class="centerVert" id="optionsCreer" style="display: none;">
-            <button class="jouer-btn" onclick='creerLigne()'>CREER UNE PARTIE EN LIGNE</button>
-            <button class="jouer-btn" onclick='creerAppareil()'>JOUER SUR L'APPAREIL</button>
+            <div class="option">
+                <div class="option-ecriture">Durée par joueur</div>
+                <button id="duree5" class="option-btn" onclick="duree(5)">5 min</button>
+                <button id="duree10" class="option-btn" onclick="duree(10)">10 min</button>
+                <button id="duree0" class="option-btn" onclick="duree(0)">∞ min</button>
+            </div>
+
+            <div class="option" style="margin-top: 30px;">
+                <div class="option-ecriture">Pions du créateur</div>
+                <button id="couleurb" class="option-btn" onclick="couleur('b')">Blanc</button>
+                <button id="couleurn" class="option-btn" onclick="couleur('n')">Noir</button>
+                <button id="couleura" class="option-btn" onclick="couleur('a')">Aléatoire</button>
+            </div>
+
+            <div style="display: flex;">
+                <button class="jouer-btn" onclick='creerLigne()' style="margin-right: 5px;">CREER UNE PARTIE EN LIGNE</button>
+                <button class="jouer-btn" onclick='creerAppareil()' style="margin-left: 5px;">JOUER SUR L'APPAREIL</button>
+            </div>
+
+            <h3 id="incompletude" style="display: none;">Veuillez choisir vos options.</h3>
         </div>
 
         <div class="centerVert" id="creationId" style="display: none;">

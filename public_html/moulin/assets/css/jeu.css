@@ -27,6 +27,7 @@ area {
     border: none;
     border-radius: 5px;
     font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .centerVert {
@@ -92,3 +93,41 @@ area {
 #pnElimine1 {
     margin-left: 20px;
 }
+
+.option {
+    background-color:#4E6E5D;
+    display: flex;
+    justify-content: right;
+    width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px 25px;
+    margin-bottom: 40px;
+}
+
+.option-btn {
+    text-align: center;
+    width: 100px;
+    display: flex;
+    padding: 8px 10px;
+    color: black;
+    text-align: center;
+    background-color: #A9E5BB;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.option-ecriture {
+    color: white;
+    text-align: left;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#incompletude {
+    color: #FF686B;
+    text-align: center;
+    margin-top: 50px;
+}
+
