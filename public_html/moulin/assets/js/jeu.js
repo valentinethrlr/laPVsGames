@@ -44,7 +44,10 @@ let supprimeDansMoulin = false
 let mouvementSansPrise = 0
 
 let dureeJoueur = null
+let tempsb = 0
+let tempsn = 0
 let couleurJoueur = null
+
 
 function duree(n) {
     document.getElementById("duree5").style.border = "none"
@@ -53,6 +56,7 @@ function duree(n) {
     document.getElementById(`duree${n}`).style.border = "2px solid #FF686B"
     dureeJoueur = n
 }
+
 
 function couleur(c) {
     document.getElementById("couleurb").style.border = "none"
@@ -75,11 +79,17 @@ function creerAppareil() {
         document.getElementById("pionsBlancs").style.display = "block"
         document.getElementById("pionsNoirs").style.display = "block"
         document.getElementById("indication").style.display = "block"
+
+        if (dureeJoueur == 0) {
+
+        } else {
+            tempsb = dureeJoueur
+            tempsn = dureeJoueur
+        }
+
     } else {
         document.getElementById("incompletude").style.display = "block"
     }
-
-    
 }
 
 
@@ -336,6 +346,7 @@ function deplacement(caseNumber) {
 
 
 function finDePartie(gagnant) {
+
     document.getElementById("grille").style.display = "none"
     for (let i = 1; i <= 9; i++) {
         document.getElementById(`pb${i}`).style.display = "none"
