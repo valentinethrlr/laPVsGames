@@ -52,7 +52,9 @@ let couleurJoueur = null
 
 
 function tourJoue() {
+
     tour ++
+
     if (tour % 2 == 1) {
         current_joueur = 'b'
         autre_joueur = 'n'
@@ -66,10 +68,9 @@ function tourJoue() {
         if (!(dureeJoueur == 0)) {
             timer(tempsn)
         }
-    }
-
-   
+    }   
 }
+
 
 function duree(n) {
     document.getElementById("duree5").style.border = "none"
@@ -109,8 +110,8 @@ function creerAppareil() {
 
             tempsb = dureeJoueur * 60
             tempsn = dureeJoueur * 60
-            document.getElementById("tempsb").innerText = `${dureeJoueur}:00`
-            document.getElementById("tempsn").innerText = `${dureeJoueur}:00`
+            document.getElementById("tempsb").innerText = `${dureeJoueur.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}:00`
+            document.getElementById("tempsn").innerText = `${dureeJoueur.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}:00`
             document.getElementById("tempsb").style.display = "block"
             document.getElementById("tempsn").style.display = "block"
 
@@ -454,6 +455,7 @@ function timer(temps) {
                 finDePartie(autre_joueur)
                 return
             }
+
 
             if (current_tour == tour) {
 
