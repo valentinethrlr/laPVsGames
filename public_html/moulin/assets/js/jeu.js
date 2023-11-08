@@ -1,4 +1,6 @@
 let tour = 1
+let current_joueur = 'b'
+let autre_joueur = 'n'
 let id = null
 let plateau = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
 let current_pion = null
@@ -49,6 +51,26 @@ let tempsn = 0
 let couleurJoueur = null
 
 
+function tourJoue() {
+    tour ++
+    if (tour % 2 == 1) {
+        current_joueur = 'b'
+        autre_joueur = 'n'
+        if (!(dureeJoueur == 0)) {
+            timer(tempsb)    
+        }
+
+    } else {
+        current_joueur = 'n'
+        autre_joueur = 'b'
+        if (!(dureeJoueur == 0)) {
+            timer(tempsn)
+        }
+    }
+
+   
+}
+
 function duree(n) {
     document.getElementById("duree5").style.border = "none"
     document.getElementById("duree10").style.border = "none"
@@ -67,10 +89,12 @@ function couleur(c) {
     couleurJoueur = c
 }
 
+
 function creer() {
     document.getElementById("optionsJouer").style.display = "none"
     document.getElementById("optionsCreer").style.display = "block" 
 }
+
 
 function creerAppareil() {
     if (!(dureeJoueur == null) && !(couleurJoueur == null)) {
@@ -85,6 +109,10 @@ function creerAppareil() {
 
             tempsb = dureeJoueur * 60
             tempsn = dureeJoueur * 60
+            document.getElementById("tempsb").innerText = `${dureeJoueur}:00`
+            document.getElementById("tempsn").innerText = `${dureeJoueur}:00`
+            document.getElementById("tempsb").style.display = "block"
+            document.getElementById("tempsn").style.display = "block"
 
         }
 
@@ -102,34 +130,34 @@ function joue(caseNumber) {
 
     //mise en place du jeu
     if (tour < 18 && typeMoulin == null) {
-        if (tour % 2 == 1) {
+        if (current_joueur == 'b') {
             mouvement(`pb${(tour+1)/2}`, `case${caseNumber}`)
             plateau[caseNumber] = `pb${(tour+1)/2}`
-            tour ++
+            tourJoue()
         } else {
             mouvement(`pn${tour/2}`, `case${caseNumber}`)
             plateau[caseNumber] = `pn${tour/2}`
-            tour ++
+            tourJoue()
         }
 
     //dernier placement de pion
     } else if (tour == 18 && typeMoulin == null) {
         mouvement("pn9", `case${caseNumber}`)
         plateau[caseNumber] = "pn9"
-        tour ++
+        tourJoue()
 
         controleMouvementPossible()
 
     //déplacement des pions (avec 3 pions)    
-    } else if (nbBElimine == 6 && tour % 2 == 1) {
+    } else if (nbBElimine == 6 && current_joueur == 'b') {
         console.log(tour)
         deplacement(caseNumber)
-        tour ++
+        tourJoue()
     
-    } else if (nbNElimine == 6 && tour % 2 == 0) {
+    } else if (nbNElimine == 6 && current_joueur == 'n') {
         console.log(tour)
         deplacement(caseNumber)
-        tour ++
+        tourJoue()
     
     //50 mouvements sans prise
     } else if (mouvementSansPrise == 50) {
@@ -141,7 +169,7 @@ function joue(caseNumber) {
         if (eval(`zone${plateau.indexOf(current_pion)}`).includes(caseNumber)) {
             deplacement(caseNumber)
             mouvementSansPrise ++
-            tour ++
+            tourJoue()
 
             controleMouvementPossible()
         }    
@@ -243,15 +271,15 @@ function selectionne(pionId) {
     
     //déplacement des pions au cours du jeu
     } else if (tour > 18) {
-        
+
         supprimeAnimation()
 
         //impossible de sélectionner un pion adverse
-        if (tour % 2 == 1 && pionId.startsWith("pb")) {
+        if (current_joueur == 'b' && pionId.startsWith("pb")) {
             document.getElementById(pionId).classList.add("animationSelection")
             current_pion = pionId
         
-        } else if (tour % 2 == 0 && pionId.startsWith("pn")) {
+        } else if (current_joueur == 'n' && pionId.startsWith("pn")) {
             document.getElementById(pionId).classList.add("animationSelection")
             current_pion = pionId
         }    
@@ -259,7 +287,7 @@ function selectionne(pionId) {
 
     //fin de partie
     if (nbBElimine > 6 || nbNElimine > 6) {
-        finDePartie(typeMoulin)
+        finDePartie(autre_joueur)
     }
     
 }
@@ -365,6 +393,8 @@ function finDePartie(gagnant) {
         document.getElementById(`pbElimine${i}`).style.display = "none"
     }
 
+    document.getElementById("tempsb").style.display = "none"
+    document.getElementById("tempsn").style.display = "none"
     document.getElementById("indication").style.marginTop= "200px"
     document.getElementById("indication").style.fontSize = "50px"
 
@@ -380,19 +410,12 @@ function finDePartie(gagnant) {
 }
 
 function casesAutorises() {
-    let joueur = null
     let cePion = null
     let positionPionPlateau = []
     let deplacementsAutorises = []
 
-    if (tour % 2 == 1) {
-        joueur = "b"
-    } else {
-        joueur = "n"
-    }
-
     for (let i = 1; i <= 9; i++) {
-        cePion = `p${joueur}${i}`
+        cePion = `p${current_joueur}${i}`
         if (plateau.includes(cePion)) {
             positionPionPlateau.push(plateau.indexOf(cePion))
         }
@@ -415,40 +438,39 @@ function controleMouvementPossible() {
      //contrôle que le joueur suivant peut se déplacer
     let autorise = casesAutorises()
     if (autorise.length == 0) {
-        if (tour % 2 == 1) {
-            finDePartie("n")
-        } else {
-            finDePartie("b")
-        }
+        finDePartie(autre_joueur)
     }
 }
 
-function timer(tempsRestant) {
+function timer(temps) {
 
-    if (tour % 2 == 1) {
-        const current_joueur = 'b'
-        const autre_joueur = 'n'
-    } else {
-        const current_joueur = 'n'
-        const autre_joueur = 'b'
-    }
-
-    let temps = tempsRestant
+    const current_tour = tour
     
-    setInterval(
+    let chornometre = setInterval(
         function() {
 
             if (temps == 0) {
+                clearInterval(chornometre)
                 finDePartie(autre_joueur)
+                return
             }
 
-            temps --
+            if (current_tour == tour) {
+
+                if (current_joueur == 'b') {
+                    tempsb --
+                } else {
+                    tempsn --
+                }
+
+                temps --
+                console.log(temps)
+                let minutes = Math.floor(temps / 60)
+                minutes = minutes.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+                let secondes = Math.floor(temps - minutes * 60)
+                secondes = secondes.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+                document.getElementById(`temps${current_joueur}`).innerText = `${minutes}:${secondes}`
+            }
             
-            const minutes = Math.floor(temps / 60)
-            const secondes = Math.floor(temps - minutes * 60)
-            getElementById(`temps${current_joueur}`).innerText = `${minutes}:${secondes}`
-
         }, 1000)
-
-    return temps
 }
