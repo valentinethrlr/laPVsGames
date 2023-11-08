@@ -55,6 +55,7 @@ function duree(n) {
     document.getElementById("duree0").style.border = "none"
     document.getElementById(`duree${n}`).style.border = "2px solid #FF686B"
     dureeJoueur = n
+
 }
 
 
@@ -80,11 +81,11 @@ function creerAppareil() {
         document.getElementById("pionsNoirs").style.display = "block"
         document.getElementById("indication").style.display = "block"
 
-        if (dureeJoueur == 0) {
+        if (!(dureeJoueur == 0)) {
 
-        } else {
-            tempsb = dureeJoueur
-            tempsn = dureeJoueur
+            tempsb = dureeJoueur * 60
+            tempsn = dureeJoueur * 60
+
         }
 
     } else {
@@ -199,9 +200,6 @@ function joue(caseNumber) {
 
 
 function selectionne(pionId) {
-    for (let i = 1; i < 10; i++) {
-        document.getElementById("pb" + i).classList.remove("animationSelection")
-        document.getElementById("pn" + i).classList.remove("animationSelection")}
 
     //contrôle s'il y a eu moulin et élimine le pion sélectionné
     if (typeMoulin == "b" || typeMoulin == "n") {
@@ -234,9 +232,10 @@ function selectionne(pionId) {
                 document.getElementById(pionsPossibles[i]).classList.remove("animationSelection")
             }
             
-        //mise à zéro des variables globales
-        plateau[plateau.indexOf(pionId)] = null
-        pionsPossibles = []
+            //mise à zéro des variables globales
+            plateau[plateau.indexOf(pionId)] = null
+            pionsPossibles = []
+            typeMoulin = null
         }
 
     //contrôle que le joueur suivant puisse encore se déplacer
@@ -244,6 +243,9 @@ function selectionne(pionId) {
     
     //déplacement des pions au cours du jeu
     } else if (tour > 18) {
+        
+        supprimeAnimation()
+
         //impossible de sélectionner un pion adverse
         if (tour % 2 == 1 && pionId.startsWith("pb")) {
             document.getElementById(pionId).classList.add("animationSelection")
@@ -260,7 +262,6 @@ function selectionne(pionId) {
         finDePartie(typeMoulin)
     }
     
-    typeMoulin = null
 }
 
 
@@ -344,6 +345,12 @@ function deplacement(caseNumber) {
     current_pion = null
 }
 
+function supprimeAnimation() {
+    for (let i = 1; i < 10; i++) {
+        document.getElementById("pb" + i).classList.remove("animationSelection")
+        document.getElementById("pn" + i).classList.remove("animationSelection")}
+}
+
 
 function finDePartie(gagnant) {
 
@@ -414,4 +421,34 @@ function controleMouvementPossible() {
             finDePartie("b")
         }
     }
+}
+
+function timer(tempsRestant) {
+
+    if (tour % 2 == 1) {
+        const current_joueur = 'b'
+        const autre_joueur = 'n'
+    } else {
+        const current_joueur = 'n'
+        const autre_joueur = 'b'
+    }
+
+    let temps = tempsRestant
+    
+    setInterval(
+        function() {
+
+            if (temps == 0) {
+                finDePartie(autre_joueur)
+            }
+
+            temps --
+            
+            const minutes = Math.floor(temps / 60)
+            const secondes = Math.floor(temps - minutes * 60)
+            getElementById(`temps${current_joueur}`).innerText = `${minutes}:${secondes}`
+
+        }, 1000)
+
+    return temps
 }
