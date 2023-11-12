@@ -7,7 +7,7 @@
         <link rel="icon" type="image/pion-icon" href="/morpion/assets/images/pion.avif">
         <meta name='viewport' content='width=device-width, initial-scale=1'>
         <link rel="stylesheet" type="text/css" href="../assets/css/jeu.css?version=95" media="screen" />
-        <script src='../assets/js/jeu.js?v=268'></script>
+        <script src='../assets/js/jeu.js?v=281'></script>
     </head>
 
     <body>
@@ -35,7 +35,7 @@
 
             <div style="display: flex;">
                 <button class="jouer-btn" onclick='creerLigne()' style="margin-right: 5px;">CREER UNE PARTIE EN LIGNE</button>
-                <button class="jouer-btn" onclick='creerAppareil()' style="margin-left: 5px;">JOUER SUR L'APPAREIL</button>
+                <button class="jouer-btn" onclick='creerAppareil(); tourJoue()' style="margin-left: 5px;">JOUER SUR L'APPAREIL</button>
             </div>
 
             <h3 id="incompletude" style="display: none;">Veuillez choisir vos options.</h3>
@@ -75,15 +75,15 @@
 
             <map name="plateau">
                 <area id="case0"  shape="circle" coords="-5,20,30" onclick="joue(0)">
-                <area id="case1"  shape="circle" coords="235,20,30" onclick="joue(1)">
+                <area id="case1"  shape="circle" coords="234,20,30" onclick="joue(1)">
                 <area id="case2"  shape="circle" coords="474,20,30" onclick="joue(2)">
 
                 <area id="case3"  shape="circle" coords="74,100,30" onclick="joue(3)">
-                <area id="case4"  shape="circle" coords="235,100,30" onclick="joue(4)">
+                <area id="case4"  shape="circle" coords="234,100,30" onclick="joue(4)">
                 <area id="case5"  shape="circle" coords="395,100,30" onclick="joue(5)">
 
                 <area id="case6"  shape="circle" coords="154,180,30" onclick="joue(6)">
-                <area id="case7"  shape="circle" coords="235,180,30" onclick="joue(7)">
+                <area id="case7"  shape="circle" coords="234,180,30" onclick="joue(7)">
                 <area id="case8"  shape="circle" coords="314,180,30" onclick="joue(8)">
 
                 <area id="case9"  shape="circle" coords="-5,260,30" onclick="joue(9)">
@@ -94,15 +94,15 @@
                 <area id="case14" shape="circle" coords="474,260,30" onclick="joue(14)">
 
                 <area id="case15" shape="circle" coords="154,340,30" onclick="joue(15)">
-                <area id="case16" shape="circle" coords="235,340,30" onclick="joue(16)">
+                <area id="case16" shape="circle" coords="234,340,30" onclick="joue(16)">
                 <area id="case17" shape="circle" coords="314,340,30" onclick="joue(17)">
 
                 <area id="case18" shape="circle" coords="74,420,30" onclick="joue(18)">
-                <area id="case19" shape="circle" coords="235,420,30" onclick="joue(19)">
+                <area id="case19" shape="circle" coords="234,420,30" onclick="joue(19)">
                 <area id="case20" shape="circle" coords="395,420,30" onclick="joue(20)">
 
                 <area id="case21" shape="circle" coords="-5,500,30" onclick="joue(21)">
-                <area id="case22" shape="circle" coords="235,500,30" onclick="joue(22)">
+                <area id="case22" shape="circle" coords="234,500,30" onclick="joue(22)">
                 <area id="case23" shape="circle" coords="474,500,30" onclick="joue(23)">
             </map>
             </div>

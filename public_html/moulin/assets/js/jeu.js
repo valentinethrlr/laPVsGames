@@ -1,4 +1,4 @@
-let tour = 1
+let tour = 0
 let current_joueur = 'b'
 let autre_joueur = 'n'
 let id = null
@@ -49,6 +49,7 @@ let dureeJoueur = null
 let tempsb = 0
 let tempsn = 0
 let couleurJoueur = null
+let gardeChrono = false
 
 
 function tourJoue() {
@@ -62,7 +63,7 @@ function tourJoue() {
             timer(tempsb)    
         }
 
-    } else {
+    } else if (tour % 2 == 0) {
         current_joueur = 'n'
         autre_joueur = 'b'
         if (!(dureeJoueur == 0)) {
@@ -199,6 +200,7 @@ function joue(caseNumber) {
                     moulinsPlateau[i] = pion1[1]
                     mouvementSansPrise = 0
                     
+                    
                     //crée la liste des pions intouchables et ceux qu'il est possible d'éliminer
                     let pionsIntouchables = listeIntouchable()
                     pionsPossibles = listePossible(pionsIntouchables)
@@ -224,6 +226,7 @@ function joue(caseNumber) {
                 moulinsPlateau[i] = null
             }
         }
+
     }
 }
 
@@ -236,6 +239,7 @@ function selectionne(pionId) {
         //contrôle que le pion peut être éliminé
         if (pionsPossibles.includes(pionId)) {
             elimine(pionId)
+            
 
             //si le pion éliminé faisait partie d'un moulin, suppression de ce moulin dans moulinsPlateau
             if (supprimeDansMoulin) {
@@ -466,7 +470,6 @@ function timer(temps) {
                 }
 
                 temps --
-                console.log(temps)
                 let minutes = Math.floor(temps / 60)
                 minutes = minutes.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
                 let secondes = Math.floor(temps - minutes * 60)
