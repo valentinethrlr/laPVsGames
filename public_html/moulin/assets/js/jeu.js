@@ -135,18 +135,18 @@ function joue(caseNumber) {
         if (current_joueur == 'b') {
             mouvement(`pb${(tour+1)/2}`, `case${caseNumber}`)
             plateau[caseNumber] = `pb${(tour+1)/2}`
-            tourJoue()
+            
         } else {
             mouvement(`pn${tour/2}`, `case${caseNumber}`)
             plateau[caseNumber] = `pn${tour/2}`
-            tourJoue()
+            
         }
 
     //dernier placement de pion
     } else if (tour == 18 && typeMoulin == null) {
         mouvement("pn9", `case${caseNumber}`)
         plateau[caseNumber] = "pn9"
-        tourJoue()
+        
 
         controleMouvementPossible()
 
@@ -154,12 +154,12 @@ function joue(caseNumber) {
     } else if (nbBElimine == 6 && current_joueur == 'b') {
         console.log(tour)
         deplacement(caseNumber)
-        tourJoue()
+        
     
     } else if (nbNElimine == 6 && current_joueur == 'n') {
         console.log(tour)
         deplacement(caseNumber)
-        tourJoue()
+        
     
     //50 mouvements sans prise
     } else if (mouvementSansPrise == 50) {
@@ -171,14 +171,14 @@ function joue(caseNumber) {
         if (eval(`zone${plateau.indexOf(current_pion)}`).includes(caseNumber)) {
             deplacement(caseNumber)
             mouvementSansPrise ++
-            tourJoue()
+            
 
             controleMouvementPossible()
         }    
     }
 
     //contrôle de moulin
-    if (tour > 5) {
+    if (tour > 4) {
         let possibilite = null
         let pion1 = null
         let pion2 = null
@@ -228,7 +228,12 @@ function joue(caseNumber) {
         }
 
     }
+
+    if (typeMoulin == null) {
+        tourJoue()
+    }
 }
+    
 
 
 function selectionne(pionId) {
@@ -269,6 +274,7 @@ function selectionne(pionId) {
             plateau[plateau.indexOf(pionId)] = null
             pionsPossibles = []
             typeMoulin = null
+            tourJoue()
         }
 
     //contrôle que le joueur suivant puisse encore se déplacer
