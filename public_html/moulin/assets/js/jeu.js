@@ -51,6 +51,8 @@ let tempsn = 0
 let couleurJoueur = null
 let gardeChrono = false
 
+let incrementeTour = false
+
 
 function tourJoue() {
 
@@ -135,10 +137,12 @@ function joue(caseNumber) {
         if (current_joueur == 'b') {
             mouvement(`pb${(tour+1)/2}`, `case${caseNumber}`)
             plateau[caseNumber] = `pb${(tour+1)/2}`
+            incrementeTour = true
             
         } else {
             mouvement(`pn${tour/2}`, `case${caseNumber}`)
             plateau[caseNumber] = `pn${tour/2}`
+            incrementeTour = true
             
         }
 
@@ -146,6 +150,7 @@ function joue(caseNumber) {
     } else if (tour == 18 && typeMoulin == null) {
         mouvement("pn9", `case${caseNumber}`)
         plateau[caseNumber] = "pn9"
+        incrementeTour = true
         
 
         controleMouvementPossible()
@@ -154,11 +159,13 @@ function joue(caseNumber) {
     } else if (nbBElimine == 6 && current_joueur == 'b') {
         console.log(tour)
         deplacement(caseNumber)
+        incrementeTour = true
         
     
     } else if (nbNElimine == 6 && current_joueur == 'n') {
         console.log(tour)
         deplacement(caseNumber)
+        incrementeTour = true
         
     
     //50 mouvements sans prise
@@ -170,8 +177,8 @@ function joue(caseNumber) {
         
         if (eval(`zone${plateau.indexOf(current_pion)}`).includes(caseNumber)) {
             deplacement(caseNumber)
+            incrementeTour = true
             mouvementSansPrise ++
-            
 
             controleMouvementPossible()
         }    
@@ -229,9 +236,13 @@ function joue(caseNumber) {
 
     }
 
-    if (typeMoulin == null) {
+    if (typeMoulin == null && incrementeTour == true) {
         tourJoue()
+        console.log(tour)
+        console.log(plateau)
     }
+
+    incrementeTour = false
 }
     
 
@@ -293,7 +304,10 @@ function selectionne(pionId) {
         } else if (current_joueur == 'n' && pionId.startsWith("pn")) {
             document.getElementById(pionId).classList.add("animationSelection")
             current_pion = pionId
-        }    
+        }   
+        
+        pionSelectionne = true
+
     }
 
     //fin de partie
