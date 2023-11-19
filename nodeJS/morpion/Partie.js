@@ -16,17 +16,18 @@ module.exports = class Partie {
     }
     //quand la partie commence
     partieCommence(){
+        console.log(this.joueur1 + " /// " + this.joueur2)
         this.envoiJoueurs("partie", "plateau:" + JSON.stringify(this.etat))
         this.envoiJoueurs("info", "statut:commence")
         
-        envoiClient(this.joueur1, "partie", "tour:" + (1-this.oPrems))
-        envoiClient(this.joueur2, "partie", "tour:" + (this.oPrems))
+        envoiMorpion(this.joueur1, "partie", "tour:" + (1-this.oPrems))
+        envoiMorpion(this.joueur2, "partie", "tour:" + (this.oPrems))
     }
 
     envoiJoueurs(titre, message) {
-        envoiClient(this.joueur1, titre, message)
+        global.envoiMorpion(this.joueur1, titre, message)
         
-        envoiClient(this.joueur2, titre, message)
+        global.envoiMorpion(this.joueur2, titre, message)
     }
 
     coupJoue(n, joueur) {
@@ -36,14 +37,14 @@ module.exports = class Partie {
 
         if (joueur == this.joueur1 && this.turn%2 == this.oPrems) {
             this.etat[n] = "X"
-            envoiClient(this.joueur1, "partie", "tour:0")
-            envoiClient(this.joueur2, "partie", "tour:1")
+            global.envoiMorpion(this.joueur1, "partie", "tour:0")
+            global.envoiMorpion(this.joueur2, "partie", "tour:1")
             this.turn ++;
             this.controleVictoire()
         } else if (joueur == this.joueur2 && this.turn%2 == 1-this.oPrems){
             this.etat[n] = "O"
-            envoiClient(this.joueur1, "partie", "tour:1")
-            envoiClient(this.joueur2, "partie", "tour:0")
+            global.envoiMorpion(this.joueur1, "partie", "tour:1")
+            global.envoiMorpion(this.joueur2, "partie", "tour:0")
             this.turn ++
             this.controleVictoire()
         }

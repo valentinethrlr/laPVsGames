@@ -6,7 +6,7 @@ let infoPartie;
 //socket = io(...) -> ouvrir la connection avec le nodeJS
 //tous les socket.on vont dans le init()
 function init() {
-    socket = io("http://totifle.ch:25565")
+    socket = io("http://totifle.ch:25565/morpion")
     socket.on("info", (message) => {
         infoJeu(message);
     });
