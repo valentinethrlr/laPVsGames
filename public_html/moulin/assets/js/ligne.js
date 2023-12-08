@@ -1,15 +1,25 @@
+const utils = require('./jeu.js');
+
 function init() {
     socket = io("http://totifle.ch:25565/moulin")
-    socket.on('connecte', () => {
-        console.log("connecté !")
+    socket.on('info', (message) => {
+        let separeMessage = message.split(":")
+        if (separeMessage[0] == "commencer") {
+            utils.creerAppareil()    
+        }
         })
+    socket.on("test", (message) => {
+        console.log(message)
+    })
 
 }
 
 function creerLigne() {
-    console.log("Ca fonctionne !")
-    socket.emit('connected')
+    socket.emit("setup", "creationId:")
+    socket.emit("setup", `duree:${dureeJoueur}`)
+    socket.emit("setup", `couleur:${couleurJoueur}`)
 }
+
 
 document.addEventListener('DOMContentLoaded', function() {
     init()

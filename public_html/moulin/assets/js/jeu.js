@@ -238,8 +238,6 @@ function joue(caseNumber) {
 
     if (typeMoulin == null && incrementeTour == true) {
         tourJoue()
-        console.log(tour)
-        console.log(plateau)
     }
 
     incrementeTour = false

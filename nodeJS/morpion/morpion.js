@@ -17,9 +17,6 @@ module.exports = class Morpion {
 
     socket.on("conrequest", (message) => {
 
-      console.log(this.parties)
-      console.log(message)
-
         if (message == "creer") {
         this.id=Math.floor((Math.random()) * 1000000)
           while (this.id in this.parties) {
@@ -64,7 +61,6 @@ module.exports = class Morpion {
         delete this.joueurs[currentPartie.joueur2]
         delete this.parties[currentPartie.idPartie]
       })
-
     }
 }
 
