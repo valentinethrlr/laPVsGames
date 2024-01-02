@@ -1,9 +1,12 @@
-const utils = require('./jeu.js');
+
 
 function init() {
     socket = io("http://totifle.ch:25565/moulin")
     socket.on('info', (message) => {
         let separeMessage = message.split(":")
+        if (separeMessage[0] == "id") {
+            console.log(separeMessage[1])
+        }
         if (separeMessage[0] == "commencer") {
             utils.creerAppareil()    
         }

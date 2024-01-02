@@ -33,7 +33,7 @@ let zone23 = [14, 22]
 
 //liste les cases qui doivent être occupées pour avoir un moulin
 let moulins = [[0,1,2], [3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 13, 14], [15, 16, 17], [18, 19, 20], [21, 22, 23], [0, 9, 21], [3, 10, 18], [6, 11, 15], [1, 4, 7], [16, 19, 22], [8, 12, 17], [5, 13, 20], [2, 14, 23]]
-//se réfère à moulins, indique s'il y a un moulin sur la plateau à la liste des positions se référant au même indexe dans moulins
+//se réfère à moulins, indique s'il y a un moulin sur la plateau à la liste des positions se trouvant au même indexe dans moulins
 let moulinsPlateau = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
 let typeMoulin = null
 //indique le nombre de pions blancs et noirs qui ont déjà été éliminés
@@ -157,13 +157,11 @@ function joue(caseNumber) {
 
     //déplacement des pions (avec 3 pions)    
     } else if (nbBElimine == 6 && current_joueur == 'b') {
-        console.log(tour)
         deplacement(caseNumber)
         incrementeTour = true
         
     
     } else if (nbNElimine == 6 && current_joueur == 'n') {
-        console.log(tour)
         deplacement(caseNumber)
         incrementeTour = true
         
@@ -206,7 +204,6 @@ function joue(caseNumber) {
                     typeMoulin = pion1[1]
                     moulinsPlateau[i] = pion1[1]
                     mouvementSansPrise = 0
-                    
                     
                     //crée la liste des pions intouchables et ceux qu'il est possible d'éliminer
                     let pionsIntouchables = listeIntouchable()
@@ -253,7 +250,6 @@ function selectionne(pionId) {
         //contrôle que le pion peut être éliminé
         if (pionsPossibles.includes(pionId)) {
             elimine(pionId)
-            
 
             //si le pion éliminé faisait partie d'un moulin, suppression de ce moulin dans moulinsPlateau
             if (supprimeDansMoulin) {
@@ -284,10 +280,11 @@ function selectionne(pionId) {
             pionsPossibles = []
             typeMoulin = null
             tourJoue()
+
+            //contrôle que le joueur suivant puisse encore se déplacer
+            controleMouvementPossible()
         }
 
-    //contrôle que le joueur suivant puisse encore se déplacer
-    controleMouvementPossible()
     
     //déplacement des pions au cours du jeu
     } else if (tour > 18) {
@@ -401,7 +398,6 @@ function supprimeAnimation() {
         document.getElementById("pb" + i).classList.remove("animationSelection")
         document.getElementById("pn" + i).classList.remove("animationSelection")}
 }
-
 
 function finDePartie(gagnant) {
 

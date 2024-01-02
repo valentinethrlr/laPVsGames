@@ -14,12 +14,10 @@ const moulinWorkspace = io.of("moulin")
 const morpionWorkspace = io.of("morpion")
   
 moulinWorkspace.on("connect", (socket) => {
-  console.log("MOOOOULIN")
   moulinController.connect(socket)
 })
 
 morpionWorkspace.on("connect", (socket) => {
-  console.log("MOOOOORPION")
   morpionController.connect(socket)
 })
 httpServer.listen(25565)
