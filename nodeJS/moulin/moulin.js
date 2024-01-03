@@ -1,39 +1,34 @@
 module.exports = class Moulin {
 
-    constructor() {
-      this.Partie = require("./PartieMoulin.js")
-      this.id
-      this.parties = {}
-      this.duree
-      this.couleur
-      this.messageDivise
-    }
-  
-    connect(socket){
+  constructor() {
+    this.PartieMoulin = require("./PartieMoulin.js")
+    this.parties = {}
+  }
+
+  connect(socket){
+
+    socket.on("setup", (message) => {
+      let messageDivise = message.split(":")
+      if (messageDivise[0] == "creationId") {
+        console.log("requête reçue")
+        let id=Math.floor((Math.random()) * 1000000)
+        while (id in this.parties) {
+          id=Math.floor((Math.random()) * 1000000)
+        }
+        let duree = messageDivise[1]
+        let couleur = messageDivise[2]
+        this.parties[id] = new this.PartieMoulin(id, socket.id, duree, couleur)
+        socket.emit("info", "id:"+ id)
         
-      socket.on("setup", (message) => {
-        this.messageDivise = message.split(":")
-        if (this.messageDivise[0] == "creationId") {
-          console.log("création ID")
-          this.id=Math.floor((Math.random()) * 1000000)
-          while (this.id in this.parties) {
-            this.id=Math.floor((Math.random()) * 1000000)
-          }
-          socket.emit("info", "id:"+this.id)
-
+      } else if (messageDivise[0] == "idConnexion") {
+        if (messageDivise[1] in this.parties) {
+          this.parties[messageDivise[1]].joueur2 = socket.id
+        } else {
+          socket.emit("info", fausseId)
         }
-
-        if (this.messageDivise[0] == "duree") {
-          this.duree = this.messageDivise[1]
-          socket.emit("test", this.duree)
-        }
-
-        if (this.messageDivise[0] == "couleur") {
-          this.couleur = this.messageDivise[1]
-        }
-
-        this.parties += new this.PartieMoulin(this.id, socket.id, this.duree, this.couleur)
-      })
+        
+      }
+    })
 
 }
 }

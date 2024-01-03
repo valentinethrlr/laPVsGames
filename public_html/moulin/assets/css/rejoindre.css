@@ -49,3 +49,8 @@ body {
  :-ms-input-placeholder {  
     text-align: center; 
  }
+
+ #idFausse {
+    color: red;
+    text-align: center;
+ }
