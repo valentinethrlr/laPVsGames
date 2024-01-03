@@ -144,3 +144,8 @@ area {
 #tempsn {
     top: 655px;
 }
+
+#creationId {
+    color: white;
+    text-align: center;
+}
