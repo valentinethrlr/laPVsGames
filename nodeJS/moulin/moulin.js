@@ -10,7 +10,6 @@ module.exports = class Moulin {
     socket.on("setup", (message) => {
       let messageDivise = message.split(":")
       if (messageDivise[0] == "creationId") {
-        console.log("requête reçue")
         let id=Math.floor((Math.random()) * 1000000)
         while (id in this.parties) {
           id=Math.floor((Math.random()) * 1000000)
@@ -21,14 +20,18 @@ module.exports = class Moulin {
         socket.emit("info", "id:"+ id)
         
       } else if (messageDivise[0] == "idConnexion") {
-        if (messageDivise[1] in this.parties) {
+        if (messageDivise[1] in this.parties && this.parties[messageDivise[1]].joueur2 == null) {
           this.parties[messageDivise[1]].joueur2 = socket.id
+          socket.emit("info", "bonneId")
+          envoiMoulin(socket.id, "info", "commencer2")
+          envoiMoulin(this.parties[messageDivise[1]].joueur1, "info", "commencer1")
         } else {
-          socket.emit("info", fausseId)
+          socket.emit("info", "fausseId")
         }
         
       }
     })
+  }
+}
 
-}
-}
+
