@@ -12,20 +12,21 @@ function init() {
         } else if (separeMessage[0] == "commencer1") {
             document.getElementById("creationId").style.display = "none"
             document.getElementById("jeuTotal").style.display = "block"
+        } else if (separeMessage[0] == "commencer2") {
+            document.getElementById("login").style.display = "none"
+            document.getElementById("jeuTotal").style.display = "block"   
+        } else if (separeMessage[0] == "temps") {
             if (!(separeMessage[1] == "pasTimer")) {
                 document.getElementById("tempsb").innerText = `${separeMessage[1].toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}:00`
                 document.getElementById("tempsn").innerText = `${separeMessage[1].toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}:00`
                 document.getElementById("tempsb").style.display = "block"
                 document.getElementById("tempsn").style.display = "block"
             }
-        } else if (separeMessage[0] == "commencer2") {
-            document.getElementById("login").style.display = "none"
-            document.getElementById("jeuTotal").style.display = "block"
-            if (!(separeMessage[1] == "pasTimer")) {
-                document.getElementById("tempsb").innerText = `${separeMessage[1].toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}:00`
-                document.getElementById("tempsn").innerText = `${separeMessage[1].toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}:00`
-                document.getElementById("tempsb").style.display = "block"
-                document.getElementById("tempsn").style.display = "block"
+        } else if (separeMessage[0] == "couleur") {
+            if (separeMessage[1] == "b") {
+                document.getElementById("indication").innerText = "C'est à vous de jouer !"
+            } else {
+                document.getElementById("indication").innerText = "C'est à l'adversaire de commencer !"
             }
         }
     })

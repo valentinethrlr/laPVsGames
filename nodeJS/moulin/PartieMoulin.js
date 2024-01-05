@@ -9,7 +9,8 @@ module.exports = class PartieMoulin {
         this.tempsn = this.duree * 60
         this.couleur1 = null
         this.couleur2 = null
-        this.couleurJoueurs(couleur)
+        this.couleur = couleur
+        this.couleurJoueurs(this.couleur)
     }
 
     couleurJoueurs(couleur) {
@@ -23,12 +24,14 @@ module.exports = class PartieMoulin {
                 this.couleur2 = "b" 
             }
         } else if (couleur == "b") {
-            this.couleur1 == "b"
-            this.couleur2 == "n"
+            this.couleur1 = "b"
+            this.couleur2 = "n"
         } else {
-            this.couleur1 == "n"
+            this.couleur1 = "n"
             this.couleur2 = "b"
         }
     }
+
+    
 
 }

@@ -22,14 +22,7 @@ module.exports = class Moulin {
       } else if (messageDivise[0] == "idConnexion") {
         if (messageDivise[1] in this.parties && this.parties[messageDivise[1]].joueur2 == null) {
           this.parties[messageDivise[1]].joueur2 = socket.id
-          if (this.parties[messageDivise[1]].tempsb == 0) {
-            envoiMoulin(socket.id, "info", "commencer2:pasTimer")
-            envoiMoulin(this.parties[messageDivise[1]].joueur1, "info", "commencer1:pasTimer")
-          } else {
-            envoiMoulin(socket.id, "info", `commencer2:${this.parties[messageDivise[1]].duree}`)
-            envoiMoulin(this.parties[messageDivise[1]].joueur1, "info", `commencer1:${this.parties[messageDivise[1]].duree}`)
-          }
-          
+          this.commencerPartie(messageDivise[1])   
         } else {
           socket.emit("info", "fausseId")
         }
@@ -37,6 +30,27 @@ module.exports = class Moulin {
       }
     })
   }
+
+  commencerPartie(partieId) {
+    envoiMoulin(this.parties[partieId].joueur1, "info", "commencer1")
+    envoiMoulin(this.parties[partieId].joueur2, "info", "commencer2")
+    if (this.parties[partieId].tempsb == 0) {
+      envoiMoulin(this.parties[partieId].joueur1, "info", "temps:pasTimer")
+      envoiMoulin(this.parties[partieId].joueur2, "info", "temps:pasTimer")
+    } else {
+      envoiMoulin(this.parties[partieId].joueur1, "info", `temps:${this.parties[partieId].duree}`)
+      envoiMoulin(this.parties[partieId].joueur2, "info", `temps:${this.parties[partieId].duree}`)
+    }
+
+    if (this.parties[partieId].couleur1 == "b") {
+      envoiMoulin(this.parties[partieId].joueur1, "info", "couleur:b")
+      envoiMoulin(this.parties[partieId].joueur2, "info", "couleur:n")
+    } else {
+      envoiMoulin(this.parties[partieId].joueur1, "info", "couleur:n")
+      envoiMoulin(this.parties[partieId].joueur2, "info", "couleur:b")
+    }
+  }
+
 }
 
 
