@@ -8,8 +8,8 @@
         <meta name='viewport' content='width=device-width, initial-scale=1'>
         <script src="https://cdn.socket.io/4.5.4/socket.io.min.js" integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous"></script>
         <link rel="stylesheet" type="text/css" href="../assets/css/jeu.css?version=97" media="screen" />
-        <script src='../assets/js/jeu.js?v=289'></script>
-        <script src='../assets/js/ligne.js?v=26'></script>
+        <script src='../assets/js/jeu.js?v=291'></script>
+        <script src='../assets/js/ligne.js?v=33'></script>
     </head>
 
     <body>
@@ -47,10 +47,10 @@
             <h2 id="votreId">L'ID de votre partie est: </h2>
         </div>
         
-        <div id="jeuTotal">
-            <h1 id="indication" style="display: none;">Les blancs commencent la partie.</h1>
+        <div id="jeuTotal" style="display: none;">
+            <h1 id="indication">Les blancs commencent la partie.</h1>
 
-            <div id="pionsBlancs" style="height: 50px; display: none;">
+            <div id="pionsBlancs" style="height: 50px;">
                 <div id="pb1" class="pionB" onclick="selectionne('pb1')"></div>
                 <div id="pb2" class="pionB" onclick="selectionne('pb2')"></div>
                 <div id="pb3" class="pionB" onclick="selectionne('pb3')"></div>
@@ -71,7 +71,7 @@
             </div>
 
             
-            <div id ="grille" class="centerGrille" style="display: none;">
+            <div id ="grille" class="centerGrille">
             <img src="./moulin_colors.svg" usemap="#plateau" width="500" height="500" alt="plateau">
 
             <map name="plateau">
@@ -108,7 +108,7 @@
             </map>
             </div>
 
-            <div id="pionsNoirs" style="height: 30px; display: none;">
+            <div id="pionsNoirs" style="height: 30px;">
                 <div id="pn1" class="pionN" onclick="selectionne('pn1')"></div>
                 <div id="pn2" class="pionN" onclick="selectionne('pn2')"></div>
                 <div id="pn3" class="pionN" onclick="selectionne('pn3')"></div>

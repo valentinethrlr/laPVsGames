@@ -22,9 +22,14 @@ module.exports = class Moulin {
       } else if (messageDivise[0] == "idConnexion") {
         if (messageDivise[1] in this.parties && this.parties[messageDivise[1]].joueur2 == null) {
           this.parties[messageDivise[1]].joueur2 = socket.id
-          socket.emit("info", "bonneId")
-          envoiMoulin(socket.id, "info", "commencer2")
-          envoiMoulin(this.parties[messageDivise[1]].joueur1, "info", "commencer1")
+          if (this.parties[messageDivise[1]].tempsb == 0) {
+            envoiMoulin(socket.id, "info", "commencer2:pasTimer")
+            envoiMoulin(this.parties[messageDivise[1]].joueur1, "info", "commencer1:pasTimer")
+          } else {
+            envoiMoulin(socket.id, "info", `commencer2:${this.parties[messageDivise[1]].duree}`)
+            envoiMoulin(this.parties[messageDivise[1]].joueur1, "info", `commencer1:${this.parties[messageDivise[1]].duree}`)
+          }
+          
         } else {
           socket.emit("info", "fausseId")
         }

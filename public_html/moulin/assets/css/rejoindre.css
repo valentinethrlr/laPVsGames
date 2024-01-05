@@ -1,56 +1,149 @@
 body {
-    background-color: #28243A;
+   background-color: #28243A;
+   font-family: Arial, Helvetica, sans-serif;
 }
 
 .id-btn {
-    width: 200px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 50px;
-    padding: 8px 10px;
-    color: #28243A;
-    background-color: #AFF4C6;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
+   width: 200px;
+   display: block;
+   margin-left: auto;
+   margin-right: auto;
+   margin-top: 50px;
+   padding: 8px 10px;
+   color: #28243A;
+   background-color: #AFF4C6;
+   border: none;
+   border-radius: 5px;
+   font-weight: bold;
 
 }
 
 #rejoindre-btn {
-    display: inline;
+   display: inline;
 }
 
 .center {
-    width: max-content;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 200px;
+   width: max-content;
+   margin-left: auto;
+   margin-right: auto;
+   margin-top: 200px;
 }
 
 ::placeholder {
-    text-align: center; 
+   text-align: center; 
  }
  
  /* or, for legacy browsers */
  
  ::-webkit-input-placeholder {
-    text-align: center;
+   text-align: center;
  }
  
  :-moz-placeholder { /* Firefox 18- */
-    text-align: center;  
+   text-align: center;  
  }
  
  ::-moz-placeholder {  /* Firefox 19+ */
-    text-align: center;  
+   text-align: center;  
  }
  
  :-ms-input-placeholder {  
-    text-align: center; 
+   text-align: center; 
  }
 
  #idFausse {
-    color: red;
-    text-align: center;
+   color: red;
+   text-align: center;
+ }
+
+ .temps {
+   color: white;
+   font-size: 20px;
+   position: absolute;
+   left: 1000px;
+}
+
+#tempsb {
+   top: 65px;
+}
+
+#tempsn {
+   top: 655px;
+}
+
+.centerVert {
+   margin-top: 200px;
+}
+
+.pionB {
+  height: 30px;
+  width: 30px;
+  background-color: white;
+  border-radius: 50%; 
+  display: inline-block;
+  justify-content: center;
+  position: relative;
+
+}
+
+.pionN {
+   height: 30px;
+   width: 30px;
+   background-color: black;
+   border-radius: 50%; 
+   display: inline-block;
+   justify-content: center;
+   position: relative;
+   border: 1px solid whitesmoke;
+}
+
+#pionsBlancs {
+   width: 800px;
+   display: block;
+   margin-left: auto;
+   margin-right: auto;
+   margin-top: 30px;
+}
+
+#pionsNoirs {
+   width: 800px;
+   display: block;
+   margin-left: auto;
+   margin-right: auto;
+   margin-top: 20px;
+}
+
+@keyframes selectionner {
+   to {outline: 2.5px solid #FF686B;}
+}
+
+.animationSelection {
+   animation-name: selectionner;
+   animation-duration: 0.75s;
+   animation-iteration-count: infinite;
+}
+
+#indication {
+   color: white;
+   text-align: center;
+   margin-bottom: 20px;
+   margin-top: 10px;
+   height: 35px;
+}
+
+#pnElimine1 {
+   margin-left: 20px;
+}
+
+.centerGrille {
+   display: block;
+   width: 500px;
+   margin-left: auto;
+   margin-right: auto;
+   margin-top: 20px;
+}
+
+area {
+   cursor: pointer;
+   position: absolute;
  }
