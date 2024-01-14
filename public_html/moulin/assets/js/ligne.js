@@ -33,7 +33,7 @@ function init() {
                 document.getElementById("indication").innerText = "C'est à l'adversaire de commencer !"
             }
         } else if (separeMessage[0] == "mouvement") {
-            mouvement(separeMessage[1], separeMessage[2])
+            mouvementLigne(separeMessage[1], separeMessage[2])
             if (separeMessage[3] == "jouer") {
                 document.getElementById("indication").innerText = "C'est à vous de jouer !"
             } else {
@@ -41,6 +41,10 @@ function init() {
             }
         } else if (separeMessage[0] == "fin") {
             finEnLigne(separeMessage[1])
+        } else if (separeMessage[0] == "supprimeAnimation") {
+            supprimeAnimationLigne()
+        } else if (separeMessage[0] == "animation") {
+            document.getElementById(separeMessage[1]).classList.add("animationSelection")
         }
     })
 }
@@ -58,10 +62,10 @@ function rejoindre() {
     votreId = document.getElementById("noPartie").value
 }
 
-function selectionneLigne() {
+function selectionneLigne(pion) {
     if (! enLigne) {
     } else {
-
+        socket.emit("setup", `pion:${pion}:${votreId}`)
     }
 
 }
@@ -69,7 +73,6 @@ function selectionneLigne() {
 function joueLigne(caseOnline) {
     if (enLigne == false) {
     } else {
-        console.log(votreId)
         socket.emit("setup", `case:${caseOnline}:${votreId}`)
     }
 
@@ -103,6 +106,26 @@ function finEnLigne(gagnant) {
     }
 }
 
+function supprimeAnimationLigne() {
+    for (let i = 1; i < 10; i++) {
+        document.getElementById("pb" + i).classList.remove("animationSelection")
+        document.getElementById("pn" + i).classList.remove("animationSelection")}
+}
+
+function mouvementLigne(pion, place) {
+    let pionBouge = document.getElementById(pion)
+    pionBouge.style.position ="absolute";
+    let but = document.getElementById(place)
+    let posBut = but.coords.split(",")
+    let xBut = Number(posBut[0])
+    let yBut = Number(posBut[1])
+    let plateau = document.getElementById("grille")
+    let xPlateau = plateau.offsetLeft
+    let yPlateau = plateau.offsetTop
+    pionBouge.style.top = (yPlateau + yBut - 29) + "px"
+    pionBouge.style.left = (xPlateau + xBut) + "px"
+    supprimeAnimationLigne()
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     init()

@@ -244,8 +244,6 @@ function joue(caseNumber) {
 function selectionne(pionId) {
 
     if (enLigne == false) {
-        //variable utilisée dans le fichier ligne.js
-    caseOnline = pionId
 
     //contrôle s'il y a eu moulin et élimine le pion sélectionné
     if (typeMoulin == "b" || typeMoulin == "n") {
@@ -314,8 +312,6 @@ function selectionne(pionId) {
     }
     }
 
-    
-    
 }
 
 

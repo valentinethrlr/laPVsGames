@@ -154,10 +154,10 @@ module.exports = class PartieMoulin {
         
             //déplacement dans les autres cas 
             } else {
-                
-                if (eval(`this.zone${this.plateau.indexOf(this.current_pion)}`).includes(caseNumber)) {
-                    envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `mouvement:pn${this.tour/2}:case${caseNumber}:pasjouer`)
-                    envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `mouvement:pn${this.tour/2}:case${caseNumber}:jouer`)
+
+                if (eval(`this.zone${this.plateau.indexOf(this.current_pion)}`).includes(Number(caseNumber))) {
+                    envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `mouvement:${this.current_pion}:case${caseNumber}:pasjouer`)
+                    envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `mouvement:${this.current_pion}:case${caseNumber}:jouer`)
                     this.incrementeTour = true
                     this.mouvementSansPrise ++
         
@@ -169,6 +169,37 @@ module.exports = class PartieMoulin {
             }
 
     }
+
+    selectionne(pionId, utilisateur) {
+
+        //déplacement des pions au cours du jeu
+        if (this.tour > 18) {
+    
+            envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", "supprimeAnimation")
+            envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", "supprimeAnimation")
+    
+            //impossible de sélectionner un pion adverse
+            if (eval(`this.couleur${this.actuel_joueur}`) == 'b' && pionId.startsWith("pb") && utilisateur == eval(`this.joueur${this.actuel_joueur}`)) {
+                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `animation:${pionId}`)
+                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `animation:${pionId}`)
+                this.current_pion = pionId
+            
+            } else if (eval(`this.couleur${this.actuel_joueur}`) == 'n' && pionId.startsWith("pn") && utilisateur == eval(`this.joueur${this.actuel_joueur}`)) {
+                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `animation:${pionId}`)
+                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `animation:${pionId}`)
+                this.current_pion = pionId
+            }   
+            
+            this.pionSelectionne = true
+    
+        }
+    
+        //fin de partie
+        if (this.nbBElimine > 6 || this.nbNElimine > 6) {
+            this.finDePartie(eval(`this.couleur${this.autre_joueur}`))
+        }
+    }    
+        
 
 
     controleMouvementPossible() {
