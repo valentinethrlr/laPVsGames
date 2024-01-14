@@ -1,3 +1,5 @@
+const { Socket } = require("dgram")
+
 module.exports = class PartieMoulin {
 
     constructor(id, joueur1, duree, couleur) {
@@ -113,29 +115,30 @@ module.exports = class PartieMoulin {
                     this.plateau[caseNumber] = `pb${(this.tour+1)/2}`
                     this.incrementeTour = true
                 } else {
-                    envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `mouvement:pn${tour/2}:case${caseNumber}:pasjouer`)
-                    envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `mouvement:pn${tour/2}:case${caseNumber}:jouer`)
-                    this.plateau[caseNumber] = `pn${tour/2}`
+                    envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `mouvement:pn${this.tour/2}:case${caseNumber}:pasjouer`)
+                    envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `mouvement:pn${this.tour/2}:case${caseNumber}:jouer`)
+                    this.plateau[caseNumber] = `pn${this.tour/2}`
                     this.incrementeTour = true
                 }
         
             //dernier placement de pion
             } else if (this.tour == 18 && this.typeMoulin == null) {
-                mouvement("pn9", `case${caseNumber}`)
+                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `mouvement:pn9:case${caseNumber}:pasjouer`)
+                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `mouvement:pn9:case${caseNumber}:jouer`)
                 this.plateau[caseNumber] = "pn9"
                 this.incrementeTour = true
-                
-        
                 controleMouvementPossible()
         
             //déplacement des pions (avec 3 pions)    
             } else if (this.nbBElimine == 6 && this.current_joueur == 'b') {
-                deplacement(caseNumber)
+                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `mouvement:pn${this.tour/2}:case${caseNumber}:pasjouer`)
+                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `mouvement:pn${this.tour/2}:case${caseNumber}:jouer`)
                 this.incrementeTour = true
                 
             
             } else if (this.nbNElimine == 6 && this.current_joueur == 'n') {
-                deplacement(caseNumber)
+                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `mouvement:pn${this.tour/2}:case${caseNumber}:pasjouer`)
+                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `mouvement:pn${this.tour/2}:case${caseNumber}:jouer`)
                 this.incrementeTour = true
                 
             
@@ -147,70 +150,54 @@ module.exports = class PartieMoulin {
             } else {
                 
                 if (eval(`this.zone${this.plateau.indexOf(this.current_pion)}`).includes(caseNumber)) {
-                    deplacement(caseNumber)
+                    envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `mouvement:pn${this.tour/2}:case${caseNumber}:pasjouer`)
+                    envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `mouvement:pn${this.tour/2}:case${caseNumber}:jouer`)
                     this.incrementeTour = true
                     this.mouvementSansPrise ++
         
-                    controleMouvementPossible()
                 }    
             }
-        
-            //contrôle de moulin
-            if (this.tour > 4) {
-                let possibilite = null
-                let pion1 = null
-                let pion2 = null
-                let pion3 = null
-                for (let i=0; i<this.moulins.length; i++) {
-                    possibilite = this.moulins[i]
-                    pion1 = this.plateau[possibilite[0]]
-                    pion2 = this.plateau[possibilite[1]]
-                    pion3 = this.plateau[possibilite[2]]
-        
-                    //contrôle que le pion soit de type b ou n (deuxième caractère de la chaîne de caractère)
-                    if (!(pion1== null) && !(pion2 == null) && !(pion3 == null) 
-                        && pion1[1] == pion2[1] && pion2[1] == pion3[1]) {
-                        
-                        //contrôle que le moulin vient d'être formé
-                        if (this.moulinsPlateau[i] == null) {
-                            document.getElementById("indication").innerText = "MOULIN !"
-                            this.typeMoulin = pion1[1]
-                            this.moulinsPlateau[i] = pion1[1]
-                            this.mouvementSansPrise = 0
-                            
-                            //crée la liste des pions intouchables et ceux qu'il est possible d'éliminer
-                            let pionsIntouchables = listeIntouchable()
-                            pionsPossibles = listePossible(pionsIntouchables)
-        
-                            //si tous les pions adverses sont dans un moulin, tous peuvent être éliminés
-                            if (pionsPossibles.length == 0) {
-                                pionsPossibles = listePossible([])
-                                this.supprimeDansMoulin = true
-                            }
-        
-                            //anime les pions qu'il est possible d'éliminer
-                            for (let i = 0; i < pionsPossibles.length; i++) {
-                                document.getElementById(pionsPossibles[i]).classList.add("animationSelection")
-                            }        
-                        
-                        //si le moulin existait déjà, il est à nouveau mis dans la liste moulinsPlateau
-                        } else {
-                            this.moulinsPlateau[i] = pion1[1]
-                        }
-                    
-                    //s'il n'y a pas de moulins à cet emplacement, la position dans mise à null dans moulinsPlateau        
-                    } else {
-                        this.moulinsPlateau[i] = null
-                    }
-                }
-        
-            }
-        
-            if (this.typeMoulin == null && this.incrementeTour == true) {
-                tourJoue()
-            }
-        
-            this.incrementeTour = false
     }
+
+
+    controleMouvementPossible() {
+        //contrôle que le joueur suivant peut se déplacer
+       let autorise = casesAutorises()
+       if (autorise.length == 0) {
+           finDePartie(autre_joueur)
+       }
+    }
+
+
+    casesAutorises() {
+    let cePion = null
+    let positionPionPlateau = []
+    let deplacementsAutorises = []
+
+    for (let i = 1; i <= 9; i++) {
+        cePion = `p${this.current_joueur}${i}`
+        if (this.plateau.includes(cePion)) {
+            positionPionPlateau.push(this.plateau.indexOf(cePion))
+        }
+    }
+
+    for (let i = 0; i < positionPionPlateau.length; i++) {
+        let current_zone = eval(`zone${positionPionPlateau[i]}`)
+        for (let j = 0; j < current_zone.length; j++) {
+            let current_case = current_zone[j]
+            if (this.plateau[current_case] == null) {
+                deplacementsAutorises.push(current_case)
+            }
+        }
+    }
+
+    return deplacementsAutorises
+    }
+
+    finDePartie(gagnant) {
+        envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `fin:${gagnant}`)
+        envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `fin:${gagnant}`)
+    }
+
 }
 

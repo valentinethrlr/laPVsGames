@@ -11,3 +11,7 @@ function mouvement(pion, place) {
     pionBouge.style.top = (yPlateau + yBut - 29) + "px"
     pionBouge.style.left = (xPlateau + xBut) + "px"
 }
+
+function joue(arg) {
+    
+}

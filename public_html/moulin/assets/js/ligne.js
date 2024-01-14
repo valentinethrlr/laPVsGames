@@ -34,11 +34,13 @@ function init() {
             }
         } else if (separeMessage[0] == "mouvement") {
             mouvement(separeMessage[1], separeMessage[2])
-            if (separeMessage[3] == "joue") {
+            if (separeMessage[3] == "jouer") {
                 document.getElementById("indication").innerText = "C'est à vous de jouer !"
             } else {
                 document.getElementById("indication").innerText = "C'est à l'adversaire de jouer !"
             }
+        } else if (separeMessage[0] == "fin") {
+            finEnLigne(separeMessage[1])
         }
     })
 }
@@ -72,6 +74,35 @@ function joueLigne(caseOnline) {
     }
 
 }
+
+function finEnLigne(gagnant) {
+    document.getElementById("grille").style.display = "none"
+    for (let i = 1; i <= 9; i++) {
+        document.getElementById(`pb${i}`).style.display = "none"
+        document.getElementById(`pn${i}`).style.display = "none"
+    }
+    
+    for (let i = 1; i <= 7; i++) {
+        document.getElementById(`pnElimine${i}`).style.display = "none"
+        document.getElementById(`pbElimine${i}`).style.display = "none"
+    }
+
+    document.getElementById("tempsb").style.display = "none"
+    document.getElementById("tempsn").style.display = "none"
+    document.getElementById("indication").style.marginTop= "200px"
+    document.getElementById("indication").style.fontSize = "50px"
+
+    if (gagnant == "n") {
+        document.getElementById("indication").innerText = "Victoire des noirs !"
+
+    } else if (gagnant == "b") {
+        document.getElementById("indication").innerText = "Victoire des blancs !"
+        
+    } else {
+        document.getElementById("indication").innerText = "La partie est nulle ! :("
+    }
+}
+
 
 document.addEventListener('DOMContentLoaded', function() {
     init()
