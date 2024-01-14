@@ -243,7 +243,8 @@ function joue(caseNumber) {
 
 function selectionne(pionId) {
 
-    //variable utilisée dans le fichier ligne.js
+    if (enLigne == false) {
+        //variable utilisée dans le fichier ligne.js
     caseOnline = pionId
 
     //contrôle s'il y a eu moulin et élimine le pion sélectionné
@@ -311,6 +312,9 @@ function selectionne(pionId) {
     if (nbBElimine > 6 || nbNElimine > 6) {
         finDePartie(autre_joueur)
     }
+    }
+
+    
     
 }
 

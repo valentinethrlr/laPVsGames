@@ -27,8 +27,8 @@ module.exports = class Moulin {
           socket.emit("info", "fausseId")
         } 
       } else if (messageDivise[0] == "case") {
-        this.parties[messageDivise[2]].tourJoue()
-        this.parties[messageDivise[2]].joue(messageDivise[1])
+        console.log(this.parties[messageDivise[2]].tour)
+        this.parties[messageDivise[2]].joue(messageDivise[1], socket.id)
       }
     })
   }

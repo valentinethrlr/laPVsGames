@@ -85,6 +85,7 @@ module.exports = class PartieMoulin {
     }
 
     tourJoue() {
+        this.incrementeTour = false
         this.tour ++
         if (this.tour % 2 == 1 && this.couleur1 == "b") {
             this.actuel_joueur = 1
@@ -106,15 +107,20 @@ module.exports = class PartieMoulin {
     }
 
 
-    joue(caseNumber) {
+    joue(caseNumber, utilisateur) {
+
+            if (this.tour == 0) {
+                this.tourJoue()
+            }
+
             //mise en place du jeu
             if (this.tour < 18 && this.typeMoulin == null) {
-                if (eval(`this.couleur${this.actuel_joueur}`) == 'b') {
+                if (eval(`this.couleur${this.actuel_joueur}`) == 'b' && utilisateur == eval(`this.joueur${this.actuel_joueur}`)) {
                     envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `mouvement:pb${(this.tour+1)/2}:case${caseNumber}:pasjouer`)
                     envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `mouvement:pb${(this.tour+1)/2}:case${caseNumber}:jouer`)
                     this.plateau[caseNumber] = `pb${(this.tour+1)/2}`
                     this.incrementeTour = true
-                } else {
+                } else if (utilisateur == eval(`this.joueur${this.actuel_joueur}`)) {
                     envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `mouvement:pn${this.tour/2}:case${caseNumber}:pasjouer`)
                     envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `mouvement:pn${this.tour/2}:case${caseNumber}:jouer`)
                     this.plateau[caseNumber] = `pn${this.tour/2}`
@@ -127,7 +133,7 @@ module.exports = class PartieMoulin {
                 envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `mouvement:pn9:case${caseNumber}:jouer`)
                 this.plateau[caseNumber] = "pn9"
                 this.incrementeTour = true
-                controleMouvementPossible()
+                this.controleMouvementPossible()
         
             //déplacement des pions (avec 3 pions)    
             } else if (this.nbBElimine == 6 && this.current_joueur == 'b') {
@@ -144,7 +150,7 @@ module.exports = class PartieMoulin {
             
             //50 mouvements sans prise
             } else if (this.mouvementSansPrise == 50) {
-                finDePartie("nul")
+                this.finDePartie("nul")
         
             //déplacement dans les autres cas 
             } else {
@@ -157,14 +163,19 @@ module.exports = class PartieMoulin {
         
                 }    
             }
+
+            if (this.incrementeTour == true) {
+                this.tourJoue()
+            }
+
     }
 
 
     controleMouvementPossible() {
         //contrôle que le joueur suivant peut se déplacer
-       let autorise = casesAutorises()
+       let autorise = this.casesAutorises()
        if (autorise.length == 0) {
-           finDePartie(autre_joueur)
+           this.finDePartie(eval(`this.couleur${this.autre_joueur}`))
        }
     }
 
@@ -175,14 +186,14 @@ module.exports = class PartieMoulin {
     let deplacementsAutorises = []
 
     for (let i = 1; i <= 9; i++) {
-        cePion = `p${this.current_joueur}${i}`
+        cePion = `p${eval(`this.couleur${this.actuel_joueur}`)}${i}` 
         if (this.plateau.includes(cePion)) {
             positionPionPlateau.push(this.plateau.indexOf(cePion))
         }
     }
 
     for (let i = 0; i < positionPionPlateau.length; i++) {
-        let current_zone = eval(`zone${positionPionPlateau[i]}`)
+        let current_zone = eval(`this.zone${positionPionPlateau[i]}`)
         for (let j = 0; j < current_zone.length; j++) {
             let current_case = current_zone[j]
             if (this.plateau[current_case] == null) {
