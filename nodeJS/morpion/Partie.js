@@ -16,7 +16,6 @@ module.exports = class Partie {
     }
     //quand la partie commence
     partieCommence(){
-        console.log(this.joueur1 + " /// " + this.joueur2)
         this.envoiJoueurs("partie", "plateau:" + JSON.stringify(this.etat))
         this.envoiJoueurs("info", "statut:commence")
         

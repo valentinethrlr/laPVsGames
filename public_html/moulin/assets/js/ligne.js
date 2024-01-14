@@ -1,3 +1,5 @@
+let votreId = null
+let enLigne = false
 
 function init() {
     socket = io("http://totifle.ch:25565/moulin")
@@ -6,15 +8,18 @@ function init() {
         if (separeMessage[0] == "id") {
             document.getElementById("optionsCreer").style.display = "none"
             document.getElementById("votreId").innerText += separeMessage[1]
+            votreId = separeMessage[1]
             document.getElementById("creationId").style.display = "block"
         } else if (separeMessage[0] == "fausseId") {
             document.getElementById("idFausse").innerText = "Cette partie n'existe pas."
         } else if (separeMessage[0] == "commencer1") {
             document.getElementById("creationId").style.display = "none"
             document.getElementById("jeuTotal").style.display = "block"
+            enLigne = true
         } else if (separeMessage[0] == "commencer2") {
             document.getElementById("login").style.display = "none"
-            document.getElementById("jeuTotal").style.display = "block"   
+            document.getElementById("jeuTotal").style.display = "block"  
+            enLigne = true
         } else if (separeMessage[0] == "temps") {
             if (!(separeMessage[1] == "pasTimer")) {
                 document.getElementById("tempsb").innerText = `${separeMessage[1].toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}:00`
@@ -25,8 +30,18 @@ function init() {
         } else if (separeMessage[0] == "couleur") {
             if (separeMessage[1] == "b") {
                 document.getElementById("indication").innerText = "C'est à vous de jouer !"
+                for (let i = 1; i <= 23; i++) {
+                    document.getElementById(`case${i}`).addEventListener("click", function(){socket.emit("setup", `case:${caseOnline}:${votreId}`)})
+                }
             } else {
                 document.getElementById("indication").innerText = "C'est à l'adversaire de commencer !"
+            }
+        } else if (separeMessage[0] == "mouvement") {
+            mouvement[separeMessage[1], separeMessage[2]]
+            if (separeMessage[3] == "joue") {
+                document.getElementById("indication").innerText = "C'est à vous de jouer !"
+            } else {
+                document.getElementById("indication").innerText = "C'est à l'adversaire de jouer !"
             }
         }
     })
@@ -42,6 +57,23 @@ function creerLigne() {
 
 function rejoindre() {
     socket.emit("setup", "idConnexion:" + document.getElementById("noPartie").value)
+    votreId = document.getElementById("noPartie").value
+}
+
+function selectionneLigne() {
+    if (! enLigne) {
+    } else {
+
+    }
+
+}
+
+function joueLigne() {
+    if (! enLigne) {
+    } else {
+
+    }
+
 }
 
 document.addEventListener('DOMContentLoaded', function() {

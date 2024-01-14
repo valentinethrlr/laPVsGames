@@ -40,28 +40,28 @@ module.exports = class Morpion {
 
       })
 
-      socket.on("partie", (message) => {
-        let infoCase = message.split(":")
-        if (infoCase[0] == "case") {
-          this.parties[this.joueurs[socket.id]].coupJoue(infoCase[1], socket.id)
+    socket.on("partie", (message) => {
+      let infoCase = message.split(":")
+      if (infoCase[0] == "case") {
+        this.parties[this.joueurs[socket.id]].coupJoue(infoCase[1], socket.id)
         
-        } else if (infoCase[1] == "rejouer") {
-          this.parties[this.joueurs[socket.id]].partieRecommence()
-        }
-      })
+      } else if (infoCase[1] == "rejouer") {
+        this.parties[this.joueurs[socket.id]].partieRecommence()
+      }
+    })
 
-      socket.on("disconnect", (raison) => {
-        const currentPartie = this.parties[this.joueurs[socket.id]]
-        if (socket.id == currentPartie.joueur1) {
-          envoiMorpion(currentPartie.joueur2, "info", "status:disconnect")
-        } else {
-          envoiMorpion(currentPartie.joueur1, "info", "status:disconnect")
-        }
-        delete this.joueurs[currentPartie.joueur1]
-        delete this.joueurs[currentPartie.joueur2]
-        delete this.parties[currentPartie.idPartie]
-      })
-    }
+    socket.on("disconnect", (raison) => {
+      const currentPartie = this.parties[this.joueurs[socket.id]]
+      if (socket.id == currentPartie.joueur1) {
+        envoiMorpion(currentPartie.joueur2, "info", "status:disconnect")
+      } else {
+        envoiMorpion(currentPartie.joueur1, "info", "status:disconnect")
+      }
+      delete this.joueurs[currentPartie.joueur1]
+      delete this.joueurs[currentPartie.joueur2]
+      delete this.parties[currentPartie.idPartie]
+    })
+  }
 }
 
 

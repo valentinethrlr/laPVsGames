@@ -53,6 +53,7 @@ let gardeChrono = false
 
 let incrementeTour = false
 
+let caseOnline = null
 
 function creer() {
     document.getElementById("optionsJouer").style.display = "none"
@@ -106,6 +107,7 @@ function tourJoue() {
         if (!(dureeJoueur == 0)) {
             timer(tempsb)    
         }
+        document.getElementById("indication").innerText = "C'est aux blancs de jouer !"
 
     } else if (tour % 2 == 0) {
         current_joueur = 'n'
@@ -113,6 +115,7 @@ function tourJoue() {
         if (!(dureeJoueur == 0)) {
             timer(tempsn)
         }
+        document.getElementById("indication").innerText = "C'est aux noirs de jouer !"
     }   
 }
 
@@ -233,6 +236,9 @@ function joue(caseNumber) {
 
 
 function selectionne(pionId) {
+
+    //variable utilisée dans le fichier ligne.js
+    caseOnline = pionId
 
     //contrôle s'il y a eu moulin et élimine le pion sélectionné
     if (typeMoulin == "b" || typeMoulin == "n") {
