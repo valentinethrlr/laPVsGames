@@ -33,8 +33,6 @@ function init() {
                 document.getElementById("indication").innerText = "C'est à l'adversaire de commencer !"
             }
         } else if (separeMessage[0] == "mouvement") {
-            console.log(separeMessage[1])
-            console.log(separeMessage[2])
             mouvement(separeMessage[1], separeMessage[2])
             if (separeMessage[3] == "joue") {
                 document.getElementById("indication").innerText = "C'est à vous de jouer !"
@@ -69,7 +67,7 @@ function selectionneLigne() {
 function joueLigne(caseOnline) {
     if (enLigne == false) {
     } else {
-        console.log(caseOnline)
+        console.log(votreId)
         socket.emit("setup", `case:${caseOnline}:${votreId}`)
     }
 

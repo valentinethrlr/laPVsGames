@@ -14,7 +14,7 @@ module.exports = class Moulin {
         while (id in this.parties) {
           id=Math.floor((Math.random()) * 1000000)
         }
-        let duree = messageDivise[1]
+        let duree = Number(messageDivise[1])
         let couleur = messageDivise[2]
         this.parties[id] = new this.PartieMoulin(id, socket.id, duree, couleur)
         socket.emit("info", "id:"+ id)
@@ -27,6 +27,9 @@ module.exports = class Moulin {
           socket.emit("info", "fausseId")
         } 
       } else if (messageDivise[0] == "case") {
+        console.log(messageDivise[1])
+        console.log(messageDivise[2])
+        this.parties[messageDivise[2]].tourJoue()
         this.parties[messageDivise[2]].joue(messageDivise[1])
       }
     })
