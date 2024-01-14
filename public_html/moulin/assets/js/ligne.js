@@ -45,6 +45,10 @@ function init() {
             supprimeAnimationLigne()
         } else if (separeMessage[0] == "animation") {
             document.getElementById(separeMessage[1]).classList.add("animationSelection")
+        } else if (separeMessage[0] == "moulin") {
+            document.getElementById("indication").innerText = "MOULIN !"
+        } else if (separeMessage[0] == "elimine") {
+            elimineLigne(separeMessage[1], separeMessage[2], separeMessage[3])
         }
     })
 }
@@ -125,6 +129,18 @@ function mouvementLigne(pion, place) {
     pionBouge.style.top = (yPlateau + yBut - 29) + "px"
     pionBouge.style.left = (xPlateau + xBut) + "px"
     supprimeAnimationLigne()
+}
+
+function elimineLigne(pion, nPion, doitJouer) {
+    document.getElementById(pion).style.display = "none"
+    document.getElementById(`p${pion[1]}Elimine${Number(nPion) + 1}`).style.visibility = "visible"
+    if (doitJouer == "doitJouer") {
+        document.getElementById("indication").innerText = "C'est à vous de jouer !"
+    } else {
+        document.getElementById("indication").innerText = "C'est à l'adversaire de jouer !"
+    }
+    
+    
 }
 
 document.addEventListener('DOMContentLoaded', function() {

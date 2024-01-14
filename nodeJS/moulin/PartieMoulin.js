@@ -19,8 +19,8 @@ module.exports = class PartieMoulin {
         this.moulinsPlateau = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
         this.typeMoulin = null
         //indique le nombre de pions blancs et noirs qui ont déjà été éliminés
-        this.nbBElimine = 0
-        this.nbNElimine = 0
+        this.nbbElimine = 0
+        this.nbnElimine = 0
         this.pionsPossibles
         this.supprimeDansMoulin = false
         this.mouvementSansPrise = 0
@@ -136,13 +136,13 @@ module.exports = class PartieMoulin {
                 this.controleMouvementPossible()
         
             //déplacement des pions (avec 3 pions)    
-            } else if (this.nbBElimine == 6 && this.current_joueur == 'b') {
+            } else if (this.nbbElimine == 6 && this.current_joueur == 'b') {
                 envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `mouvement:pn${this.tour/2}:case${caseNumber}:pasjouer`)
                 envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `mouvement:pn${this.tour/2}:case${caseNumber}:jouer`)
                 this.incrementeTour = true
                 
             
-            } else if (this.nbNElimine == 6 && this.current_joueur == 'n') {
+            } else if (this.nbnElimine == 6 && this.current_joueur == 'n') {
                 envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `mouvement:pn${this.tour/2}:case${caseNumber}:pasjouer`)
                 envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `mouvement:pn${this.tour/2}:case${caseNumber}:jouer`)
                 this.incrementeTour = true
@@ -164,6 +164,60 @@ module.exports = class PartieMoulin {
                 }    
             }
 
+            //contrôle de moulin
+            if (this.tour > 4) {
+                let possibilite = null
+                let pion1 = null
+                let pion2 = null
+                let pion3 = null
+                for (let i=0; i<this.moulins.length; i++) {
+                    possibilite = this.moulins[i]
+                    pion1 = this.plateau[possibilite[0]]
+                    pion2 = this.plateau[possibilite[1]]
+                    pion3 = this.plateau[possibilite[2]]
+        
+                    //contrôle que le pion soit de type b ou n (deuxième caractère de la chaîne de caractère)
+                    if (!(pion1== null) && !(pion2 == null) && !(pion3 == null) 
+                        && pion1[1] == pion2[1] && pion2[1] == pion3[1]) {
+                        
+                        //contrôle que le moulin vient d'être formé
+                        if (this.moulinsPlateau[i] == null) {
+                            envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", "moulin")
+                            envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", "moulin")
+                            this.typeMoulin = pion1[1]
+                            this.moulinsPlateau[i] = pion1[1]
+                            this.mouvementSansPrise = 0
+                            this.incrementeTour = false
+                            
+                            //crée la liste des pions intouchables et ceux qu'il est possible d'éliminer
+                            let pionsIntouchables = this.listeIntouchable()
+                            this.pionsPossibles = this.listePossible(pionsIntouchables)
+        
+                            //si tous les pions adverses sont dans un moulin, tous peuvent être éliminés
+                            if (this.pionsPossibles.length == 0) {
+                                this.pionsPossibles = this.listePossible([])
+                                this.supprimeDansMoulin = true
+                            }
+
+                            //anime les pions qu'il est possible d'éliminer
+                            for (let i = 0; i < this.pionsPossibles.length; i++) {
+                                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `animation:${this.pionsPossibles[i]}`)
+                                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `animation:${this.pionsPossibles[i]}`)
+                            }        
+                        
+                        //si le moulin existait déjà, il est à nouveau mis dans la liste moulinsPlateau
+                        } else {
+                            this.moulinsPlateau[i] = pion1[1]
+                        }
+                    
+                    //s'il n'y a pas de moulins à cet emplacement, la position dans mise à null dans moulinsPlateau        
+                    } else {
+                        this.moulinsPlateau[i] = null
+                    }
+                }
+    
+            }
+
             if (this.incrementeTour == true) {
                 this.tourJoue()
             }
@@ -172,8 +226,48 @@ module.exports = class PartieMoulin {
 
     selectionne(pionId, utilisateur) {
 
+        //contrôle s'il y a eu moulin et élimine le pion sélectionné
+        if (this.typeMoulin == "b" || this.typeMoulin == "n") {
+            //contrôle que le pion peut être éliminé
+            if (this.pionsPossibles.includes(pionId) && utilisateur == eval(`this.joueur${this.actuel_joueur}`)) {
+                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `elimine:${pionId}:${eval(`this.nb${this.typeMoulin}Elimine`)}:neDoitPasJouer`)
+                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `elimine:${pionId}:${eval(`this.nb${this.typeMoulin}Elimine`)}:doitJouer`)
+
+                //si le pion éliminé faisait partie d'un moulin, suppression de ce moulin dans moulinsPlateau
+                if (this.supprimeDansMoulin) {
+                    let positionPion = this.plateau.indexOf(pionId)
+                    let dansMoulin = []
+                    
+                    //cherche dans quel(s) moulin(s) il se trouve
+                    for (i = 0; i < this.moulins.length; i++) {
+                        if (this.moulins[i].includes(positionPion)) {
+                            dansMoulin.push(i)
+                        }
+                    }
+
+                    for (i = 0; i < dansMoulin.length; i++) {
+                        this.moulinsPlateau[dansMoulin[i]] = null
+                    }
+
+                    this.supprimeDansMoulin = false
+                }
+            
+                //désanime les pions qu'il est possible d'éliminer
+                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", "supprimeAnimation")
+                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", "supprimeAnimation")
+                
+                //mise à zéro des variables globales
+                this.plateau[this.plateau.indexOf(pionId)] = null
+                this.pionsPossibles = []
+                this.typeMoulin = null
+                this.tourJoue()
+
+                //contrôle que le joueur suivant puisse encore se déplacer
+                this.controleMouvementPossible()
+            }
+
         //déplacement des pions au cours du jeu
-        if (this.tour > 18) {
+        } else if (this.tour > 18) {
     
             envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", "supprimeAnimation")
             envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", "supprimeAnimation")
@@ -195,7 +289,7 @@ module.exports = class PartieMoulin {
         }
     
         //fin de partie
-        if (this.nbBElimine > 6 || this.nbNElimine > 6) {
+        if (this.nbbElimine > 6 || this.nbnElimine > 6) {
             this.finDePartie(eval(`this.couleur${this.autre_joueur}`))
         }
     }    
@@ -239,6 +333,44 @@ module.exports = class PartieMoulin {
     finDePartie(gagnant) {
         envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `fin:${gagnant}`)
         envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `fin:${gagnant}`)
+    }
+
+    listeIntouchable(){
+        //crée la liste des pions adverses qui sont dans un moulin
+        let intouchable = []
+        let positionsIntouchables = null
+        for (let i = 0; i < this.moulins.length; i++) {
+    
+            //ne considère que les pions adverses
+            if (!(this.moulinsPlateau[i] == this.typeMoulin) && !(this.moulinsPlateau[i] == null)) {
+                positionsIntouchables = this.moulins[i]
+                for (let j = 0; j < 3; j++) {
+                    intouchable.push(this.plateau[positionsIntouchables[j]])
+                }
+            }
+        }
+        
+        return intouchable
+    }
+
+    listePossible(intouchable) {
+        //liste des pions qu'il est possible d'éliminer
+        let adverse
+        let pionPossible
+        let possibles = []
+        
+        if (this.typeMoulin == "b") {
+            adverse = "n"
+        } else {adverse = "b"}
+    
+        for (let i = 1; i <= 9; i++ ) {
+            pionPossible = "p" + adverse + i
+            if (!(intouchable.includes(pionPossible)) && this.plateau.includes(pionPossible)) {
+                possibles.push(pionPossible)
+            }
+        }
+    
+        return possibles
     }
 
 }
