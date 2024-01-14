@@ -4,6 +4,7 @@ let autre_joueur = 'n'
 let id = null
 let plateau = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
 let current_pion = null
+let enLigne = false
 
 //liste les cases atteignables à partir d'une certaine case
 let zone0 = [1, 9]
@@ -120,117 +121,122 @@ function tourJoue() {
 }
 
 function joue(caseNumber) {
+    
+    if (enLigne == false) {
 
-    if (tour == 1) {
-        document.getElementById("indication").innerText = ""
-    }
-
-    //mise en place du jeu
-    if (tour < 18 && typeMoulin == null) {
-        if (current_joueur == 'b') {
-            mouvement(`pb${(tour+1)/2}`, `case${caseNumber}`)
-            plateau[caseNumber] = `pb${(tour+1)/2}`
-            incrementeTour = true
-            
-        } else {
-            mouvement(`pn${tour/2}`, `case${caseNumber}`)
-            plateau[caseNumber] = `pn${tour/2}`
-            incrementeTour = true
-            
+        if (tour == 1) {
+            document.getElementById("indication").innerText = ""
         }
-
-    //dernier placement de pion
-    } else if (tour == 18 && typeMoulin == null) {
-        mouvement("pn9", `case${caseNumber}`)
-        plateau[caseNumber] = "pn9"
-        incrementeTour = true
-        
-
-        controleMouvementPossible()
-
-    //déplacement des pions (avec 3 pions)    
-    } else if (nbBElimine == 6 && current_joueur == 'b') {
-        deplacement(caseNumber)
-        incrementeTour = true
-        
     
-    } else if (nbNElimine == 6 && current_joueur == 'n') {
-        deplacement(caseNumber)
-        incrementeTour = true
-        
+        //mise en place du jeu
+        if (tour < 18 && typeMoulin == null) {
+            if (current_joueur == 'b') {
+                mouvement(`pb${(tour+1)/2}`, `case${caseNumber}`)
+                plateau[caseNumber] = `pb${(tour+1)/2}`
+                incrementeTour = true
+                
+            } else {
+                mouvement(`pn${tour/2}`, `case${caseNumber}`)
+                plateau[caseNumber] = `pn${tour/2}`
+                incrementeTour = true
+                
+            }
     
-    //50 mouvements sans prise
-    } else if (mouvementSansPrise == 50) {
-        finDePartie("nul")
-
-    //déplacement dans les autres cas 
-    } else {
-        
-        if (eval(`zone${plateau.indexOf(current_pion)}`).includes(caseNumber)) {
+        //dernier placement de pion
+        } else if (tour == 18 && typeMoulin == null) {
+            mouvement("pn9", `case${caseNumber}`)
+            plateau[caseNumber] = "pn9"
+            incrementeTour = true
+            
+    
+            controleMouvementPossible()
+    
+        //déplacement des pions (avec 3 pions)    
+        } else if (nbBElimine == 6 && current_joueur == 'b') {
             deplacement(caseNumber)
             incrementeTour = true
-            mouvementSansPrise ++
-
-            controleMouvementPossible()
-        }    
-    }
-
-    //contrôle de moulin
-    if (tour > 4) {
-        let possibilite = null
-        let pion1 = null
-        let pion2 = null
-        let pion3 = null
-        for (let i=0; i<moulins.length; i++) {
-            possibilite = moulins[i]
-            pion1 = plateau[possibilite[0]]
-            pion2 = plateau[possibilite[1]]
-            pion3 = plateau[possibilite[2]]
-
-            //contrôle que le pion soit de type b ou n (deuxième caractère de la chaîne de caractère)
-            if (!(pion1== null) && !(pion2 == null) && !(pion3 == null) 
-                && pion1[1] == pion2[1] && pion2[1] == pion3[1]) {
-                
-                //contrôle que le moulin vient d'être formé
-                if (moulinsPlateau[i] == null) {
-                    document.getElementById("indication").innerText = "MOULIN !"
-                    typeMoulin = pion1[1]
-                    moulinsPlateau[i] = pion1[1]
-                    mouvementSansPrise = 0
-                    
-                    //crée la liste des pions intouchables et ceux qu'il est possible d'éliminer
-                    let pionsIntouchables = listeIntouchable()
-                    pionsPossibles = listePossible(pionsIntouchables)
-
-                    //si tous les pions adverses sont dans un moulin, tous peuvent être éliminés
-                    if (pionsPossibles.length == 0) {
-                        pionsPossibles = listePossible([])
-                        supprimeDansMoulin = true
-                    }
-
-                    //anime les pions qu'il est possible d'éliminer
-                    for (let i = 0; i < pionsPossibles.length; i++) {
-                        document.getElementById(pionsPossibles[i]).classList.add("animationSelection")
-                    }        
-                
-                //si le moulin existait déjà, il est à nouveau mis dans la liste moulinsPlateau
-                } else {
-                    moulinsPlateau[i] = pion1[1]
-                }
             
-            //s'il n'y a pas de moulins à cet emplacement, la position dans mise à null dans moulinsPlateau        
-            } else {
-                moulinsPlateau[i] = null
-            }
+        
+        } else if (nbNElimine == 6 && current_joueur == 'n') {
+            deplacement(caseNumber)
+            incrementeTour = true
+            
+        
+        //50 mouvements sans prise
+        } else if (mouvementSansPrise == 50) {
+            finDePartie("nul")
+    
+        //déplacement dans les autres cas 
+        } else {
+            
+            if (eval(`zone${plateau.indexOf(current_pion)}`).includes(caseNumber)) {
+                deplacement(caseNumber)
+                incrementeTour = true
+                mouvementSansPrise ++
+    
+                controleMouvementPossible()
+            }    
         }
+    
+        //contrôle de moulin
+        if (tour > 4) {
+            let possibilite = null
+            let pion1 = null
+            let pion2 = null
+            let pion3 = null
+            for (let i=0; i<moulins.length; i++) {
+                possibilite = moulins[i]
+                pion1 = plateau[possibilite[0]]
+                pion2 = plateau[possibilite[1]]
+                pion3 = plateau[possibilite[2]]
+    
+                //contrôle que le pion soit de type b ou n (deuxième caractère de la chaîne de caractère)
+                if (!(pion1== null) && !(pion2 == null) && !(pion3 == null) 
+                    && pion1[1] == pion2[1] && pion2[1] == pion3[1]) {
+                    
+                    //contrôle que le moulin vient d'être formé
+                    if (moulinsPlateau[i] == null) {
+                        document.getElementById("indication").innerText = "MOULIN !"
+                        typeMoulin = pion1[1]
+                        moulinsPlateau[i] = pion1[1]
+                        mouvementSansPrise = 0
+                        
+                        //crée la liste des pions intouchables et ceux qu'il est possible d'éliminer
+                        let pionsIntouchables = listeIntouchable()
+                        pionsPossibles = listePossible(pionsIntouchables)
+    
+                        //si tous les pions adverses sont dans un moulin, tous peuvent être éliminés
+                        if (pionsPossibles.length == 0) {
+                            pionsPossibles = listePossible([])
+                            supprimeDansMoulin = true
+                        }
+    
+                        //anime les pions qu'il est possible d'éliminer
+                        for (let i = 0; i < pionsPossibles.length; i++) {
+                            document.getElementById(pionsPossibles[i]).classList.add("animationSelection")
+                        }        
+                    
+                    //si le moulin existait déjà, il est à nouveau mis dans la liste moulinsPlateau
+                    } else {
+                        moulinsPlateau[i] = pion1[1]
+                    }
+                
+                //s'il n'y a pas de moulins à cet emplacement, la position dans mise à null dans moulinsPlateau        
+                } else {
+                    moulinsPlateau[i] = null
+                }
+            }
+    
+        }
+    
+        if (typeMoulin == null && incrementeTour == true) {
+            tourJoue()
+        }
+    
+        incrementeTour = false
 
     }
-
-    if (typeMoulin == null && incrementeTour == true) {
-        tourJoue()
-    }
-
-    incrementeTour = false
+    
 }
     
 

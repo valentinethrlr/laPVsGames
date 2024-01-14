@@ -1,5 +1,4 @@
 let votreId = null
-let enLigne = false
 
 function init() {
     socket = io("http://totifle.ch:25565/moulin")
@@ -30,14 +29,13 @@ function init() {
         } else if (separeMessage[0] == "couleur") {
             if (separeMessage[1] == "b") {
                 document.getElementById("indication").innerText = "C'est à vous de jouer !"
-                for (let i = 1; i <= 23; i++) {
-                    document.getElementById(`case${i}`).addEventListener("click", function(){socket.emit("setup", `case:${caseOnline}:${votreId}`)})
-                }
             } else {
                 document.getElementById("indication").innerText = "C'est à l'adversaire de commencer !"
             }
         } else if (separeMessage[0] == "mouvement") {
-            mouvement[separeMessage[1], separeMessage[2]]
+            console.log(separeMessage[1])
+            console.log(separeMessage[2])
+            mouvement(separeMessage[1], separeMessage[2])
             if (separeMessage[3] == "joue") {
                 document.getElementById("indication").innerText = "C'est à vous de jouer !"
             } else {
@@ -68,10 +66,11 @@ function selectionneLigne() {
 
 }
 
-function joueLigne() {
-    if (! enLigne) {
+function joueLigne(caseOnline) {
+    if (enLigne == false) {
     } else {
-
+        console.log(caseOnline)
+        socket.emit("setup", `case:${caseOnline}:${votreId}`)
     }
 
 }

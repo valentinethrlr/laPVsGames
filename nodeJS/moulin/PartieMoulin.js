@@ -11,7 +11,7 @@ module.exports = class PartieMoulin {
         this.couleur2 = null
         this.couleur = couleur
         this.couleurJoueurs(this.couleur)
-        this.tour = 0
+        this.tour = 1
         this.plateau = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
         //se réfère à moulins, indique s'il y a un moulin sur la plateau à la liste des positions se trouvant au même indexe dans moulins
         this.moulinsPlateau = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
