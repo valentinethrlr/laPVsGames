@@ -119,6 +119,7 @@ module.exports = class PartieMoulin {
     joue(caseNumber, utilisateur) {
 
         if (!(utilisateur == eval(`this.joueur${this.actuel_joueur}`))) {
+            console.log("ceci s'exécute")
             return
         }
 

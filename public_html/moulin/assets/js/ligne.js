@@ -138,9 +138,35 @@ function elimineLigne(pion, nPion, doitJouer) {
         document.getElementById("indication").innerText = "C'est à vous de jouer !"
     } else {
         document.getElementById("indication").innerText = "C'est à l'adversaire de jouer !"
-    }
-    
-    
+    }  
+}
+
+function timerligne(temps) {
+
+    let chornometre = setInterval(
+        function() {
+
+            if (temps == 0) {
+                clearInterval(chornometre)
+                finDePartie(autre_joueur)
+                return
+            }
+
+                if (current_joueur == 'b') {
+                    tempsb --
+                } else {
+                    tempsn --
+                }
+
+                temps --
+                let minutes = Math.floor(temps / 60)
+                minutes = minutes.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+                let secondes = Math.floor(temps - minutes * 60)
+                secondes = secondes.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+                document.getElementById(`temps${current_joueur}`).innerText = `${minutes}:${secondes}`
+
+            
+        }, 1000)
 }
 
 document.addEventListener('DOMContentLoaded', function() {

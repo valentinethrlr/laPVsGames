@@ -32,6 +32,11 @@ module.exports = class Moulin {
         this.parties[messageDivise[2]].selectionne(messageDivise[1], socket.id)
       }
     })
+
+    socket.on("disconnect", (reason) => {
+      
+    });
+
   }
 
   commencerPartie(partieId) {
