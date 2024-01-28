@@ -13,7 +13,7 @@ module.exports = class PartieMoulin {
         this.couleur2 = null
         this.couleur = couleur
         this.couleurJoueurs(this.couleur)
-        this.tour = 0
+        this.tour = 1
         this.plateau = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
         //se réfère à moulins, indique s'il y a un moulin sur la plateau à la liste des positions se trouvant au même indexe dans moulins
         this.moulinsPlateau = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
@@ -63,7 +63,8 @@ module.exports = class PartieMoulin {
 
         //liste les cases qui doivent être occupées pour avoir un moulin
         this.moulins = [[0,1,2], [3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 13, 14], [15, 16, 17], [18, 19, 20], [21, 22, 23], [0, 9, 21], [3, 10, 18], [6, 11, 15], [1, 4, 7], [16, 19, 22], [8, 12, 17], [5, 13, 20], [2, 14, 23]]
-
+        this.chornometre
+        
     }
 
     couleurJoueurs(couleur) {
@@ -113,13 +114,17 @@ module.exports = class PartieMoulin {
             this.autre_joueur = 2
            
         }    
+        
+        envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `chrono:${eval(`this.temps${eval(`this.couleur${this.actuel_joueur}`)}`)}:${eval(`this.couleur${this.actuel_joueur}`)}`)
+        envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `chrono:${eval(`this.temps${eval(`this.couleur${this.actuel_joueur}`)}`)}:${eval(`this.couleur${this.actuel_joueur}`)}`)
+        clearInterval(this.chornometre)
+        this.timer()
     }
 
 
     joue(caseNumber, utilisateur) {
 
         if (!(utilisateur == eval(`this.joueur${this.actuel_joueur}`))) {
-            console.log("ceci s'exécute")
             return
         }
 
@@ -391,6 +396,27 @@ module.exports = class PartieMoulin {
         this.plateau[this.plateau.indexOf(this.current_pion)] = null
         this.plateau[caseNumber] = this.current_pion
         this.current_pion = null
+    }
+
+    timer() {
+
+    var that = this
+    this.chornometre = setInterval(
+        function() {
+
+            if (eval(`that.temps${that.actuel_joueur}`) == 0) {
+                clearInterval(chornometre)
+                finDePartie(eval(`that.couleur${that.autre_joueur}`))
+                return
+            }
+
+            if (eval(`that.couleur${that.actuel_joueur}`) == 'b') {
+                that.tempsb --
+            } else {
+                that.tempsn --
+            }
+            
+        }, 1000)
     }
 
 }

@@ -1,4 +1,5 @@
 let votreId = null
+let chornometreLigne
 
 function init() {
     socket = io("http://totifle.ch:25565/moulin")
@@ -25,6 +26,7 @@ function init() {
                 document.getElementById("tempsn").innerText = `${separeMessage[1].toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}:00`
                 document.getElementById("tempsb").style.display = "block"
                 document.getElementById("tempsn").style.display = "block"
+                //timerLigne(separeMessage[1], 'b')
             }
         } else if (separeMessage[0] == "couleur") {
             if (separeMessage[1] == "b") {
@@ -39,6 +41,10 @@ function init() {
             } else {
                 document.getElementById("indication").innerText = "C'est à l'adversaire de jouer !"
             }
+        } else if (separeMessage[0] == "chrono"){
+            clearInterval(chornometreLigne)
+            timerLigne(separeMessage[1], separeMessage[2])
+
         } else if (separeMessage[0] == "fin") {
             finEnLigne(separeMessage[1])
         } else if (separeMessage[0] == "supprimeAnimation") {
@@ -141,30 +147,17 @@ function elimineLigne(pion, nPion, doitJouer) {
     }  
 }
 
-function timerligne(temps) {
+function timerLigne(temps, joueur) {
 
-    let chornometre = setInterval(
+    chornometreLigne = setInterval(
         function() {
 
-            if (temps == 0) {
-                clearInterval(chornometre)
-                finDePartie(autre_joueur)
-                return
-            }
-
-                if (current_joueur == 'b') {
-                    tempsb --
-                } else {
-                    tempsn --
-                }
-
-                temps --
-                let minutes = Math.floor(temps / 60)
-                minutes = minutes.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
-                let secondes = Math.floor(temps - minutes * 60)
-                secondes = secondes.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
-                document.getElementById(`temps${current_joueur}`).innerText = `${minutes}:${secondes}`
-
+            temps --
+            let minutes = Math.floor(temps / 60)
+            minutes = minutes.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+            let secondes = Math.floor(temps - minutes * 60)
+            secondes = secondes.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+            document.getElementById(`temps${joueur}`).innerText = `${minutes}:${secondes}`
             
         }, 1000)
 }

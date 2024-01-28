@@ -46,8 +46,8 @@ module.exports = class Moulin {
       envoiMoulin(this.parties[partieId].joueur1, "info", "temps:pasTimer")
       envoiMoulin(this.parties[partieId].joueur2, "info", "temps:pasTimer")
     } else {
-      envoiMoulin(this.parties[partieId].joueur1, "info", `temps:${this.parties[partieId].duree}`)
-      envoiMoulin(this.parties[partieId].joueur2, "info", `temps:${this.parties[partieId].duree}`)
+      envoiMoulin(this.parties[partieId].joueur1, "info", `temps:0${this.parties[partieId].duree}`)
+      envoiMoulin(this.parties[partieId].joueur2, "info", `temps:0${this.parties[partieId].duree}`)
     }
 
     if (this.parties[partieId].couleur1 == "b") {
