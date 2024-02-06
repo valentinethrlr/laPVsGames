@@ -55,6 +55,12 @@ function init() {
             document.getElementById("indication").innerText = "MOULIN !"
         } else if (separeMessage[0] == "elimine") {
             elimineLigne(separeMessage[1], separeMessage[2], separeMessage[3])
+        } else if (separeMessage[0] == "deconnecte") {
+            document.getElementById("login").style.display = "none"
+            document.getElementById("jeuTotal").style.display = "none"
+            document.getElementById("indication").innerText = "Votre adversaire s'est déconnecté"
+            document.getElementById("indication").style.display = "block"
+
         }
     })
 }
