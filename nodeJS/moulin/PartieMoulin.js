@@ -285,8 +285,7 @@ module.exports = class PartieMoulin {
             }
 
         //déplacement des pions au cours du jeu
-        } else if (this.tour > 18) {
-    
+        } else if (this.tour > 18 && this.plateau.includes(pionId)) {
             envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", "supprimeAnimation")
             envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", "supprimeAnimation")
     

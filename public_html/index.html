@@ -7,10 +7,17 @@
     <link rel="icon" type="image/pion-icon" href="/morpion/assets/images/pion.avif">
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" type="text/css" href="./main.css?version=10" media="screen" />
+    <script src='../common/env.js?v=1'></script>
 </head>
-<body>
+<body> 
    <h1 class="titre">Bienvenue !</h1>
-   <button class="btn" onclick="location.href = 'http://vgames.totifle.ch/morpion'">MORPION</button>
+   <button id="jouerMorpion" class="btn" onclick="visitPage('morpion')">MORPION</button>
    <button class="btn" onclick="location.href = 'http://vgames.totifle.ch/moulin'">MOULIN</button>
 </body>
 </html>
+<script>
+    function visitPage(page){
+        window.location=CONFIG.URL + page;
+    }
+</script>
+

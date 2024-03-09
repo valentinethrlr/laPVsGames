@@ -295,7 +295,7 @@ function selectionne(pionId) {
 
     
     //déplacement des pions au cours du jeu
-    } else if (tour > 18) {
+    } else if (tour > 18 && pionId in plateau) {
 
         supprimeAnimation()
 
