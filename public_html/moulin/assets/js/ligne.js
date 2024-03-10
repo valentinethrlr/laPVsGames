@@ -158,7 +158,7 @@ function timerLigne(temps, joueur) {
     chornometreLigne = setInterval(
         function() {
 
-            temps --
+            temps--
             let minutes = Math.floor(temps / 60)
             minutes = minutes.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
             let secondes = Math.floor(temps - minutes * 60)

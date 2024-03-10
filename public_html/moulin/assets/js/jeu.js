@@ -1,10 +1,17 @@
+//décompte des tours
 let tour = 0
+//joueur qui doit effectuer un mouvement
 let current_joueur = 'b'
+//joueur qui doit attendre le mouvement de l'autre
 let autre_joueur = 'n'
-let id = null
-let plateau = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+//liste qui décrit l'état du plateau à chaque instant du jeu
+let plateau = new Array(24)
+//pion actuellement sélectionné
 let current_pion = null
+//jeu en ligne ou en local
 let enLigne = false
+
+let chronometre
 
 //liste les cases atteignables à partir d'une certaine case
 let zone0 = [1, 9]
@@ -35,33 +42,46 @@ let zone23 = [14, 22]
 //liste les cases qui doivent être occupées pour avoir un moulin
 let moulins = [[0,1,2], [3, 4, 5], [6, 7, 8], [9, 10, 11], [12, 13, 14], [15, 16, 17], [18, 19, 20], [21, 22, 23], [0, 9, 21], [3, 10, 18], [6, 11, 15], [1, 4, 7], [16, 19, 22], [8, 12, 17], [5, 13, 20], [2, 14, 23]]
 //se réfère à moulins, indique s'il y a un moulin sur la plateau à la liste des positions se trouvant au même indexe dans moulins
-let moulinsPlateau = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+let moulinsPlateau = new Array(16)
+//indique si le moulin actuel a été créé par les blancs ou les noirs
 let typeMoulin = null
 //indique le nombre de pions blancs et noirs qui ont déjà été éliminés
 let nbBElimine = 0
 let nbNElimine = 0
 
+//pions sur le plateau qu'il est possible de sélectionner
 let pionsPossibles
+//indique s'il est possible d'éliminer un pion dans un moulin ou non
 let supprimeDansMoulin = false
 
+//nombre de mouvement sans qu'aucune prise ne soit réalisée
 let mouvementSansPrise = 0
 
+//temps de jeu restant du joueur actuel
 let dureeJoueur = null
+//temps de jeu restants des blancs et des noirs
 let tempsb = 0
 let tempsn = 0
+//contrôle qu'une couleur et qu'un temps de jeu aient été définis lors de l'initialisation de la partie
 let couleurJoueur = null
 let gardeChrono = false
 
+//déterminer si le tour du joueur actuel est terminé 
 let incrementeTour = false
 
-let caseOnline = null
-
 function creer() {
+  /**
+   * Affichage des options à déterminer pour initialiser une partie
+   */
     document.getElementById("optionsJouer").style.display = "none"
     document.getElementById("optionsCreer").style.display = "block" 
 }
 
 function duree(n) {
+  /**
+   * Enregistre le choix du temps de jeu
+   * @param {number} *n le temps de jeu
+   */
     document.getElementById("duree5").style.border = "none"
     document.getElementById("duree10").style.border = "none"
     document.getElementById("duree0").style.border = "none"
@@ -70,6 +90,10 @@ function duree(n) {
 }
 
 function couleur(c) {
+  /**
+   * Enregistre le choix de la couleur du premier joueur 
+   * @param {string} *c la couleur du premier joueur
+   */
     document.getElementById("couleurb").style.border = "none"
     document.getElementById("couleurn").style.border = "none"
     document.getElementById("couleura").style.border = "none"
@@ -78,6 +102,9 @@ function couleur(c) {
 }
 
 function creerAppareil() {
+  /**
+   * Création d'une partie locale avec l'initialisation de tous les paramètres de base (couleur et durée)
+   */
     if (!(dureeJoueur == null) && !(couleurJoueur == null)) {
         document.getElementById("optionsCreer").style.display = "none"
         document.getElementById("incompletude").style.display = "none"
@@ -92,15 +119,22 @@ function creerAppareil() {
             document.getElementById("tempsb").style.display = "block"
             document.getElementById("tempsn").style.display = "block"
         }
-
+    
+    //contrôle qu'un choix a été fait pour toutes les options disponibles
     } else {
         document.getElementById("incompletude").style.display = "block"
     }
 }
 
 function tourJoue() {
+  /**
+   * S'occupe de l'incrémentation des tours
+   * Change le joueur actuel
+   * Vérifie que ce joueur ait encore du temps de jeu
+   */
 
     tour ++
+
 
     if (tour % 2 == 1) {
         current_joueur = 'b'
@@ -108,9 +142,8 @@ function tourJoue() {
         document.getElementById("indication").innerText = "C'est aux blancs de jouer !"
         if (!(dureeJoueur == 0)) {
             if (!(tour == 1)) {
-                clearInterval(chornometre)
+                clearInterval(chronometre)
             }
-            
             timer(tempsb)    
         }
         
@@ -120,14 +153,21 @@ function tourJoue() {
         autre_joueur = 'b'
         document.getElementById("indication").innerText = "C'est aux noirs de jouer !"
         if (!(dureeJoueur == 0)) {
-            clearInterval(chornometre)
+            clearInterval(chronometre)
             timer(tempsn)
         }
         
     }   
 }
 
-function joue(caseNumber) {
+function joue(numeroCase) {
+  /**
+   * Gère tout ce qui est lié à la sélection des cases durant une partie
+   * S'occupe de la mise en place des pions durant les 18 premiers tours
+   * S'occupe des différents types de déplacement des pions sur le plateau
+   * Contrôle après avoir effectuer le déplacement s'il y a un moulin
+   * @param {number} *numeroCase la case sélectionnée
+   */
     
     if (enLigne == false) {
 
@@ -136,36 +176,32 @@ function joue(caseNumber) {
         }
     
         //mise en place du jeu
-        if (tour < 18 && typeMoulin == null) {
+        if (tour <= 18 && typeMoulin == null) {
             if (current_joueur == 'b') {
-                mouvement(`pb${(tour+1)/2}`, `case${caseNumber}`)
-                plateau[caseNumber] = `pb${(tour+1)/2}`
-                incrementeTour = true
+                mouvement(`pb${(tour+1)/2}`, `case${numeroCase}`)
+                plateau[numeroCase] = `pb${(tour+1)/2}`
                 
             } else {
-                mouvement(`pn${tour/2}`, `case${caseNumber}`)
-                plateau[caseNumber] = `pn${tour/2}`
-                incrementeTour = true
+                mouvement(`pn${tour/2}`, `case${numeroCase}`)
+                plateau[numeroCase] = `pn${tour/2}`
+                
+                // lors du placement du dernier pion, contrôle que l'autre joueur puisse déplacer un de ses pions
+                if (tour == 18) {
+                    controleMouvementPossible()
+                }
                 
             }
-    
-        //dernier placement de pion
-        } else if (tour == 18 && typeMoulin == null) {
-            mouvement("pn9", `case${caseNumber}`)
-            plateau[caseNumber] = "pn9"
+
             incrementeTour = true
-            
-    
-            controleMouvementPossible()
     
         //déplacement des pions (avec 3 pions)    
         } else if (nbBElimine == 6 && current_joueur == 'b') {
-            deplacement(caseNumber)
+            deplacement(numeroCase)
             incrementeTour = true
             
         
         } else if (nbNElimine == 6 && current_joueur == 'n') {
-            deplacement(caseNumber)
+            deplacement(numeroCase)
             incrementeTour = true
             
         
@@ -176,8 +212,10 @@ function joue(caseNumber) {
         //déplacement dans les autres cas 
         } else {
             
-            if (eval(`zone${plateau.indexOf(current_pion)}`).includes(caseNumber)) {
-                deplacement(caseNumber)
+            console.log()
+
+            if (eval(`zone${plateau.indexOf(current_pion)}`).includes(numeroCase)) {
+                deplacement(numeroCase)
                 incrementeTour = true
                 mouvementSansPrise ++
     
@@ -191,6 +229,7 @@ function joue(caseNumber) {
             let pion1 = null
             let pion2 = null
             let pion3 = null
+            //inspecte toutes les configurations possibles de moulin
             for (let i=0; i<moulins.length; i++) {
                 possibilite = moulins[i]
                 pion1 = plateau[possibilite[0]]
@@ -236,19 +275,24 @@ function joue(caseNumber) {
     
         }
     
+        //incrémentation des tours si le tour précédant est terminé
         if (typeMoulin == null && incrementeTour == true) {
             tourJoue()
         }
     
         incrementeTour = false
-
     }
-    
 }
     
 
 
 function selectionne(pionId) {
+  /**
+   * Gère tout ce qui est lié à la sélection des pions durant une partie
+   * S'il y eu un moulin, permet au joueur d'éliminer un pion adverse
+   * Sinon, contrôle que le pion choisi peut être joué
+   * @param {string} *pionId le pion sélectionné
+   */
 
     if (enLigne == false) {
 
@@ -271,6 +315,7 @@ function selectionne(pionId) {
                     }
                 }
 
+                //suppression du moulin en question
                 for (i = 0; i < dansMoulin.length; i++) {
                     moulinsPlateau[dansMoulin[i]] = null
                 }
@@ -295,7 +340,7 @@ function selectionne(pionId) {
 
     
     //déplacement des pions au cours du jeu
-    } else if (tour > 18 && pionId in plateau) {
+    } else if (tour > 18 && plateau.includes(pionId)) {
 
         supprimeAnimation()
 
@@ -323,6 +368,10 @@ function selectionne(pionId) {
 
 
 function mouvement(pion, place) {
+  /**
+   * Anime le mouvement des pions
+   * @param {string} *le pion à éliminer
+   */
     let pionBouge = document.getElementById(pion)
     pionBouge.style.position ="absolute";
     let but = document.getElementById(place)
@@ -339,6 +388,10 @@ function mouvement(pion, place) {
 
 
 function elimine(pion) {
+  /**
+   * Anime l'élimination d'un pion
+   * @param {string} *le pion à éliminer
+   */
     if (pion[1] == "b") {
         nbBElimine += 1
         document.getElementById(pion).style.display = "none"
@@ -354,6 +407,11 @@ function elimine(pion) {
 
 
 function listeIntouchable(){
+  /**
+   * Crée la liste des pions qu'il n'est pas possible de sélectionner
+   * @returns la liste des pions que le joueur ne peut pas sélectionner
+   */
+
     //crée la liste des pions adverses qui sont dans un moulin
     let intouchable = []
     let positionsIntouchables = null
@@ -373,6 +431,12 @@ function listeIntouchable(){
 
 
 function listePossible(intouchable) {
+  /**
+   * Crée la liste des pions qu'il est possible de sélectionner et s'occuper de les animer
+   * @returns la liste des pions que le joueur peut sélectionner
+   * @param {list} *intouchable la liste des pions qu'il n'est pas possible de sélectionner
+   */
+
     //liste des pions qu'il est possible d'éliminer
     let adverse
     let pionPossible
@@ -393,22 +457,33 @@ function listePossible(intouchable) {
 }
 
 
-function deplacement(caseNumber) {
-    mouvement(current_pion, `case${caseNumber}`)
+function deplacement(numeroCase) {
+  /**
+   * Anime le déplacement du pion vers la case sélectionnée et s'occuper des modifications dans la liste plateau
+   * @param {number} *numeroCase le numéro de la case sélectionnée
+   */
+    mouvement(current_pion, `case${numeroCase}`)
     document.getElementById(current_pion).classList.remove("animationSelection")
     //déplace le pion dans la liste plateau
     plateau[plateau.indexOf(current_pion)] = null
-    plateau[caseNumber] = current_pion
+    plateau[numeroCase] = current_pion
     current_pion = null
 }
 
 function supprimeAnimation() {
+  /**
+   * Supprime toutes les animations de sélection
+   */
     for (let i = 1; i < 10; i++) {
         document.getElementById("pb" + i).classList.remove("animationSelection")
         document.getElementById("pn" + i).classList.remove("animationSelection")}
 }
 
 function finDePartie(gagnant) {
+  /**
+   * Effectue les changements sur la page lors de la fin d'une partie
+   * @param {string} *gagnant indique le gagnant de la partie
+   */
 
     document.getElementById("grille").style.display = "none"
     for (let i = 1; i <= 9; i++) {
@@ -437,7 +512,11 @@ function finDePartie(gagnant) {
     }
 }
 
-function casesAutorises() {
+function controleMouvementPossible() {
+  /**
+   * Détermine si un joueur est bloqué
+   * @returns {boolean} le joueur peut jouer ou non
+   */
     let cePion = null
     let positionPionPlateau = []
     let deplacementsAutorises = []
@@ -459,24 +538,20 @@ function casesAutorises() {
         }
     }
 
-    return deplacementsAutorises
-}
-
-function controleMouvementPossible() {
-     //contrôle que le joueur suivant peut se déplacer
-    let autorise = casesAutorises()
-    if (autorise.length == 0) {
-        finDePartie(autre_joueur)
-    }
+    return deplacementsAutorises.length == 0
 }
 
 function timer(temps) {
+  /**
+   * Gestion des chronomètres
+   * @param {number} *temps le temps restant du joueur
+   */
 
-    let chornometre = setInterval(
+    chronometre = setInterval(
         function() {
 
             if (temps == 0) {
-                clearInterval(chornometre)
+                clearInterval(chronometre)
                 finDePartie(autre_joueur)
                 return
             }
