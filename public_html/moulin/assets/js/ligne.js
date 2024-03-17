@@ -5,62 +5,87 @@ function init() {
     socket = io("http://totifle.ch:25565/moulin")
     socket.on("info", (message) => {
         let separeMessage = message.split(":")
-        if (separeMessage[0] == "id") {
-            document.getElementById("optionsCreer").style.display = "none"
-            document.getElementById("votreId").innerText += separeMessage[1]
-            votreId = separeMessage[1]
-            document.getElementById("creationId").style.display = "block"
-        } else if (separeMessage[0] == "fausseId") {
-            document.getElementById("idFausse").innerText = "Cette partie n'existe pas."
-        } else if (separeMessage[0] == "commencer1") {
-            document.getElementById("creationId").style.display = "none"
-            document.getElementById("jeuTotal").style.display = "block"
-            enLigne = true
-        } else if (separeMessage[0] == "commencer2") {
-            document.getElementById("login").style.display = "none"
-            document.getElementById("jeuTotal").style.display = "block"  
-            enLigne = true
-        } else if (separeMessage[0] == "temps") {
-            if (!(separeMessage[1] == "pasTimer")) {
-                document.getElementById("tempsb").innerText = `${separeMessage[1].toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}:00`
-                document.getElementById("tempsn").innerText = `${separeMessage[1].toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}:00`
-                document.getElementById("tempsb").style.display = "block"
-                document.getElementById("tempsn").style.display = "block"
-                //timerLigne(separeMessage[1], 'b')
-            }
-        } else if (separeMessage[0] == "couleur") {
-            if (separeMessage[1] == "b") {
-                document.getElementById("indication").innerText = "C'est à vous de jouer !"
-            } else {
-                document.getElementById("indication").innerText = "C'est à l'adversaire de commencer !"
-            }
-        } else if (separeMessage[0] == "mouvement") {
-            mouvementLigne(separeMessage[1], separeMessage[2])
-            if (separeMessage[3] == "jouer") {
-                document.getElementById("indication").innerText = "C'est à vous de jouer !"
-            } else {
-                document.getElementById("indication").innerText = "C'est à l'adversaire de jouer !"
-            }
-        } else if (separeMessage[0] == "chrono"){
-            clearInterval(chornometreLigne)
-            timerLigne(separeMessage[1], separeMessage[2])
+        switch (separeMessage[0]) {
+            case "id":
+                document.getElementById("optionsCreer").style.display = "none"
+                document.getElementById("votreId").innerText += separeMessage[1]
+                votreId = separeMessage[1]
+                document.getElementById("creationId").style.display = "block"
+                break
+            
+            case "fausseId":
+                document.getElementById("idFausse").innerText = "Cette partie n'existe pas."
+                break
 
-        } else if (separeMessage[0] == "fin") {
-            finEnLigne(separeMessage[1])
-        } else if (separeMessage[0] == "supprimeAnimation") {
-            supprimeAnimationLigne()
-        } else if (separeMessage[0] == "animation") {
-            document.getElementById(separeMessage[1]).classList.add("animationSelection")
-        } else if (separeMessage[0] == "moulin") {
-            document.getElementById("indication").innerText = "MOULIN !"
-        } else if (separeMessage[0] == "elimine") {
-            elimineLigne(separeMessage[1], separeMessage[2], separeMessage[3])
-        } else if (separeMessage[0] == "deconnecte") {
-            document.getElementById("login").style.display = "none"
-            document.getElementById("jeuTotal").style.display = "none"
-            document.getElementById("indication").innerText = "Votre adversaire s'est déconnecté"
-            document.getElementById("indication").style.display = "block"
+            case "commencer1":
+                document.getElementById("creationId").style.display = "none"
+                document.getElementById("jeuTotal").style.display = "block"
+                enLigne = true
+                break
 
+            case "commencer2":
+                document.getElementById("login").style.display = "none"
+                document.getElementById("jeuTotal").style.display = "block"  
+                enLigne = true
+                break
+
+            case "temps":
+                if (!(separeMessage[1] == "pasTimer")) {
+                    document.getElementById("tempsb").innerText = `${separeMessage[1].toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}:00`
+                    document.getElementById("tempsn").innerText = `${separeMessage[1].toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}:00`
+                    document.getElementById("tempsb").style.display = "block"
+                    document.getElementById("tempsn").style.display = "block"
+                } 
+                break
+                
+            case "couleur":     
+                if (separeMessage[1] == "b") {
+                    document.getElementById("indication").innerText = "C'est à vous de jouer !"
+                } else {
+                    document.getElementById("indication").innerText = "C'est à l'adversaire de commencer !"
+                }
+                break
+
+            case "mouvement":
+                mouvementLigne(separeMessage[1], separeMessage[2])
+                if (separeMessage[3] == "jouer") {
+                    document.getElementById("indication").innerText = "C'est à vous de jouer !"
+                } else {
+                    document.getElementById("indication").innerText = "C'est à l'adversaire de jouer !"
+                }
+                break
+
+            case "chrono":
+                clearInterval(chornometreLigne)
+                timerLigne(separeMessage[1], separeMessage[2])
+                break
+
+            case "fin":
+                finEnLigne(separeMessage[1])
+                break
+
+            case "supprimeAnimation":
+                supprimeAnimationLigne()
+                break
+
+            case "animation":
+                document.getElementById(separeMessage[1]).classList.add("animationSelection")
+                break
+
+            case "moulin":
+                document.getElementById("indication").innerText = "MOULIN !"
+                break
+
+            case "elimine":
+                elimineLigne(separeMessage[1], separeMessage[2], separeMessage[3])
+                break
+
+            case "deconnecte":
+                document.getElementById("login").style.display = "none"
+                document.getElementById("jeuTotal").style.display = "none"
+                document.getElementById("indication").innerText = "Votre adversaire s'est déconnecté"
+                document.getElementById("indication").style.display = "block"
+                break
         }
     })
 }
