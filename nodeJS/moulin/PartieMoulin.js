@@ -239,7 +239,8 @@ module.exports = class PartieMoulin {
     }
 
     selectionne(pionId, utilisateur) {
-
+        console.log(this.tour)
+        console.log(this.plateau)
         //contrôle s'il y a eu moulin et élimine le pion sélectionné
         if (this.typeMoulin == "b" || this.typeMoulin == "n") {
             //contrôle que le pion peut être éliminé
@@ -257,13 +258,13 @@ module.exports = class PartieMoulin {
                     let dansMoulin = []
                     
                     //cherche dans quel(s) moulin(s) il se trouve
-                    for (i = 0; i < this.moulins.length; i++) {
+                    for (let i=0; i < this.moulins.length; i++) {
                         if (this.moulins[i].includes(positionPion)) {
                             dansMoulin.push(i)
                         }
                     }
 
-                    for (i = 0; i < dansMoulin.length; i++) {
+                    for (let i = 0; i < dansMoulin.length; i++) {
                         this.moulinsPlateau[dansMoulin[i]] = null
                     }
 
