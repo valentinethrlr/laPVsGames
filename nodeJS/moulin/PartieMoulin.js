@@ -115,8 +115,8 @@ module.exports = class PartieMoulin {
            
         }    
         
-        envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `chrono:${eval(`this.temps${eval(`this.couleur${this.actuel_joueur}`)}`)}:${eval(`this.couleur${this.actuel_joueur}`)}`)
-        envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `chrono:${eval(`this.temps${eval(`this.couleur${this.actuel_joueur}`)}`)}:${eval(`this.couleur${this.actuel_joueur}`)}`)
+        envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", {"but" : "chrono", "temps" : eval(`this.temps${eval(`this.couleur${this.actuel_joueur}`)}`), "couleurJoueur" : eval(`this.couleur${this.actuel_joueur}`)})
+        envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", {"but" : "chrono", "temps" : eval(`this.temps${eval(`this.couleur${this.actuel_joueur}`)}`), "couleurJoueur" : eval(`this.couleur${this.actuel_joueur}`)})
         clearInterval(this.chornometre)
         this.timer()
     }
@@ -129,37 +129,35 @@ module.exports = class PartieMoulin {
         }
 
         //mise en place du jeu
-        if (this.tour < 18 && this.typeMoulin == null) {
+        if (this.tour <= 18 && this.typeMoulin == null) {
             if (eval(`this.couleur${this.actuel_joueur}`) == 'b' && utilisateur == eval(`this.joueur${this.actuel_joueur}`)) {
-                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `mouvement:pb${(this.tour+1)/2}:case${caseNumber}:pasjouer`)
-                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `mouvement:pb${(this.tour+1)/2}:case${caseNumber}:jouer`)
+                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", {"but" : "mouvement", "pion" : `pb${(this.tour+1)/2}`, "case" : `case${caseNumber}`, "sonTour" : "non"})
+                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", {"but" : "mouvement", "pion" : `pb${(this.tour+1)/2}`, "case" : `case${caseNumber}`, "sonTour" : "oui"})
                 this.plateau[caseNumber] = `pb${(this.tour+1)/2}`
                 this.incrementeTour = true
             } else if (utilisateur == eval(`this.joueur${this.actuel_joueur}`)) {
-                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `mouvement:pn${this.tour/2}:case${caseNumber}:pasjouer`)
-                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `mouvement:pn${this.tour/2}:case${caseNumber}:jouer`)
+                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", {"but" : "mouvement", "pion" : `pn${(this.tour)/2}`, "case" : `case${caseNumber}`, "sonTour" : "non"})
+                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", {"but" : "mouvement", "pion" : `pn${(this.tour)/2}`, "case" : `case${caseNumber}`, "sonTour" : "oui"})
                 this.plateau[caseNumber] = `pn${this.tour/2}`
                 this.incrementeTour = true
+
+                //contrôle que le joueur blanc puisse faire un mouvement
+                if (this.tour == 18) {
+                    this.controleMouvementPossible()
+                }
             }
-    
-        //dernier placement de pion
-        } else if (this.tour == 18 && this.typeMoulin == null) {
-            envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `mouvement:pn9:case${caseNumber}:pasjouer`)
-            envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `mouvement:pn9:case${caseNumber}:jouer`)
-            this.plateau[caseNumber] = "pn9"
-            this.incrementeTour = true
-            this.controleMouvementPossible()
+            
     
         //déplacement des pions (avec 3 pions)    
         } else if (this.nbbElimine == 6 && eval(`this.couleur${this.actuel_joueur}`) == 'b') {
-            envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `mouvement:${this.current_pion}:case${caseNumber}:pasjouer`)
-            envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `mouvement:${this.current_pion}:case${caseNumber}:jouer`)
+            envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", {"but" : "mouvement", "pion" : this.current_pion, "case" : `case${caseNumber}`, "sonTour" : "non"})
+            envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", {"but" : "mouvement", "pion" : this.current_pion, "case" : `case${caseNumber}`, "sonTour" : "oui"})
             this.incrementeTour = true
             
         
         } else if (this.nbnElimine == 6 && eval(`this.couleur${this.actuel_joueur}`) == 'n') {
-            envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `mouvement:${this.current_pion}:case${caseNumber}:pasjouer`)
-            envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `mouvement:${this.current_pion}:case${caseNumber}:jouer`)
+            envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", {"but" : "mouvement", "pion" : this.current_pion, "case" : `case${caseNumber}`, "sonTour" : "non"})
+            envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", {"but" : "mouvement", "pion" : this.current_pion, "case" : `case${caseNumber}`, "sonTour" : "oui"})
             this.incrementeTour = true
             
         
@@ -171,8 +169,8 @@ module.exports = class PartieMoulin {
         } else {
 
             if (eval(`this.zone${this.plateau.indexOf(this.current_pion)}`).includes(Number(caseNumber))) {
-                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `mouvement:${this.current_pion}:case${caseNumber}:pasjouer`)
-                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `mouvement:${this.current_pion}:case${caseNumber}:jouer`)
+                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", {"but" : "mouvement", "pion" : this.current_pion, "case" : `case${caseNumber}`, "sonTour" : "non"})
+                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", {"but" : "mouvement", "pion" : this.current_pion, "case" : `case${caseNumber}`, "sonTour" : "oui"})
                 this.deplacement(caseNumber)
                 this.incrementeTour = true
                 this.mouvementSansPrise ++
@@ -195,8 +193,8 @@ module.exports = class PartieMoulin {
                     && pion1[1] == pion2[1] && pion2[1] == pion3[1]) {
                     //contrôle que le moulin vient d'être formé
                     if (this.moulinsPlateau[i] == null) {
-                        envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", "moulin")
-                        envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", "moulin")
+                        envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", {"but" : "moulin"})
+                        envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", {"but" : "moulin"})
                         this.typeMoulin = pion1[1]
                         this.moulinsPlateau[i] = pion1[1]
                         this.mouvementSansPrise = 0
@@ -214,8 +212,8 @@ module.exports = class PartieMoulin {
 
                         //anime les pions qu'il est possible d'éliminer
                         for (let i = 0; i < this.pionsPossibles.length; i++) {
-                            envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `animation:${this.pionsPossibles[i]}`)
-                            envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `animation:${this.pionsPossibles[i]}`)
+                            envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", {"but" : "animation", "pion" : this.pionsPossibles[i]})
+                            envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", {"but" : "animation", "pion" : this.pionsPossibles[i]})
                         }        
                         break
                     
@@ -239,14 +237,12 @@ module.exports = class PartieMoulin {
     }
 
     selectionne(pionId, utilisateur) {
-        console.log(this.tour)
-        console.log(this.plateau)
         //contrôle s'il y a eu moulin et élimine le pion sélectionné
         if (this.typeMoulin == "b" || this.typeMoulin == "n") {
             //contrôle que le pion peut être éliminé
             if (this.pionsPossibles.includes(pionId) && utilisateur == eval(`this.joueur${this.actuel_joueur}`)) {
-                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `elimine:${pionId}:${eval(`this.nb${this.typeMoulin}Elimine`)}:neDoitPasJouer`)
-                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `elimine:${pionId}:${eval(`this.nb${this.typeMoulin}Elimine`)}:doitJouer`)
+                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", {"but" : "elimine", "pion" : pionId, "couleur" : eval(`this.nb${this.typeMoulin}Elimine`), "sonTour" : "non"})
+                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", {"but" : "elimine", "pion" : pionId, "couleur" : eval(`this.nb${this.typeMoulin}Elimine`), "sonTour" : "oui"})
                 if (this.typeMoulin == "b") {
                     this.nbnElimine ++
                 } else {
@@ -272,8 +268,8 @@ module.exports = class PartieMoulin {
                 }
             
                 //désanime les pions qu'il est possible d'éliminer
-                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", "supprimeAnimation")
-                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", "supprimeAnimation")
+                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", {"but" : "supprimeAnimation"})
+                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", {"but" : "supprimeAnimation"})
                 
                 //mise à zéro des variables globales
                 this.plateau[this.plateau.indexOf(pionId)] = null
@@ -287,18 +283,18 @@ module.exports = class PartieMoulin {
 
         //déplacement des pions au cours du jeu
         } else if (this.tour > 18 && this.plateau.includes(pionId)) {
-            envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", "supprimeAnimation")
-            envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", "supprimeAnimation")
+            envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", {"but" : "supprimeAnimation"})
+            envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", {"but" : "supprimeAnimation"})
     
             //impossible de sélectionner un pion adverse
             if (eval(`this.couleur${this.actuel_joueur}`) == 'b' && pionId.startsWith("pb") && utilisateur == eval(`this.joueur${this.actuel_joueur}`)) {
-                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `animation:${pionId}`)
-                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `animation:${pionId}`)
+                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", {"but" : "animation", "pion" : pionId})
+                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", {"but" : "animation", "pion" : pionId})
                 this.current_pion = pionId
             
             } else if (eval(`this.couleur${this.actuel_joueur}`) == 'n' && pionId.startsWith("pn") && utilisateur == eval(`this.joueur${this.actuel_joueur}`)) {
-                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `animation:${pionId}`)
-                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `animation:${pionId}`)
+                envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", {"but" : "animation", "pion" : pionId})
+                envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", {"but" : "animation", "pion" : pionId})
                 this.current_pion = pionId
             }   
             
@@ -349,8 +345,8 @@ module.exports = class PartieMoulin {
     }
 
     finDePartie(gagnant) {
-        envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", `fin:${gagnant}`)
-        envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", `fin:${gagnant}`)
+        envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", {"but" : "fin", "gagnant" : gagnant})
+        envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", {"but" : "fin", "gagnant" : gagnant})
     }
 
     listeIntouchable(){

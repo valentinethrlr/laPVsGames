@@ -4,12 +4,11 @@ let chornometreLigne
 function init() {
     socket = io("http://totifle.ch:25565/moulin")
     socket.on("info", (message) => {
-        let separeMessage = message.split(":")
-        switch (separeMessage[0]) {
+        switch (message["but"]) {
             case "id":
                 document.getElementById("optionsCreer").style.display = "none"
-                document.getElementById("votreId").innerText += separeMessage[1]
-                votreId = separeMessage[1]
+                document.getElementById("votreId").innerText += message["id"]
+                votreId = message["id"]
                 document.getElementById("creationId").style.display = "block"
                 break
             
@@ -30,16 +29,16 @@ function init() {
                 break
 
             case "temps":
-                if (!(separeMessage[1] == "pasTimer")) {
-                    document.getElementById("tempsb").innerText = `${separeMessage[1].toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}:00`
-                    document.getElementById("tempsn").innerText = `${separeMessage[1].toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}:00`
+                if (!(message["temps"] == "pasTimer")) {
+                    document.getElementById("tempsb").innerText = `${message["temps"].toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}:00`
+                    document.getElementById("tempsn").innerText = `${message["temps"].toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})}:00`
                     document.getElementById("tempsb").style.display = "block"
                     document.getElementById("tempsn").style.display = "block"
                 } 
                 break
                 
             case "couleur":     
-                if (separeMessage[1] == "b") {
+                if (message["couleur"] == "b") {
                     document.getElementById("indication").innerText = "C'est à vous de jouer !"
                 } else {
                     document.getElementById("indication").innerText = "C'est à l'adversaire de commencer !"
@@ -47,8 +46,8 @@ function init() {
                 break
 
             case "mouvement":
-                mouvementLigne(separeMessage[1], separeMessage[2])
-                if (separeMessage[3] == "jouer") {
+                mouvementLigne(message["pion"], message["case"])
+                if (message["sonTour"] == "oui") {
                     document.getElementById("indication").innerText = "C'est à vous de jouer !"
                 } else {
                     document.getElementById("indication").innerText = "C'est à l'adversaire de jouer !"
@@ -57,11 +56,11 @@ function init() {
 
             case "chrono":
                 clearInterval(chornometreLigne)
-                timerLigne(separeMessage[1], separeMessage[2])
+                timerLigne(message["temps"], message["couleurJoueur"])
                 break
 
             case "fin":
-                finEnLigne(separeMessage[1])
+                finEnLigne(message["gagnant"])
                 break
 
             case "supprimeAnimation":
@@ -69,7 +68,7 @@ function init() {
                 break
 
             case "animation":
-                document.getElementById(separeMessage[1]).classList.add("animationSelection")
+                document.getElementById(message["pion"]).classList.add("animationSelection")
                 break
 
             case "moulin":
@@ -77,7 +76,8 @@ function init() {
                 break
 
             case "elimine":
-                elimineLigne(separeMessage[1], separeMessage[2], separeMessage[3])
+                console.log("la condition")
+                elimineLigne(message["pion"], message["couleur"], message["sonTour"])
                 break
 
             case "deconnecte":
@@ -92,21 +92,21 @@ function init() {
 
 function creerLigne() {
     if (!(dureeJoueur == null) && !(couleurJoueur == null)) {
-        socket.emit("setup", `creationId:${dureeJoueur}:${couleurJoueur}`)
+        socket.emit("setup", {"but": "creationId", "duree": dureeJoueur, "couleur": couleurJoueur})
     } else {
         document.getElementById("incompletude").style.display = "block"
     }
 }
 
 function rejoindre() {
-    socket.emit("setup", "idConnexion:" + document.getElementById("noPartie").value)
+    socket.emit("setup", {"but": "idConnexion", "id": document.getElementById("noPartie").value})
     votreId = document.getElementById("noPartie").value
 }
 
 function selectionneLigne(pion) {
     if (! enLigne) {
     } else {
-        socket.emit("setup", `pion:${pion}:${votreId}`)
+        socket.emit("setup", {"but": "pion", "pion": pion, "id": votreId})
     }
 
 }
@@ -114,7 +114,7 @@ function selectionneLigne(pion) {
 function joueLigne(caseOnline) {
     if (enLigne == false) {
     } else {
-        socket.emit("setup", `case:${caseOnline}:${votreId}`)
+        socket.emit("setup", {"but": "case", "case": caseOnline, "id": votreId})
     }
 
 }
@@ -171,7 +171,10 @@ function mouvementLigne(pion, place) {
 function elimineLigne(pion, nPion, doitJouer) {
     document.getElementById(pion).style.display = "none"
     document.getElementById(`p${pion[1]}Elimine${Number(nPion) + 1}`).style.visibility = "visible"
-    if (doitJouer == "doitJouer") {
+    console.log("ceci s'exécute")
+    console.log(doitJouer)
+    console.log (doitJouer == "oui")
+    if (doitJouer == "oui") {
         document.getElementById("indication").innerText = "C'est à vous de jouer !"
     } else {
         document.getElementById("indication").innerText = "C'est à l'adversaire de jouer !"
