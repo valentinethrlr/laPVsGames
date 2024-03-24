@@ -260,15 +260,15 @@ function joue(numeroCase) {
                             document.getElementById(pionsPossibles[i]).classList.add("animationSelection")
                         }        
                     
-                    //si le moulin existait déjà, il est à nouveau mis dans la liste moulinsPlateau
+                        //si le moulin existait déjà, il est à nouveau mis dans la liste moulinsPlateau
+                        } else {
+                            moulinsPlateau[i] = pion1[1]
+                        }
+                    
+                    //s'il n'y a pas de moulins à cet emplacement, la position dans mise à null dans moulinsPlateau        
                     } else {
-                        moulinsPlateau[i] = pion1[1]
+                        moulinsPlateau[i] = null
                     }
-                
-                //s'il n'y a pas de moulins à cet emplacement, la position dans mise à null dans moulinsPlateau        
-                } else {
-                    moulinsPlateau[i] = null
-                }
             }
     
         }
