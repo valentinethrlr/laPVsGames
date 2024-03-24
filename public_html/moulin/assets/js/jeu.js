@@ -1,13 +1,13 @@
 //décompte des tours
 let tour = 0
 //joueur qui doit effectuer un mouvement
-let current_joueur = 'b'
+let joueur_actuel = 'b'
 //joueur qui doit attendre le mouvement de l'autre
 let autre_joueur = 'n'
 //liste qui décrit l'état du plateau à chaque instant du jeu
 let plateau = new Array(24)
 //pion actuellement sélectionné
-let current_pion = null
+let pion_actuel = null
 //jeu en ligne ou en local
 let enLigne = false
 
@@ -137,7 +137,7 @@ function tourJoue() {
 
 
     if (tour % 2 == 1) {
-        current_joueur = 'b'
+        joueur_actuel = 'b'
         autre_joueur = 'n'
         document.getElementById("indication").innerText = "C'est aux blancs de jouer !"
         if (!(dureeJoueur == 0)) {
@@ -149,7 +149,7 @@ function tourJoue() {
         
 
     } else if (tour % 2 == 0) {
-        current_joueur = 'n'
+        joueur_actuel = 'n'
         autre_joueur = 'b'
         document.getElementById("indication").innerText = "C'est aux noirs de jouer !"
         if (!(dureeJoueur == 0)) {
@@ -177,7 +177,7 @@ function joue(numeroCase) {
     
         //mise en place du jeu
         if (tour <= 18 && typeMoulin == null) {
-            if (current_joueur == 'b') {
+            if (joueur_actuel == 'b') {
                 mouvement(`pb${(tour+1)/2}`, `case${numeroCase}`)
                 plateau[numeroCase] = `pb${(tour+1)/2}`
                 
@@ -195,12 +195,12 @@ function joue(numeroCase) {
             incrementeTour = true
     
         //déplacement des pions (avec 3 pions)    
-        } else if (nbBElimine == 6 && current_joueur == 'b') {
+        } else if (nbBElimine == 6 && joueur_actuel == 'b') {
             deplacement(numeroCase)
             incrementeTour = true
             
         
-        } else if (nbNElimine == 6 && current_joueur == 'n') {
+        } else if (nbNElimine == 6 && joueur_actuel == 'n') {
             deplacement(numeroCase)
             incrementeTour = true
             
@@ -211,10 +211,8 @@ function joue(numeroCase) {
     
         //déplacement dans les autres cas 
         } else {
-            
-            console.log()
 
-            if (eval(`zone${plateau.indexOf(current_pion)}`).includes(numeroCase)) {
+            if (eval(`zone${plateau.indexOf(pion_actuel)}`).includes(numeroCase)) {
                 deplacement(numeroCase)
                 incrementeTour = true
                 mouvementSansPrise ++
@@ -345,13 +343,13 @@ function selectionne(pionId) {
         supprimeAnimation()
 
         //impossible de sélectionner un pion adverse
-        if (current_joueur == 'b' && pionId.startsWith("pb")) {
+        if (joueur_actuel == 'b' && pionId.startsWith("pb")) {
             document.getElementById(pionId).classList.add("animationSelection")
-            current_pion = pionId
+            pion_actuel = pionId
         
-        } else if (current_joueur == 'n' && pionId.startsWith("pn")) {
+        } else if (joueur_actuel == 'n' && pionId.startsWith("pn")) {
             document.getElementById(pionId).classList.add("animationSelection")
-            current_pion = pionId
+            pion_actuel = pionId
         }   
         
         pionSelectionne = true
@@ -381,7 +379,7 @@ function mouvement(pion, place) {
     let plateau = document.getElementById("grille")
     let xPlateau = plateau.offsetLeft
     let yPlateau = plateau.offsetTop
-    pionBouge.style.top = (yPlateau + yBut - 29) + "px"
+    pionBouge.style.top = (yPlateau + yBut) + "px"
     pionBouge.style.left = (xPlateau + xBut) + "px"
 }
 
@@ -462,12 +460,12 @@ function deplacement(numeroCase) {
    * Anime le déplacement du pion vers la case sélectionnée et s'occuper des modifications dans la liste plateau
    * @param {number} *numeroCase le numéro de la case sélectionnée
    */
-    mouvement(current_pion, `case${numeroCase}`)
-    document.getElementById(current_pion).classList.remove("animationSelection")
+    mouvement(pion_actuel, `case${numeroCase}`)
+    document.getElementById(pion_actuel).classList.remove("animationSelection")
     //déplace le pion dans la liste plateau
-    plateau[plateau.indexOf(current_pion)] = null
-    plateau[numeroCase] = current_pion
-    current_pion = null
+    plateau[plateau.indexOf(pion_actuel)] = null
+    plateau[numeroCase] = pion_actuel
+    pion_actuel = null
 }
 
 function supprimeAnimation() {
@@ -522,18 +520,18 @@ function controleMouvementPossible() {
     let deplacementsAutorises = []
 
     for (let i = 1; i <= 9; i++) {
-        cePion = `p${current_joueur}${i}`
+        cePion = `p${joueur_actuel}${i}`
         if (plateau.includes(cePion)) {
             positionPionPlateau.push(plateau.indexOf(cePion))
         }
     }
 
     for (let i = 0; i < positionPionPlateau.length; i++) {
-        let current_zone = eval(`zone${positionPionPlateau[i]}`)
-        for (let j = 0; j < current_zone.length; j++) {
-            let current_case = current_zone[j]
-            if (plateau[current_case] == null) {
-                deplacementsAutorises.push(current_case)
+        let actuel_zone = eval(`zone${positionPionPlateau[i]}`)
+        for (let j = 0; j < actuel_zone.length; j++) {
+            let actuel_case = actuel_zone[j]
+            if (plateau[actuel_case] == null) {
+                deplacementsAutorises.push(actuel_case)
             }
         }
     }
@@ -556,7 +554,7 @@ function timer(temps) {
                 return
             }
 
-            if (current_joueur == 'b') {
+            if (joueur_actuel == 'b') {
                 tempsb --
             } else {
                 tempsn --
@@ -567,7 +565,7 @@ function timer(temps) {
             minutes = minutes.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
             let secondes = Math.floor(temps - minutes * 60)
             secondes = secondes.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
-            document.getElementById(`temps${current_joueur}`).innerText = `${minutes}:${secondes}`
+            document.getElementById(`temps${joueur_actuel}`).innerText = `${minutes}:${secondes}`
             
         }, 1000)
 }
