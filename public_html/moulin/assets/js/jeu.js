@@ -273,7 +273,7 @@ function joue(numeroCase) {
     
         }
     
-        //incrémentation des tours si le tour précédant est terminé
+        //incrémentation des tours si le tour précédent est terminé
         if (typeMoulin == null && incrementeTour == true) {
             tourJoue()
         }
@@ -365,14 +365,14 @@ function selectionne(pionId) {
 }
 
 
-function mouvement(pion, place) {
+function mouvement(pion, cetteCase) {
   /**
    * Anime le mouvement des pions
    * @param {string} *le pion à éliminer
    */
     let pionBouge = document.getElementById(pion)
     pionBouge.style.position ="absolute";
-    let but = document.getElementById(place)
+    let but = document.getElementById(cetteCase)
     let posBut = but.coords.split(",")
     let xBut = Number(posBut[0])
     let yBut = Number(posBut[1])
@@ -457,7 +457,7 @@ function listePossible(intouchable) {
 
 function deplacement(numeroCase) {
   /**
-   * Anime le déplacement du pion vers la case sélectionnée et s'occuper des modifications dans la liste plateau
+   * Ordonne le déplacement du pion vers la case sélectionnée et s'occupe des modifications dans la liste plateau
    * @param {number} *numeroCase le numéro de la case sélectionnée
    */
     mouvement(pion_actuel, `case${numeroCase}`)
