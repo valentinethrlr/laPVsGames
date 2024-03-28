@@ -108,7 +108,6 @@ function selectionneLigne(pion) {
     } else {
         socket.emit("setup", {"but": "pion", "pion": pion, "id": votreId})
     }
-
 }
 
 function joueLigne(caseOnline) {
@@ -116,7 +115,6 @@ function joueLigne(caseOnline) {
     } else {
         socket.emit("setup", {"but": "case", "case": caseOnline, "id": votreId})
     }
-
 }
 
 function finEnLigne(gagnant) {
