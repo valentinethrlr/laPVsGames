@@ -8,8 +8,8 @@
     <link rel="icon" type="image/pion-icon" href="/morpion/assets/images/pion.avif">
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js" integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="../assets/css/rejoindre.css?version=6" media="screen" />
-    <script src='../assets/js/ligne.js?v=77'></script>
+    <link rel="stylesheet" type="text/css" href="../assets/css/rejoindre.css?version=9" media="screen" />
+    <script src='../assets/js/ligne.js?v=81'></script>
 </head>
 <body>
     <div id="login">
@@ -19,6 +19,8 @@
         </div>
         <h1 id="idFausse"></h1>
     </div>
+
+    <h1 id="deconnexion"></h1>
 
     <div id="jeuTotal" style="display: none;">
         <h1 id="indication"></h1>
@@ -48,36 +50,36 @@
         <img src="./moulin_colors.svg" usemap="#plateau" width="500" height="500" alt="plateau">
 
         <map name="plateau">
-            <area id="case0"  shape="circle" coords="-5,-9,30" onclick="joue(0); joueLigne(0);">
-            <area id="case1"  shape="circle" coords="234,-9,30" onclick="joue(1); joueLigne(1);">
-            <area id="case2"  shape="circle" coords="474,-9,30" onclick="joue(2); joueLigne(2);">
+            <area id="case0"  shape="circle" coords="-5,-9,30" onclick="joueLigne(0);">
+            <area id="case1"  shape="circle" coords="234,-9,30" onclick="joueLigne(1);">
+            <area id="case2"  shape="circle" coords="474,-9,30" onclick="joueLigne(2);">
 
-            <area id="case3"  shape="circle" coords="74,71,30" onclick="joue(3); joueLigne(3);">
-            <area id="case4"  shape="circle" coords="234,71,30" onclick="joue(4); joueLigne(4);">
-            <area id="case5"  shape="circle" coords="395,71,30" onclick="joue(5); joueLigne(5);">
+            <area id="case3"  shape="circle" coords="74,71,30" onclick="joueLigne(3);">
+            <area id="case4"  shape="circle" coords="234,71,30" onclick="joueLigne(4);">
+            <area id="case5"  shape="circle" coords="395,71,30" onclick="joueLigne(5);">
 
-            <area id="case6"  shape="circle" coords="154,151,30" onclick="joue(6); joueLigne(6);">
-            <area id="case7"  shape="circle" coords="234,151,30" onclick="joue(7); joueLigne(7);">
-            <area id="case8"  shape="circle" coords="314,151,30" onclick="joue(8); joueLigne(8);">
+            <area id="case6"  shape="circle" coords="154,151,30" onclick="joueLigne(6);">
+            <area id="case7"  shape="circle" coords="234,151,30" onclick="joueLigne(7);">
+            <area id="case8"  shape="circle" coords="314,151,30" onclick="joueLigne(8);">
 
-            <area id="case9"  shape="circle" coords="-5,231,30" onclick="joue(9); joueLigne(9);">
-            <area id="case10" shape="circle" coords="74,231,30" onclick="joue(10); joueLigne(10);">
-            <area id="case11" shape="circle" coords="154,231,30" onclick="joue(11); joueLigne(11);">
-            <area id="case12" shape="circle" coords="314,231,30" onclick="joue(12); joueLigne(12);">
-            <area id="case13" shape="circle" coords="395,231,30" onclick="joue(13); joueLigne(13);">
-            <area id="case14" shape="circle" coords="474,231,30" onclick="joue(14); joueLigne(14);">
+            <area id="case9"  shape="circle" coords="-5,231,30" onclick="joueLigne(9);">
+            <area id="case10" shape="circle" coords="74,231,30" onclick="joueLigne(10);">
+            <area id="case11" shape="circle" coords="154,231,30" onclick="joueLigne(11);">
+            <area id="case12" shape="circle" coords="314,231,30" onclick="joueLigne(12);">
+            <area id="case13" shape="circle" coords="395,231,30" onclick="joueLigne(13);">
+            <area id="case14" shape="circle" coords="474,231,30" onclick="joueLigne(14);">
 
-            <area id="case15" shape="circle" coords="154,311,30" onclick="joue(15); joueLigne(15);">
-            <area id="case16" shape="circle" coords="234,311,30" onclick="joue(16); joueLigne(16);">
-            <area id="case17" shape="circle" coords="314,311,30" onclick="joue(17); joueLigne(17);">
+            <area id="case15" shape="circle" coords="154,311,30" onclick="joueLigne(15);">
+            <area id="case16" shape="circle" coords="234,311,30" onclick="joueLigne(16);">
+            <area id="case17" shape="circle" coords="314,311,30" onclick="joueLigne(17);">
 
-            <area id="case18" shape="circle" coords="74,391,30" onclick="joue(18); joueLigne(18);">
-            <area id="case19" shape="circle" coords="234,391,30" onclick="joue(19); joueLigne(19);">
-            <area id="case20" shape="circle" coords="395,391,30" onclick="joue(20); joueLigne(20);">
+            <area id="case18" shape="circle" coords="74,391,30" onclick="joueLigne(18);">
+            <area id="case19" shape="circle" coords="234,391,30" onclick="joueLigne(19);">
+            <area id="case20" shape="circle" coords="395,391,30" onclick="joueLigne(20);">
 
-            <area id="case21" shape="circle" coords="-5,471,30" onclick="joue(21); joueLigne(21);">
-            <area id="case22" shape="circle" coords="234,471,30" onclick="joue(22); joueLigne(22);">
-            <area id="case23" shape="circle" coords="474,471,30" onclick="joue(23); joueLigne(23);">
+            <area id="case21" shape="circle" coords="-5,471,30" onclick="joueLigne(21);">
+            <area id="case22" shape="circle" coords="234,471,30" onclick="joueLigne(22);">
+            <area id="case23" shape="circle" coords="474,471,30" onclick="joueLigne(23);">
         </map>
         </div>
 

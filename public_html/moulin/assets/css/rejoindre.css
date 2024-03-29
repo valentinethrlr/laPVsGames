@@ -157,3 +157,8 @@ area {
    animation-duration: 0.75s;
    animation-iteration-count: infinite;
 }
+
+#deconnexion {
+   color: #FF686B;
+   text-align: center;
+}

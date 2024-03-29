@@ -83,8 +83,9 @@ function init() {
             case "deconnecte":
                 document.getElementById("login").style.display = "none"
                 document.getElementById("jeuTotal").style.display = "none"
-                document.getElementById("indication").innerText = "Votre adversaire s'est déconnecté"
-                document.getElementById("indication").style.display = "block"
+                document.getElementById("deconnexion").innerText = "Votre adversaire s'est déconnecté"
+                document.getElementById("deconnexion").style.marginTop = "100px";
+                document.getElementById("deconnexion").style.display = "block"
                 break
         }
     })
@@ -161,7 +162,7 @@ function mouvementLigne(pion, place) {
     let plateau = document.getElementById("grille")
     let xPlateau = plateau.offsetLeft
     let yPlateau = plateau.offsetTop
-    pionBouge.style.top = (yPlateau + yBut - 29) + "px"
+    pionBouge.style.top = (yPlateau + yBut) + "px"
     pionBouge.style.left = (xPlateau + xBut) + "px"
     supprimeAnimationLigne()
 }

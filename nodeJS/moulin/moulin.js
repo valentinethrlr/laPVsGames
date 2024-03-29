@@ -35,6 +35,23 @@ module.exports = class Moulin {
       }
     })
 
+    socket.on("disconnect", (raison) => {
+      const currentPartie = this.parties[this.joueurs[socket.id]]
+      if(!currentPartie){
+        return
+      }
+      if (socket.id == currentPartie.joueur1) {
+        envoiMoulin(currentPartie.joueur2, "info", {"but" : "deconnecte"})
+        currentPartie.joueur2.disconnect()
+      } else {
+        envoiMoulin(currentPartie.joueur1, "info", {"but" : "deconnecte"})
+        currentPartie.joueur1.disconnect()
+      }
+      delete this.joueurs[currentPartie.joueur1]
+      delete this.joueurs[currentPartie.joueur2]
+      delete this.parties[currentPartie.id]
+    })
+
   }
 
   commencerPartie(partieId) {

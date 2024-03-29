@@ -7,13 +7,14 @@
         <link rel="icon" type="image/pion-icon" href="/morpion/assets/images/pion.avif">
         <meta name='viewport' content='width=device-width, initial-scale=1'>
         <script src="https://cdn.socket.io/4.5.4/socket.io.min.js" integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous"></script>
-        <link rel="stylesheet" type="text/css" href="../assets/css/jeu.css?version=97" media="screen" />
+        <link rel="stylesheet" type="text/css" href="../assets/css/jeu.css?version=100" media="screen" />
         <script src='../assets/js/jeu.js?v=316'></script>
-        <script src='../assets/js/ligne.js?v=77'></script>
+        <script src='../assets/js/ligne.js?v=81'></script>
     </head>
 
     <body>
 
+        <div id="login" style="display: none;"></div>
         <div class="centerVert" id="optionsCreer">
             <div class="option">
                 <div class="option-ecriture">Durée par joueur</div>
@@ -41,6 +42,8 @@
             <h2>En attente de l'adversaire...</h2>
             <h2 id="votreId">L'ID de votre partie est: </h2>
         </div>
+
+        <h1 id="deconnexion"></h1>
         
         <div id="jeuTotal" style="display: none;">
             <h1 id="indication"></h1>
