@@ -76,7 +76,6 @@ function init() {
                 break
 
             case "elimine":
-                console.log("la condition")
                 elimineLigne(message["pion"], message["couleur"], message["sonTour"])
                 break
 
@@ -170,9 +169,6 @@ function mouvementLigne(pion, place) {
 function elimineLigne(pion, nPion, doitJouer) {
     document.getElementById(pion).style.display = "none"
     document.getElementById(`p${pion[1]}Elimine${Number(nPion) + 1}`).style.visibility = "visible"
-    console.log("ceci s'exécute")
-    console.log(doitJouer)
-    console.log (doitJouer == "oui")
     if (doitJouer == "oui") {
         document.getElementById("indication").innerText = "C'est à vous de jouer !"
     } else {

@@ -198,16 +198,14 @@ function joue(numeroCase) {
         } else if (nbBElimine == 6 && joueur_actuel == 'b') {
             deplacement(numeroCase)
             incrementeTour = true
+            mouvementSansPrise ++
             
         
         } else if (nbNElimine == 6 && joueur_actuel == 'n') {
             deplacement(numeroCase)
             incrementeTour = true
-            
+            mouvementSansPrise ++
         
-        //50 mouvements sans prise
-        } else if (mouvementSansPrise == 50) {
-            finDePartie("nul")
     
         //déplacement dans les autres cas 
         } else {
@@ -221,6 +219,11 @@ function joue(numeroCase) {
             }    
         }
     
+        //50 mouvements sans prise
+        if (mouvementSansPrise == 50) {
+            finDePartie("nul")
+        }
+
         //contrôle de moulin
         if (tour > 4) {
             let possibilite = null

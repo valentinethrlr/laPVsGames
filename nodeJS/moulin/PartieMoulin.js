@@ -14,9 +14,9 @@ module.exports = class PartieMoulin {
         this.couleur = couleur
         this.couleurJoueurs(this.couleur)
         this.tour = 1
-        this.plateau = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+        this.plateau = new Array(24)
         //se réfère à moulins, indique s'il y a un moulin sur la plateau à la liste des positions se trouvant au même indexe dans moulins
-        this.moulinsPlateau = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+        this.moulinsPlateau = new Array(16)
         this.typeMoulin = null
         //indique le nombre de pions blancs et noirs qui ont déjà été éliminés
         this.nbbElimine = 0
@@ -97,15 +97,8 @@ module.exports = class PartieMoulin {
     tourJoue() {
         this.incrementeTour = false
         this.tour ++
-        if (this.tour % 2 == 1 && this.couleur1 == "b") {
-            this.actuel_joueur = 1
-            this.autre_joueur = 2
         
-        } else if (this.tour % 2 == 0 && this.couleur1 == "b") {
-            this.actuel_joueur = 2
-            this.autre_joueur = 1
-            
-        } else if (this.tour % 2 == 1 && this.couleur1 == "n") {
+        if ((this.tour % 2 == 0 && this.couleur1 == "b") || (this.tour % 2 == 1 && this.couleur1 == "n")) {
             this.actuel_joueur = 2
             this.autre_joueur = 1
             
@@ -152,18 +145,18 @@ module.exports = class PartieMoulin {
         } else if (this.nbbElimine == 6 && eval(`this.couleur${this.actuel_joueur}`) == 'b') {
             envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", {"but" : "mouvement", "pion" : this.current_pion, "case" : `case${caseNumber}`, "sonTour" : "non"})
             envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", {"but" : "mouvement", "pion" : this.current_pion, "case" : `case${caseNumber}`, "sonTour" : "oui"})
+            this.deplacement(caseNumber)
             this.incrementeTour = true
+            this.mouvementSansPrise ++
             
         
         } else if (this.nbnElimine == 6 && eval(`this.couleur${this.actuel_joueur}`) == 'n') {
             envoiMoulin(eval(`this.joueur${this.actuel_joueur}`), "info", {"but" : "mouvement", "pion" : this.current_pion, "case" : `case${caseNumber}`, "sonTour" : "non"})
             envoiMoulin(eval(`this.joueur${this.autre_joueur}`), "info", {"but" : "mouvement", "pion" : this.current_pion, "case" : `case${caseNumber}`, "sonTour" : "oui"})
+            this.deplacement(caseNumber)
             this.incrementeTour = true
-            
-        
-        //50 mouvements sans prise
-        } else if (this.mouvementSansPrise == 50) {
-            this.finDePartie("nul")
+            this.mouvementSansPrise ++
+
     
         //déplacement dans les autres cas 
         } else {
@@ -177,12 +170,19 @@ module.exports = class PartieMoulin {
             }    
         }
 
+        //50 mouvements sans prise
+        if (this.mouvementSansPrise == 50) {
+            this.finDePartie("nul")
+        }
+
         //contrôle de moulin
+        console.log(utilisateur == eval(`this.joueur${this.actuel_joueur}`))
         if (this.tour > 4 && utilisateur == eval(`this.joueur${this.actuel_joueur}`)) {
             let possibilite = null
             let pion1 = null
             let pion2 = null
             let pion3 = null
+            console.log(this.plateau)
             for (let i=0; i<(this.moulins).length; i++) {
                 possibilite = this.moulins[i]
                 pion1 = this.plateau[possibilite[0]]
@@ -233,7 +233,6 @@ module.exports = class PartieMoulin {
         if (this.incrementeTour == true) {
             this.tourJoue()
         }
-
     }
 
     selectionne(pionId, utilisateur) {
