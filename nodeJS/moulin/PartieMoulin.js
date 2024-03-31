@@ -222,13 +222,14 @@ module.exports = class PartieMoulin {
                         this.moulinsPlateau[i] = pion1[1]
                     }
                 
-                //s'il n'y a pas de moulins à cet emplacement, la position dans mise à null dans moulinsPlateau        
+                //s'il n'y a pas de moulins à cet emplacement, la position est mise à null dans moulinsPlateau        
                 } else {
                     this.moulinsPlateau[i] = null
                 }
             }
-
         }
+
+        console.log(this.moulinsPlateau)
 
         if (this.incrementeTour == true) {
             this.tourJoue()
@@ -399,7 +400,7 @@ module.exports = class PartieMoulin {
     this.chornometre = setInterval(
         function() {
 
-            if (eval(`that.temps${that.actuel_joueur}`) == 0) {
+            if (eval(`that.temps${that.actuel_joueur}`) <= 0) {
                 clearInterval(chornometre)
                 finDePartie(eval(`that.couleur${that.autre_joueur}`))
                 return

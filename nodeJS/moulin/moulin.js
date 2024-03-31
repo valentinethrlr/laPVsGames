@@ -40,6 +40,9 @@ module.exports = class Moulin {
       if(!currentPartie){
         return
       }
+      if (currentPartie.joueur2 == null) {
+        return
+      }
       if (socket.id == currentPartie.joueur1) {
         envoiMoulin(currentPartie.joueur2, "info", {"but" : "deconnecte"})
         currentPartie.joueur2.disconnect()
