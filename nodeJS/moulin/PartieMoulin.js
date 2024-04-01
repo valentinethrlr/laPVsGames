@@ -176,13 +176,11 @@ module.exports = class PartieMoulin {
         }
 
         //contrôle de moulin
-        console.log(utilisateur == eval(`this.joueur${this.actuel_joueur}`))
         if (this.tour > 4 && utilisateur == eval(`this.joueur${this.actuel_joueur}`)) {
             let possibilite = null
             let pion1 = null
             let pion2 = null
             let pion3 = null
-            console.log(this.plateau)
             for (let i=0; i<(this.moulins).length; i++) {
                 possibilite = this.moulins[i]
                 pion1 = this.plateau[possibilite[0]]
