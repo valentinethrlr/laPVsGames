@@ -227,8 +227,6 @@ module.exports = class PartieMoulin {
             }
         }
 
-        console.log(this.moulinsPlateau)
-
         if (this.incrementeTour == true) {
             this.tourJoue()
         }
@@ -398,16 +396,30 @@ module.exports = class PartieMoulin {
     this.chornometre = setInterval(
         function() {
 
-            if (eval(`that.temps${that.actuel_joueur}`) <= 0) {
-                clearInterval(chornometre)
-                finDePartie(eval(`that.couleur${that.autre_joueur}`))
-                return
-            }
+            
+            //console.log(eval(`that.temps${that.actuel_joueur}`))
+            //if (eval(`that.temps${that.actuel_joueur}`) <= 0) {
+              //  console.log("Ceci s'exécute")
+                //clearInterval(chornometre)
+                //finDePartie(eval(`this.couleur${that.autre_joueur}`))
+                //return
+            //}
 
             if (eval(`that.couleur${that.actuel_joueur}`) == 'b') {
-                that.tempsb --
+                that.tempsb--
+                if (that.tempsb <= 0) {
+                    clearInterval(that.chornometre)
+                    that.finDePartie("n")
+                    return
+                }
             } else {
-                that.tempsn --
+                that.tempsn--
+
+                if (that.tempsn <= 0) {
+                    clearInterval(that.chornometre)
+                    that.finDePartie("b")
+                    return
+                }
             }
             
         }, 1000)
