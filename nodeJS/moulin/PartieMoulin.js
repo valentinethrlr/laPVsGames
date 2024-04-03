@@ -396,15 +396,6 @@ module.exports = class PartieMoulin {
     this.chornometre = setInterval(
         function() {
 
-            
-            //console.log(eval(`that.temps${that.actuel_joueur}`))
-            //if (eval(`that.temps${that.actuel_joueur}`) <= 0) {
-              //  console.log("Ceci s'exécute")
-                //clearInterval(chornometre)
-                //finDePartie(eval(`this.couleur${that.autre_joueur}`))
-                //return
-            //}
-
             if (eval(`that.couleur${that.actuel_joueur}`) == 'b') {
                 that.tempsb--
                 if (that.tempsb <= 0) {
