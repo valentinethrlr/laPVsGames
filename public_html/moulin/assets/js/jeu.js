@@ -268,7 +268,7 @@ function joue(numeroCase) {
                             moulinsPlateau[i] = pion1[1]
                         }
                     
-                    //s'il n'y a pas de moulins à cet emplacement, la position dans mise à null dans moulinsPlateau        
+                    //s'il n'y a pas de moulins à cet emplacement, la position dans moulinsPlateau prend la valeur null     
                     } else {
                         moulinsPlateau[i] = null
                     }
